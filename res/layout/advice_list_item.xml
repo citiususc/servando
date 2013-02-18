@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="10dip"
+    android:padding="10dip"
+    android:visibility="visible" >
+
+    <ImageView
+        android:id="@+id/user_icon"
+        android:layout_width="40dip"
+        android:layout_height="40dip"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:scaleType="fitCenter"
+        android:src="@drawable/nurse" />
+
+    <RelativeLayout
+        android:id="@+id/relMessage"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="40dip"
+        android:layout_marginRight="10dip">
+
+        <ImageView
+            android:id="@+id/imageView1"
+            android:layout_width="wrap_content"
+            android:layout_height="30dip"
+            android:layout_alignParentTop="true"
+            android:scaleType="fitEnd"
+            android:src="@drawable/text_message_up" />
+
+		<ImageView
+            android:id="@+id/imageView3"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:layout_below="@+id/imageView1"
+            android:layout_alignBottom="@+id/imageView2"
+            android:scaleType="fitXY"
+            android:src="@drawable/text_message_center" />
+
+        <ImageView
+            android:id="@+id/imageView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:scaleType="fitXY"
+            android:src="@drawable/text_message_bottom" />
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dip"
+            android:layout_marginTop="10dip"
+            android:orientation="vertical"
+            android:padding="10dip"
+            android:scrollbars="none" >
+
+            <TextView
+                android:id="@+id/message_intro"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Ana:"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="#333333"
+                android:textSize="25dip" />
+
+            <TextView
+                android:id="@+id/message_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dip"
+                android:text="Ola Ángel, últimamente estás tomando demasiado sal. Procura reducir o consumo de sal nas comidas."
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textColor="#666666"
+                android:textSize="20dip" />
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/message_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginRight="20dip"
+        android:layout_marginTop="15dip"
+        android:text="Mar 12, 11:03"
+        android:textColor="#777777"
+        android:textSize="11dip" />
+
+    <ImageView
+        android:id="@+id/visible_layer"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:src="#ccffffff"
+        android:visibility="visible" />
+
+</RelativeLayout>

@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item>
+
+        <bitmap
+            android:gravity="center"
+            android:src="@drawable/patient_siluet" />
+    </item>
+
+    <item
+        android:left="-120dp"
+        android:top="-260dp">
+
+        <bitmap
+            android:gravity="center"
+            android:src="@drawable/red_light" />
+    </item>
+
+    <item
+        android:left="-120dp"
+        android:top="-260dp">
+
+        <bitmap
+            android:gravity="center"
+            android:src="@drawable/green_light" />
+    </item>
+
+    <item
+        android:left="-120dp"
+        android:top="-260dp"
+        android:drawable="@drawable/alpha_blink">
+    </item>
+
+    <item
+        android:id="@+id/left_clavicle_indicator"
+        android:left="120dp"
+        android:top="-260dp">
+
+        <bitmap
+            android:id="@+id/right_groin_indicator"
+            android:gravity="center"
+            android:src="@drawable/red_light" />
+    </item>
+
+    <item
+        android:id="@+id/left_clavicle_indicator"
+        android:left="120dp"
+        android:top="-260dp">
+
+        <bitmap
+            android:id="@+id/right_groin_indicator"
+            android:gravity="center"
+            android:src="@drawable/green_light" />
+    </item>
+
+    <item
+        android:left="-60dp"
+        android:top="40dp">
+
+        <bitmap
+            android:id="@+id/left_groin_indicator"
+            android:gravity="center"
+            android:src="@drawable/red_light" />
+    </item>
+
+    <item
+        android:left="-60dp"
+        android:top="40dp">
+
+        <bitmap
+            android:id="@+id/left_groin_indicator"
+            android:gravity="center"
+            android:src="@drawable/green_light" />
+    </item>
+
+    <item
+        android:left="60dp"
+        android:top="40dp">
+
+        <bitmap
+            android:gravity="center"
+            android:src="@drawable/red_light" />
+    </item>
+
+    <item
+        android:left="60dp"
+        android:top="40dp">
+
+        <bitmap
+            android:gravity="center"
+            android:src="@drawable/green_light" />
+    </item>
+
+</layer-list>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:id="@+id/menu_settings"
+        android:icon="@android:drawable/ic_menu_preferences"
+        android:title="Settings"/>
+
+    <item
+        android:id="@+id/menu_doctor_view"
+        android:icon="@android:drawable/ic_dialog_info"
+        android:title="Doctor view"/>
+
+    <item
+        android:id="@+id/menu_help"
+        android:icon="@android:drawable/ic_menu_help"
+        android:title="Help"/>
+
+    <item
+        android:id="@+id/menu_close"
+        android:icon="@drawable/ic_menu_close"
+        android:title="Exit"/>
+
+</menu>

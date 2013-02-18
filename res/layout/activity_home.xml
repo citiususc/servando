@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app1="http://schemas.android.com/apk/res/com.dashboardtest"
+    android:id="@+id/db1_root"
+    style="@style/screenBackground"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:id="@+id/relative_layout_1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" >
+
+        <LinearLayout style="@style/TitleBar" >
+
+            <ImageView
+                style="@style/TitleBarLogo"
+                android:contentDescription="@string/description_logo"
+                android:scaleType="fitStart"
+                android:src="@drawable/home_title"  />
+
+            <TextView style="@style/TitleBarText" />
+
+            <ImageButton
+                style="@style/TitleBarAction"
+                android:contentDescription="@string/description_about"
+                android:onClick="onClickAbout"
+                android:src="@drawable/ic_about" />
+        </LinearLayout>
+
+        <ImageButton
+            android:id="@+id/home_notifications_icon"
+            style="@style/TitleBarAction"
+            android:layout_width="@dimen/title_height"
+            android:layout_height="@dimen/title_height"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="155dip"
+            android:background="@null"
+            android:onClick="onClickNotifications"
+            android:padding="0dip"
+            android:src="@drawable/notification"/>
+
+        <TextView
+            android:id="@+id/home_notifications_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="183dip"
+            android:layout_marginTop="5dip"
+            android:text="2"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="@color/background1"
+            android:textStyle="bold" />
+
+    </RelativeLayout>
+
+    <ScrollView
+        android:id="@+id/scrollView1"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:scrollbars="vertical" >
+
+        <FrameLayout
+            android:id="@+id/dashboard_container"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" >
+
+            <android.support.v7.widget.GridLayout
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/grid"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:horizontalSpacing="10dip"
+                android:orientation="horizontal"
+                android:verticalSpacing="5dip"
+                app:columnCount="2" >
+
+                <Button
+                    android:id="@+id/home_button_agenda"
+                    style="@style/DashboardButton"
+                    android:layout_gravity="left"
+                    android:drawableTop="@drawable/home_button4"
+                    android:onClick="onClickAgenda"
+                    android:text="@string/title_feature3" />
+
+<!--                 <Button -->
+<!--                     android:id="@+id/button_testing" -->
+<!--                     style="@style/DashboardButton" -->
+<!--                     android:drawableTop="@drawable/home_button2" -->
+<!--                     android:onClick="onClickTesting" -->
+<!--                     android:text="@string/title_feature2" /> -->
+
+<!--                 <Button -->
+<!--                     android:id="@+id/button_agenda" -->
+<!--                     style="@style/DashboardButton" -->
+<!--                     android:layout_gravity="left" -->
+<!--                     android:drawableTop="@drawable/home_button3" -->
+<!--                     android:onClick="onClickFeature" -->
+<!--                     android:text="@string/title_feature4" /> -->
+            </android.support.v7.widget.GridLayout>
+        </FrameLayout>
+    </ScrollView>
+
+</LinearLayout>

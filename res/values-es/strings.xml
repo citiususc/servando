@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<resources>
+    <string name="hello">Choose one of the features below.</string>
+    <string name="app_name">Servando</string>
+    <string name="description_logo">Demo</string>
+    <string name="description_about">About</string>
+    <string name="description_home">Home</string>
+    <string name="description_search">Search</string>
+    <string name="description_feature1">Monitoring</string>
+    <string name="description_feature2">Therapy</string>
+    <string name="description_feature3">Agenda</string>
+    <string name="description_feature4">Tests</string>
+    <string name="description_feature5">Feature 5</string>
+    <string name="description_feature6">Feature 6</string>
+    <string name="title_about">About</string>
+    <string name="title_home">Home</string>
+    <string name="title_search">Search</string>
+    <string name="title_feature1">Monitoring</string>
+    <string name="title_feature2">Therapy</string>
+    <string name="title_feature3">Agenda</string>
+    <string name="title_feature4">Tests</string>
+    <string name="title_feature5">Feature 5</string>
+    <string name="title_feature6">Feature 6</string>
+    <string name="default_intro">This is the default content view for an activity. Be sure to change your activity\'s onCreate method. Use setContentView on a custom layout.</string>
+    <string name="feature1_intro">Feature 1 content goes here.</string>
+    <string name="feature2_intro">Feature 2 content goes here.</string>
+    <string name="feature3_intro">Feature 3 content goes here.</string>
+    <string name="feature4_intro">Feature 4 content goes here.</string>
+    <string name="feature5_intro">Feature 5 content goes here.</string>
+    <string name="feature6_intro">Feature 6 content goes here.</string>
+    <string name="about_intro">
+    Servando is an open and distributed telemedicine platform, initially developed by the intelligent systems research group in the Centro de Información en Tecnoloxías da Información (CITIUS) of the University of Santiago de Compostela.
+    </string>
+    <string name="search_intro">Content for the Search page goes here.</string>
+    <string name="start_monitoring_button_text">Start monitoring</string>
+    <string name="monitoring_stopped_description">Monitoring stopped.</string>
+    <string name="monitoring_running_description">Monitoring in progress...</string>
+    <string name="medim_instructions_first">Place the sensors as indicated below</string>
+    <string name="next_1_2">1/2  \u003E\u003E</string>
+    <string name="back_2_2">\u003C\u003C 2/2</string>
+    <string name="medim_instructions_second">Then turn on the electrocardiograph by pressing the power button</string>
+    <string name="instructions_close">Close</string>
+    <string name="medical_actions">Medical actions</string>
+    <string name="notifications_list_title">Notifications</string>
+    <string name="service_hint">Service hint</string>
+    <string name="servando_platform">Servando Platform</string>
+    <string name="clear">Clear</string>
+    <string name="citius_link_title"><a href="http://www.citius.usc.es">Citius homepage</a></string>
+    <string name="servando_link_title"><a href="http://code.google.com/p/servando/">Servando homepage</a></string>
+    <string name="usc_link_title"><a href="http://www.usc.es">USC homepage</a></string>
+
+    <string name="message_welcome">"Welcome to Servando Platform!"</string>
+
+
+</resources>

@@ -1,0 +1,11 @@
+build/
+gen/
+bin/
+libs/
+.settings/
+.classpath
+.project
+.directory
+*~
+
+

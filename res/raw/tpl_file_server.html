@@ -1,0 +1,107 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Servando</title>
+<style>
+a,a:link,a:visited {
+	color: #2072b9
+}
+
+body {
+	font-size: 12pt;
+	font-family: Helvetica, Arial, sans-serif;
+	font-weight: normal;
+	font-style: normal;
+	color: #444;
+	background-color: white;
+	line-height: 1.2em;
+	margin-left: 3em;
+	margin-right: 2em;
+}
+
+#header {
+	height: 60px;
+	padding: 10px;
+	background: #2072b9;
+	color: #fff;
+}
+
+h1 {
+	margin-bottom: 0;
+}
+
+h5 {
+	padding: 20px;
+	/* 	background: #2072b9; */
+	/* 	color:#fff; */
+	margin-top: 0;
+}
+
+hr {
+	background-color: #2072b9;
+}
+
+a.dir {
+	color: blue;
+}
+
+a.file {
+	color: green
+}
+
+.ligth {
+	color: #777;
+}
+
+.title {
+	font-size: 14pt;
+	font-weight: bold;
+}
+
+input {
+	border: 1px solid #666666;
+	background: #fff;
+	float: right;
+	color: #444444;
+}
+
+form {
+	margin: 0
+}
+
+table tr {
+	border-bottom: 1px solid #ececec
+}
+</style>
+</head>
+<body>
+	<center>
+		<div id="header">
+			<form id='generic_login_form' method='POST'
+				action='http://%local_ip_address%:8080/%file_server_path%'>
+				<input type="hidden" name="exit" value="true" /> <input
+					type="submit" value="Exit"/>
+			</form>
+			<h1>Servando File Server</h1>
+		</div>
+		<h5>*** Running at %local_ip_address% ***</h5>
+	</center>
+	<br>
+	<div class="title">Listing %file_count% files from:</div>
+	<br>
+	<div class="title">&#187; %listed_directory%</div>
+
+	<hr>
+	<span class="toright"><a
+		href="http://%local_ip_address%:8080/%file_server_path%">Server root directory</a></span>
+	<hr>
+	%file_list%
+	<hr>
+	<center>
+		Servando File Server is developed by <a
+			href="http://proxectos.citius.usc.es/servando">ServandoPlatform</a>
+		Team
+	</center>
+</body>
+</html>

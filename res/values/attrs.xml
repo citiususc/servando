@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+
+    <declare-styleable name="BlocksLayout">
+        <attr name="columns" format="integer" />
+    </declare-styleable>
+
+    <declare-styleable name="TimeRulerView">
+        <attr name="headerWidth" format="dimension" />
+        <attr name="hourHeight" format="dimension" />
+        <attr name="horizontalDivider" format="boolean" />
+        <attr name="labelTextSize" format="dimension" />
+        <attr name="labelPaddingLeft" format="dimension" />
+        <attr name="labelColor" format="color" />
+        <attr name="dividerColor" format="color" />
+        <attr name="startHour" format="integer" />
+        <attr name="endHour" format="integer" />
+    </declare-styleable>
+
+</resources>

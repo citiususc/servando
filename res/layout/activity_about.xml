@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical" >
+
+<!--     <LinearLayout style="@style/TitleBar" > -->
+
+<!--         <ImageButton -->
+<!--             style="@style/TitleBarAction" -->
+<!--             android:contentDescription="@string/description_home" -->
+<!--             android:onClick="onClickHome" -->
+<!--             android:src="@drawable/title_home_default" /> -->
+
+<!--         <ImageView style="@style/TitleBarSeparator" /> -->
+
+<!--         <TextView -->
+<!--             style="@style/TitleBarText" -->
+<!--             android:text="@string/description_about" /> -->
+<!--     </LinearLayout> -->
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dip"
+        android:text="@string/about_intro"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="@color/foreground2" />
+
+    <TextView
+        android:id="@+id/servando_link"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dip"
+        android:layout_marginTop="10dip"
+        android:linksClickable="true"
+        android:text="@string/servando_link_title"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="@color/foreground1"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/citius_link"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dip"
+        android:layout_marginTop="10dip"
+        android:linksClickable="true"
+        android:text="@string/citius_link_title"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="@color/foreground1"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/usc_link"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dip"
+        android:layout_marginTop="10dip"
+        android:linksClickable="true"
+        android:text="@string/usc_link_title"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="@color/foreground1"
+        android:textStyle="bold" />
+
+    <RelativeLayout
+        android:id="@+id/relativeLayout3"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" >
+
+        <LinearLayout
+            android:layout_alignParentBottom="true"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal" >
+
+            <ImageView
+                android:id="@+id/imageView2"
+                android:layout_width="100dip"
+                android:layout_height="100dip"
+                android:layout_margin="20dip"
+                android:scaleType="centerInside"
+                android:src="@drawable/logo_citius_big" />
+
+            <ImageView
+                android:id="@+id/imageView1"
+                android:layout_width="100dip"
+                android:layout_height="100dip"
+                android:layout_margin="20dip"
+                android:scaleType="centerInside"
+                android:src="@drawable/logo_usc" />
+
+        </LinearLayout>
+    </RelativeLayout>
+
+</LinearLayout>

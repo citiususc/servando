@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:id="@+id/linearLayout2"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center" >
+
+        <RelativeLayout
+            android:id="@+id/relativeLayout1"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:gravity="center"
+            android:padding="20dip" >
+
+            <ProgressBar
+                android:id="@+id/progress"
+                android:layout_width="30dip"
+                android:layout_height="30dip"
+                android:layout_marginLeft="150dip"
+                android:layout_marginTop="0dip"
+                android:indeterminateDrawable="@android:drawable/ic_popup_sync"
+                android:visibility="visible" />
+
+            <ImageView
+                android:id="@+id/imageView1"
+                android:layout_width="wrap_content"
+                android:layout_height="250dip"
+                android:scaleType="centerInside"
+                android:src="@drawable/patient_siluet" />
+
+            <View
+                android:id="@+id/r_sensor"
+                android:layout_width="15dip"
+                android:layout_height="15dip"
+                android:layout_marginLeft="65dip"
+                android:layout_marginTop="55dip"
+                android:background="@drawable/alpha_blink"
+                android:scaleType="centerInside" />
+
+            <View
+                android:id="@+id/l_sensor"
+                android:layout_width="15dip"
+                android:layout_height="15dip"
+                android:layout_marginLeft="110dip"
+                android:layout_marginTop="55dip"
+                android:background="@drawable/alpha_blink"
+                android:scaleType="centerInside" />
+
+            <View
+                android:id="@+id/n_sensor"
+                android:layout_width="15dip"
+                android:layout_height="15dip"
+                android:layout_marginLeft="100dip"
+                android:layout_marginTop="130dip"
+                android:background="@drawable/alpha_blink"
+                android:scaleType="centerInside" />
+
+            <View
+                android:id="@+id/f_sensor"
+                android:layout_width="15dip"
+                android:layout_height="15dip"
+                android:layout_marginLeft="75dip"
+                android:layout_marginTop="130dip"
+                android:background="@drawable/alpha_blink"
+                android:scaleType="centerInside" />
+        </RelativeLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayout1"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="bottom|center|top"
+        android:orientation="vertical"
+        android:padding="5dip" >
+
+        <LinearLayout
+            android:id="@+id/linearLayout3"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center" >
+
+            <Button
+                android:id="@+id/start_monitoring_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/start_monitoring_button_text" />
+
+            <ImageButton
+                android:id="@+id/btn_play"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@android:drawable/ic_media_play" />
+
+            <ImageButton
+                android:id="@+id/btn_pause"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@android:drawable/ic_media_pause" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/monitoring_status_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/monitoring_stopped_description"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+    </LinearLayout>
+
+</LinearLayout>

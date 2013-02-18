@@ -1,0 +1,335 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app1="http://schemas.android.com/apk/res/com.dashboardtest"
+    android:id="@+id/patient_home_view"
+    style="@style/screenBackground"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:id="@+id/relative_layout_1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" >
+
+        <LinearLayout style="@style/TitleBar" >
+
+            <ImageView
+                style="@style/TitleBarLogo"
+                android:contentDescription="@string/description_logo"
+                android:scaleType="fitStart"
+                android:src="@drawable/home_title" />
+
+            <TextView style="@style/TitleBarText" />
+
+            <ImageButton
+                style="@style/TitleBarAction"
+                android:contentDescription="@string/description_about"
+                android:onClick="onClickAbout"
+                android:src="@drawable/ic_about" />
+        </LinearLayout>
+
+        <ImageButton
+            android:id="@+id/home_notifications_icon"
+            style="@style/TitleBarAction"
+            android:layout_width="@dimen/title_height"
+            android:layout_height="@dimen/title_height"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="155dip"
+            android:background="@null"
+            android:onClick="onClickNotifications"
+            android:padding="0dip"
+            android:src="@drawable/notification"
+            android:visibility="invisible" />
+
+        <TextView
+            android:id="@+id/home_notifications_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="183dip"
+            android:layout_marginTop="5dip"
+            android:text="2"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="@color/background1"
+            android:textStyle="bold"
+            android:visibility="invisible" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/header_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        android:background="#112072b9" >
+
+        <LinearLayout
+            android:id="@+id/linearLayout2"
+            android:layout_width="fill_parent"
+            android:layout_height="70dip"
+            android:background="#222072b9" >
+
+            <ImageView
+                android:id="@+id/imageView1"
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:layout_marginLeft="10dip"
+                android:src="@drawable/user" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:orientation="vertical" >
+
+                <TextView
+                    android:id="@+id/TextView03"
+                    android:layout_width="wrap_content"
+                    android:layout_height="fill_parent"
+                    android:layout_marginLeft="10dip"
+                    android:gravity="center"
+                    android:text="Benvido,"
+                    android:textColor="#666666"
+                    android:textSize="14dip" />
+
+                <TextView
+                    android:id="@+id/patient_name_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="fill_parent"
+                    android:layout_marginLeft="10dip"
+                    android:gravity="center"
+                    android:text="José Ángel!"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="@color/foreground2"
+                    android:textSize="25dip" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <RelativeLayout
+            android:id="@+id/RelativeLayout1"
+            android:layout_width="100dip"
+            android:layout_height="90dip"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="10dip"
+            android:layout_marginTop="10dip" >
+
+            <ImageView
+                android:id="@+id/imageView2"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:src="@drawable/ic_calendar_serv" />
+
+            <Button
+                android:id="@+id/patient_day_tv"
+                style="@style/TextBody"
+                android:layout_width="fill_parent"
+                android:layout_height="50dip"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="5dip"
+                android:background="@null"
+                android:gravity="center"
+                android:onClick="onClickAgenda"
+                android:padding="0dip"
+                android:text="12"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textSize="45dip"
+                android:typeface="sans" />
+
+            <TextView
+                android:id="@+id/patient_month_tv"
+                style="@style/BoldText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="15dip"
+                android:gravity="center"
+                android:text="Feb"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textColor="@color/foreground1" />
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_marginLeft="0dip"
+            android:layout_marginTop="125dip"
+            android:orientation="vertical" >
+
+            <LinearLayout
+                android:id="@+id/linearLayout4"
+                android:layout_width="fill_parent"
+                android:layout_height="60dip"
+                android:layout_below="@+id/patient_day_tv" >
+            </LinearLayout>
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/imageView4"
+            android:layout_width="wrap_content"
+            android:layout_height="10dip"
+            android:layout_above="@+id/bottomBar"
+            android:scaleType="fitXY"
+            android:src="@drawable/pending_actions_top" />
+
+        <RelativeLayout
+            android:id="@+id/bottomBar"
+            android:layout_width="fill_parent"
+            android:layout_height="50dip"
+            android:layout_alignBottom="@id/bottomBar"
+            android:layout_alignParentBottom="true"
+            android:layout_alignTop="@id/bottomBar"
+            android:background="@color/foreground1" >
+
+            <ImageButton
+                android:id="@+id/bb_comunication"
+                style="@style/ServandoBlueButton"
+                android:layout_width="80dip"
+                android:layout_height="50dip"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="5dip"
+                android:layout_marginRight="5dip"
+                android:src="@drawable/conversation_w" />
+
+            <ImageButton
+                android:id="@+id/bb_agenda"
+                style="@style/ServandoBlueButton"
+                android:layout_width="80dip"
+                android:layout_height="50dip"
+                android:layout_centerInParent="true"
+                android:layout_marginLeft="5dip"
+                android:layout_marginRight="5dip"
+                android:onClick="onClickAgenda"
+                android:src="@drawable/calendar_w" />
+
+            <ImageButton
+                android:id="@+id/bb_nursery"
+                style="@style/ServandoBlueButton"
+                android:layout_width="80dip"
+                android:layout_height="50dip"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="5dip"
+                android:layout_marginRight="5dip"
+                android:src="@drawable/hospital_h_w" />
+
+            <Button
+                android:id="@+id/Button1"
+                android:layout_width="20dip"
+                android:layout_height="20dip"
+                android:layout_alignRight="@+id/bb_comunication"
+                android:layout_margin="10dip"
+                android:layout_marginBottom="20dip"
+                android:layout_marginRight="50dip"
+                android:background="@drawable/shape_notification_count"
+                android:enabled="false"
+                android:text="2"
+                android:textColor="#ffffff"
+                android:textSize="8dip" />
+
+            <Button
+                android:id="@+id/Button1"
+                android:layout_width="20dip"
+                android:layout_height="20dip"
+                android:layout_alignRight="@+id/bb_agenda"
+                android:layout_margin="10dip"
+                android:layout_marginBottom="20dip"
+                android:layout_marginRight="60dip"
+                android:background="@drawable/shape_notification_count"
+                android:enabled="false"
+                android:text="2"
+                android:textColor="#ffffff"
+                android:textSize="8dip"
+                android:visibility="invisible" />
+
+            <Button
+                android:id="@+id/Button1"
+                android:layout_width="20dip"
+                android:layout_height="20dip"
+                android:layout_alignRight="@+id/bb_nursery"
+                android:layout_margin="10dip"
+                android:layout_marginBottom="20dip"
+                android:layout_marginRight="60dip"
+                android:background="@drawable/shape_notification_count"
+                android:enabled="false"
+                android:text="2"
+                android:textColor="#ffffff"
+                android:textSize="8dip" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/PendingLayout"
+            android:layout_width="fill_parent"
+            android:layout_height="135dip"
+            android:layout_alignBottom="@id/bottomBar"
+            android:layout_marginBottom="30dip"
+            android:visibility="visible" >
+
+            <ImageView
+                android:id="@+id/imageView3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="0dip"
+                android:layout_marginRight="0dip"
+                android:scaleType="fitXY"
+                android:src="@drawable/pending_actions_bg_serv" />
+
+            <LinearLayout
+                android:id="@+id/pending_actions_title"
+                android:layout_width="fill_parent"
+                android:layout_height="20dip"
+                android:layout_alignParentTop="true"
+                android:layout_marginLeft="15dip"
+                android:layout_marginRight="15dip"
+                android:layout_marginTop="10dip"
+                android:padding="2dip" >
+
+                <ImageView
+                    android:id="@+id/ImageView01"
+                    android:layout_width="wrap_content"
+                    android:layout_height="15dip"
+                    android:src="@drawable/circle_exclamation_mark" />
+
+                <TextView
+                    android:id="@+id/patient_pending_actions_count"
+                    android:layout_width="wrap_content"
+                    android:layout_height="15dip"
+                    android:layout_marginLeft="5dip"
+                    android:gravity="center_vertical"
+                    android:text="2"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="#444444"
+                    android:textSize="12dip" />
+
+                <TextView
+                    android:id="@+id/TextView02"
+                    android:layout_width="wrap_content"
+                    android:layout_height="15dip"
+                    android:layout_marginLeft="5dip"
+                    android:gravity="center_vertical"
+                    android:text="actuacións pendentes"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="#444444"
+                    android:textSize="12dip" />
+            </LinearLayout>
+
+            <HorizontalScrollView
+                android:id="@+id/pending_actions_scroll"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/pending_actions_title"
+                android:layout_marginLeft="20dip"
+                android:layout_marginRight="20dip"
+                android:layout_marginTop="5dip" >
+
+                <LinearLayout
+                    android:id="@+id/pending_actions"
+                    android:layout_width="fill_parent"
+                    android:layout_height="50dip"
+                    android:background="@null" >
+                </LinearLayout>
+            </HorizontalScrollView>
+        </RelativeLayout>
+    </RelativeLayout>
+
+</LinearLayout>
