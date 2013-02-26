@@ -3,15 +3,13 @@
     <string name="hello">Choose one of the features below.</string>
     <string name="app_name">Servando</string>
     <string name="description_logo">Demo</string>
-    <string name="description_about">About</string>
-    <string name="description_home">Home</string>
-    <string name="description_search">Search</string>
-    <string name="description_feature1">Monitoring</string>
-    <string name="description_feature2">Therapy</string>
-    <string name="description_feature3">Agenda</string>
+    <string name="description_about">Info</string>
+    <string name="description_home">Inicio</string>
+    <string name="description_search">Buscar</string>
+    <string name="description_feature1">Monitorización</string>
+    <string name="description_feature2">Terapia</string>
+    <string name="description_feature3">Axenda</string>
     <string name="description_feature4">Tests</string>
-    <string name="description_feature5">Feature 5</string>
-    <string name="description_feature6">Feature 6</string>
     <string name="title_about">About</string>
     <string name="title_home">Home</string>
     <string name="title_search">Search</string>
@@ -53,4 +51,3 @@
 
 
 </resources>
-

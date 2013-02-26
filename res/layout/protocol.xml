@@ -1,0 +1,95 @@
+<MedicalProtocol>
+   <startDate>2013-02-26 00:00:00.000</startDate>
+   <name>IC Pilot Protocol</name>
+   <description>Protocolo utilizado para el ensayo clínico de insuficiencia cardíaca.</description>
+   <patient>
+      <name>Pablo</name>
+      <surnames>Viqueira</surnames>
+      <phonenumber>Teléfono</phonenumber>
+      <address>Dirección</address>
+      <clinicalHistoryNumber>123456</clinicalHistoryNumber>
+   </patient>
+
+<!-- Cuestionario boas prácticas-->
+<protocolAction>
+      <action>
+        <id>goodpractice</id>
+ 	<displayname>Cuestionario boas prácticas</displayname>
+        <description>Conxunto de preguntas...</description>
+      </action>
+      <priority>Normal</priority>
+      <startGap>9h</startGap>
+      <interval>1d</interval>
+      <duration>5d</duration>
+      <timewindow>3h</timewindow>
+      <exceptions class="java.util.ArrayList"/>
+</protocolAction>
+
+<!-- Cuestionario morisky-->
+<protocolAction>
+      <action>
+        <id>morisky</id>
+ 	<displayname>Morisky</displayname>
+        <description>Conxunto de preguntas...</description>
+      </action>
+      <priority>Low</priority>
+      <startGap>20h</startGap>
+      <interval>2d</interval>
+      <duration>5d</duration>
+      <timewindow>3h</timewindow>
+      <exceptions class="java.util.ArrayList"/>
+</protocolAction>
+
+<protocolAction>
+ 	<action>
+         	<id>therapy</id>
+         	<displayname>Therapy</displayname>
+         	<description>Therapy action</description>
+	</action>
+       	<priority>Low</priority>
+        <startGap>8h</startGap>				
+      	<interval>8h</interval>
+      	<duration>4d</duration> 
+      	<timewindow>1h</timewindow>			
+	<parameters>
+         	<parameter>
+            		<name>therapy_id</name>
+            		<value>Acovil</value>
+            		<visible>true</visible>
+         	</parameter>
+          	<parameter>
+            		<name>therapy_dose</name>
+            		<value>1 pill</value>
+            		<visible>true</visible>
+         	</parameter>
+      </parameters>
+      <exceptions class="java.util.ArrayList"/>
+</protocolAction>
+
+<protocolAction>
+ 	<action>
+         	<id>therapy</id>
+         	<displayname>Therapy</displayname>
+         	<description>Therapy action</description>
+	</action>
+       	<priority>Low</priority>
+        <startGap>8h</startGap>				
+      	<interval>12h</interval>
+      	<duration>0</duration> 
+      	<timewindow>1h</timewindow>			
+	<parameters>
+         	<parameter>
+            		<name>therapy_id</name>
+            		<value>Vals</value>
+            		<visible>true</visible>
+         	</parameter>
+          	<parameter>
+            		<name>therapy_dose</name>
+            		<value>2 pill</value>
+            		<visible>true</visible>
+         	</parameter>
+      </parameters>
+      <exceptions class="java.util.ArrayList"/>
+</protocolAction>
+
+</MedicalProtocol>

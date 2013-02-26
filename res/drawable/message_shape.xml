@@ -3,12 +3,9 @@
 
     <item>
         <shape>
-            <stroke
-                android:width="1dp"
-                android:color="#557081a3" />
-            <corners android:radius="10dp" />
-
-            <solid android:color="#117081a3" />
+           
+            <corners android:radius="5dp" />
+            <solid android:color="@color/foreground2" />
         </shape>
     </item>
 </layer-list>

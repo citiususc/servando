@@ -28,7 +28,6 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 import es.usc.citius.servando.android.ServandoPlatformFacade;
-import es.usc.citius.servando.android.agenda.MedicalActionExecutor;
 import es.usc.citius.servando.android.agenda.ProtocolEngineServiceBinder;
 import es.usc.citius.servando.android.app.R;
 import es.usc.citius.servando.android.app.ServandoIntent;
@@ -174,7 +173,7 @@ public class SwitcherActivity extends FragmentActivity implements ServiceFragmen
 		// Remove ready notification if any
 		if (uniqueId != -1)
 		{
-			MedicalActionExecutor.removeActionReadyNotification(uniqueId, this);
+			// MedicalActionExecutor.removeActionReadyNotification(uniqueId, this);
 		}
 
 		if (!uid.equals(previousUid))

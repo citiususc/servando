@@ -1,50 +1,60 @@
 package es.usc.citius.servando.android.app.activities;
 
-import java.util.ArrayList;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 import android.app.ListActivity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
+import android.content.res.Configuration;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
+import android.widget.ImageButton;
 import android.widget.TextView;
-import es.usc.citius.servando.android.app.Advice;
+import es.usc.citius.servando.android.advices.Advice;
+import es.usc.citius.servando.android.advices.DailyReport;
+import es.usc.citius.servando.android.advices.storage.SQLiteAdviceDAO;
 import es.usc.citius.servando.android.app.R;
+import es.usc.citius.servando.android.app.ServandoAdviceMgr;
 
 public class AdvicesListActivity extends ListActivity implements View.OnClickListener {
 
 	private AdviceAdapter adapter;
+	private List<Advice> advices;
+
+	private boolean showSeenMessages = false;
 
 	@Override
 	public void onCreate(Bundle icicle)
 	{
-		String message = "Ola Ángel, últimamente estas tomando demasiado sal. Por favor, procura reducir o uso de sal nas comidas";
-
-		List<Advice> advices = new ArrayList<Advice>();
-		advices.add(new Advice(message, true));
-		advices.add(new Advice(message, true));
-		advices.add(new Advice(
-				"Ángel, onte esqueciches tomar a medicación pola mañá. Recorda que debes tomar as pastillas sempre que Servando cho indique.", true));
-		advices.add(new Advice(message, false));
 
 		super.onCreate(icicle);
 		setContentView(R.layout.advices_layout);
-		adapter = new AdviceAdapter(this, R.layout.advice_list_item, advices);
 
+		advices = DailyReport.getInstance().getAll();
+		adapter = new AdviceAdapter(this, R.layout.advice_list_item, advices);
 		setListAdapter(adapter);
+
 		getListView().setOnItemClickListener(new AdviceClickListener());
+
 	}
 
 	private class AdviceClickListener implements AdapterView.OnItemClickListener {
 		@Override
 		public void onItemClick(AdapterView<?> parent, View view, int position, long id)
 		{
+			Advice a = advices.get(position);
+
 		}
 
 	}
@@ -59,42 +69,97 @@ public class AdvicesListActivity extends ListActivity implements View.OnClickLis
 		}
 	}
 
+	@Override
+	public void onConfigurationChanged(Configuration newConfig)
+	{
+		super.onConfigurationChanged(newConfig);
+		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu)
+	{
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.advices_menu, menu);
+		return true;
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item)
+	{
+
+		int id = item.getItemId();
+
+		// Handle item selection
+		if (id == R.id.menu_advices_show_seen)
+		{
+			showSeenMessages = !showSeenMessages;
+			adapter.notifyDataSetChanged();
+		}
+
+		return true;
+	}
+
 	private class AdviceAdapter extends ArrayAdapter<Advice> {
 
-		List<Advice> mAdvices;
+		SimpleDateFormat sdf = new SimpleDateFormat("EEE dd, HH:mm");
 
 		public AdviceAdapter(Context context, int textViewResourceId, List<Advice> advs)
 		{
 			super(context, textViewResourceId, advs);
-			mAdvices = advs;
+
 		}
 
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent)
 		{
 
-			View v = convertView;
+			final Advice o = advices.get(position);
+			LayoutInflater vi = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-			if (v == null)
+			View v;
+			if (!o.isSeen() || showSeenMessages)
 			{
-				LayoutInflater vi = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 				v = vi.inflate(R.layout.advice_list_item, null);
-			}
+				v.setTag(o);
+				Log.d("TAG", "Position: " + position + ", " + o.getSender() + ": " + o.getMsg());
 
-			Advice o = mAdvices.get(position);
-
-			if (o != null)
-			{
+				TextView from = (TextView) v.findViewById(R.id.message_intro);
 				TextView msg = (TextView) v.findViewById(R.id.message_text);
-				msg.setText(o.getContent());
+				TextView when = (TextView) v.findViewById(R.id.message_time);
+				View transparentLayer = (View) v.findViewById(R.id.visible_layer);
+				ImageButton seen = (ImageButton) v.findViewById(R.id.seenButton);
 
-				ImageView visibility = (ImageView) v.findViewById(R.id.visible_layer);
-				if (!o.isViewed())
+
+				from.setText(o.getSender() + ":");
+				msg.setText(o.getMsg());
+				when.setText(sdf.format(o.getDate()));
+
+				if (o.isSeen())
 				{
-					visibility.setVisibility(View.INVISIBLE);
+					transparentLayer.setVisibility(View.VISIBLE);
+					seen.setVisibility(View.INVISIBLE);
+				} else
+				{
+					transparentLayer.setVisibility(View.INVISIBLE);
+					seen.setVisibility(View.VISIBLE);
+					seen.setOnClickListener(new OnClickListener()
+					{
+						@Override
+						public void onClick(View v)
+						{
+							onClickAdvice(o);
+						}
+					});
 				}
-
 			}
+
+			else
+			{
+				v = vi.inflate(R.layout.seen_advice_list_item, null);
+			}
+
+
 			return v;
 		}
 	}
@@ -109,18 +174,22 @@ public class AdvicesListActivity extends ListActivity implements View.OnClickLis
 	@Override
 	public void onClick(View v)
 	{
+		Advice a = (Advice) v.getTag();
+		a.setSeen(true);
+		SQLiteAdviceDAO.getInstance().markAsSeen(a);
+		adapter.notifyDataSetChanged();
+	}
 
-		// final int viewId = v.getId();
-		//
-		// switch (viewId) {
-		// case R.id.clear_notifications_button:
-		// NotificationMgr.getInstance().clear();
-		// adapter.notifyDataSetChanged();
-		// break;
-		// default:
-		// break;
-		// }
-
+	private void onClickAdvice(Advice a)
+	{
+		a.setSeen(true);
+		SQLiteAdviceDAO.getInstance().markAsSeen(a);
+		adapter.notifyDataSetChanged();
+		// se o mensaxe seleccionado é o mesmo ca o do home, eliminámolo.
+		if (ServandoAdviceMgr.getInstance().getHomeAdvice() != null && a.getId() == ServandoAdviceMgr.getInstance().getHomeAdvice().getId())
+		{
+			ServandoAdviceMgr.getInstance().getHomeAdvice().setSeen(true);
+		}
 	}
 
 }

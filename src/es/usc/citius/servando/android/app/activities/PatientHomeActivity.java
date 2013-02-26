@@ -1,5 +1,7 @@
 package es.usc.citius.servando.android.app.activities;
 
+import java.text.SimpleDateFormat;
+
 import org.joda.time.DateTime;
 
 import android.app.Activity;
@@ -14,9 +16,11 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.content.LocalBroadcastManager;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -36,8 +40,13 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import es.usc.citius.servando.android.ServandoPlatformFacade;
+import es.usc.citius.servando.android.advices.Advice;
+import es.usc.citius.servando.android.advices.DailyReport;
+import es.usc.citius.servando.android.agenda.ProtocolEngine;
 import es.usc.citius.servando.android.agenda.ProtocolEngineListener;
 import es.usc.citius.servando.android.app.R;
+import es.usc.citius.servando.android.app.ServandoAdviceMgr;
+import es.usc.citius.servando.android.app.ServandoAdviceMgr.AdviceListener;
 import es.usc.citius.servando.android.app.uiHelper.AppManager;
 import es.usc.citius.servando.android.logging.ILog;
 import es.usc.citius.servando.android.logging.ServandoLoggerFactory;
@@ -49,8 +58,10 @@ import es.usc.citius.servando.android.ui.NotificationMgr;
 import es.usc.citius.servando.android.ui.ServandoService;
 import es.usc.citius.servando.android.util.UiUtils;
 
-public class PatientHomeActivity extends Activity implements ProtocolEngineListener {
+public class PatientHomeActivity extends Activity implements ProtocolEngineListener, AdviceListener {
 
+	private static int MAX_MSG_SIZE = 50;
+	private static int MAX_MSG_SIZE_NO_ACTIONS = 100;
 	/**
 	 * Servando paltform logger for this class
 	 */
@@ -66,9 +77,10 @@ public class PatientHomeActivity extends Activity implements ProtocolEngineListe
 	private TextView dayText;
 	private TextView monthText;
 	private TextView pendingActionsCountText;
-
+	private LinearLayout centerRegion;
 	private LinearLayout pendingActionsList;
 	private RelativeLayout pendingLayout;
+
 	private boolean hasFocus = false;
 
 	private ImageButton coomunicationsButton;
@@ -76,6 +88,7 @@ public class PatientHomeActivity extends Activity implements ProtocolEngineListe
 	Handler h;
 
 	private boolean isFirstTime = true;
+	private ProtocolEngine protocolEngine;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -86,7 +99,14 @@ public class PatientHomeActivity extends Activity implements ProtocolEngineListe
 		registerNotificationReceiver();
 		h = new Handler();
 		initComponents();
-		ServandoPlatformFacade.getInstance().getProtocolEngine().addProtocolListener(this);
+		protocolEngine = ServandoPlatformFacade.getInstance().getProtocolEngine();
+		protocolEngine.addProtocolListener(this);
+	}
+
+	@Override
+	protected void onNewIntent(Intent intent)
+	{
+		super.onNewIntent(intent);
 	}
 
 	private void initComponents()
@@ -101,6 +121,7 @@ public class PatientHomeActivity extends Activity implements ProtocolEngineListe
 		pendingActionsCountText = (TextView) findViewById(R.id.patient_pending_actions_count);
 		pendingLayout = (RelativeLayout) findViewById(R.id.PendingLayout);
 		pendingActionsList = (LinearLayout) findViewById(R.id.pending_actions);
+		centerRegion = (LinearLayout) findViewById(R.id.center_region);
 		pendingLayout.setVisibility(View.INVISIBLE);
 
 		coomunicationsButton = (ImageButton) findViewById(R.id.bb_comunication);
@@ -119,37 +140,44 @@ public class PatientHomeActivity extends Activity implements ProtocolEngineListe
 			}
 		});
 
-		// ((Button) findViewById(R.id.add)).setOnClickListener(new OnClickListener()
+		// // Advice a = new Advice("Angel", "Aquí van as mensaxes do informa diario que emite Servando", new Date());
+		// Advice a = ServandoAdviceMgr.getInstance().getHomeAdvice();
+		// if (a != null && !a.isSeen())
 		// {
-		// @Override
-		// public void onClick(View v)
-		// {
-		// addPendingActionLauncherTest();
+		// addToCenter(getAdviceView(a), true);
 		// }
-		// });
-		// ((Button) findViewById(R.id.remove)).setOnClickListener(new OnClickListener()
-		// {
-		// @Override
-		// public void onClick(View v)
-		// {
-		// pendingActionsList.removeViewAt(0);
-		// invalidateFullView();
-		// }
-		// });
 
 	}
 
-	private void addPendingActionLauncherTest()
+	private void addToCenter(View v, boolean removeAll)
 	{
+		if (removeAll)
+			centerRegion.removeAllViews();
 
-		int pixh = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 50, getResources().getDisplayMetrics());
-		int pixw = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 60, getResources().getDisplayMetrics());
-		LayoutParams params = new LayoutParams(pixw, pixh);
-		ImageButton b = (ImageButton) getLayoutInflater().inflate(R.layout.pending_action_launcher, null);
-		pendingActionsList.addView(b, params);
+		centerRegion.setVisibility(View.INVISIBLE);
+		centerRegion.addView(v);
+
+		AnimationSet set = new AnimationSet(true);
+		Animation animation = new AlphaAnimation(0.0f, 1.0f);
+		animation.setDuration(600);
+		set.addAnimation(animation);
 		invalidateFullView();
 
+		centerRegion.startAnimation(animation);
+		centerRegion.setVisibility(View.VISIBLE);
 	}
+
+	// private void addPendingActionLauncherTest()
+	// {
+	//
+	// int pixh = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 50, getResources().getDisplayMetrics());
+	// int pixw = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 60, getResources().getDisplayMetrics());
+	// LayoutParams params = new LayoutParams(pixw, pixh);
+	// ImageButton b = (ImageButton) getLayoutInflater().inflate(R.layout.pending_action_launcher, null);
+	// pendingActionsList.addView(b, params);
+	// invalidateFullView();
+	//
+	// }
 
 	void invalidateFullView()
 	{
@@ -210,6 +238,11 @@ public class PatientHomeActivity extends Activity implements ProtocolEngineListe
 	protected void onPause()
 	{
 		hasFocus = false;
+		ServandoAdviceMgr.getInstance().removeAdviceListener(this);
+		if (protocolEngine != null && protocolEngine.getAdvisedActions().getExecutions().size() > 0)
+		{
+			// ServandoService.updateServandoNotification(PatientHomeActivity.this, true, false, " ");
+		}
 		super.onPause();
 	}
 
@@ -224,8 +257,10 @@ public class PatientHomeActivity extends Activity implements ProtocolEngineListe
 	{
 		super.onResume();
 		hasFocus = true;
+		ServandoAdviceMgr.getInstance().addAdviceListener(this);
 		log.debug("onResume");
 		updatePendingActions();
+		showHomeAdvice();
 	}
 
 	@Override
@@ -443,7 +478,6 @@ public class PatientHomeActivity extends Activity implements ProtocolEngineListe
 						log.debug("Adding launcher for action" + m.getUniqueId());
 						addPendingActionLauncher(m);
 					}
-
 					invalidateFullView();
 
 				} else
@@ -452,6 +486,8 @@ public class PatientHomeActivity extends Activity implements ProtocolEngineListe
 					invalidateFullView();
 				}
 				log.debug("Pending actions list updated (" + advised.getExecutions().size() + ")");
+
+				ServandoService.updateServandoNotification(PatientHomeActivity.this, false, false, " ");
 			}
 		});
 
@@ -461,7 +497,7 @@ public class PatientHomeActivity extends Activity implements ProtocolEngineListe
 	{
 		try
 		{
-			throw new Exception();
+			// throw new Exception();
 		} catch (Exception e)
 		{
 			log.error("GENERATED EXCEPTION", e);
@@ -578,6 +614,86 @@ public class PatientHomeActivity extends Activity implements ProtocolEngineListe
 	{
 		// updatePendingActionsOnEvent();
 
+	}
+
+	private View getAdviceView(Advice advice)
+	{
+
+		SimpleDateFormat sdf = new SimpleDateFormat("EEE dd, HH:mm");
+		LayoutInflater vi = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		View v = vi.inflate(R.layout.home_advice, null);
+
+		TextView from = (TextView) v.findViewById(R.id.message_intro);
+		TextView msg = (TextView) v.findViewById(R.id.message_text);
+		TextView when = (TextView) v.findViewById(R.id.message_time);
+		
+		DisplayMetrics dm = new DisplayMetrics();
+		this.getWindowManager().getDefaultDisplay().getMetrics(dm);
+
+		int ellipsizeSize = ServandoPlatformFacade.getInstance().getProtocolEngine().getAdvisedActions().getExecutions().size() > 0 ? MAX_MSG_SIZE
+				: MAX_MSG_SIZE_NO_ACTIONS;
+
+		String formattedMsg = advice.getMsg().length() < ellipsizeSize ? advice.getMsg() : (advice.getMsg().substring(0, ellipsizeSize) + "...");
+
+		from.setText(advice.getSender() + ":");
+		msg.setText(formattedMsg);
+		when.setText(sdf.format(advice.getDate()));
+		return v;
+	}
+
+	public void onClickHomeMessage(View v)
+	{
+		Advice a = ServandoAdviceMgr.getInstance().getHomeAdvice();
+
+		if (a != null)
+		{
+			if (DailyReport.getInstance().getNotSeen().size() == 1 && a.getId() == DailyReport.getInstance().getNotSeen().get(0).getId())
+			{
+				hideHomeAdvice();
+
+			} else
+			{
+				startCommunications();
+			}
+		}
+
+		ServandoAdviceMgr.getInstance().getHomeAdvice().setSeen(true);
+
+	}
+
+	private void showHomeAdvice()
+	{
+		hideHomeAdvice();
+
+		Advice advice = ServandoAdviceMgr.getInstance().getHomeAdvice();
+
+		if (advice != null && !advice.isSeen())
+		{
+			addToCenter(getAdviceView(advice), true);
+		}
+	}
+
+	private void hideHomeAdvice()
+	{
+		centerRegion.removeAllViews();
+	}
+
+	@Override
+	public void onAdvice(final Advice advice)
+	{
+		runOnUiThread(new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				centerRegion.removeAllViews();
+
+				if (advice != null && !advice.isSeen())
+				{
+					addToCenter(getAdviceView(advice), true);
+				}
+			}
+		});
 	}
 
 }

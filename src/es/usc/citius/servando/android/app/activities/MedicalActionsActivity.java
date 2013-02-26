@@ -5,6 +5,8 @@ import java.util.List;
 import android.app.ListActivity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -114,6 +116,13 @@ public class MedicalActionsActivity extends ListActivity {
 		intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 		this.startActivity(intent);
 		finish();
+	}
+
+	@Override
+	public void onConfigurationChanged(Configuration newConfig)
+	{
+		super.onConfigurationChanged(newConfig);
+		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 	}
 
 }

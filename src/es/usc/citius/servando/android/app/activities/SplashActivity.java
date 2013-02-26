@@ -1,11 +1,22 @@
 package es.usc.citius.servando.android.app.activities;
 
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.Enumeration;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
@@ -13,8 +24,12 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.content.pm.ActivityInfo;
+import android.content.res.Configuration;
 import android.graphics.drawable.AnimationDrawable;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.IBinder;
 import android.speech.tts.TextToSpeech;
@@ -25,10 +40,12 @@ import android.widget.TextView;
 import es.usc.citius.servando.android.ServandoPlatformFacade;
 import es.usc.citius.servando.android.ServandoPlatformFacade.PlatformFacadeListener;
 import es.usc.citius.servando.android.app.R;
+import es.usc.citius.servando.android.app.ServandoApplication;
 import es.usc.citius.servando.android.medim.util.BluetoothUtils;
 import es.usc.citius.servando.android.models.protocol.MedicalAction;
 import es.usc.citius.servando.android.models.protocol.MedicalActionMgr;
 import es.usc.citius.servando.android.models.services.IPlatformService;
+import es.usc.citius.servando.android.settings.ServandoStartConfig;
 import es.usc.citius.servando.android.ui.NotificationMgr;
 import es.usc.citius.servando.android.ui.ServandoService;
 import es.usc.citius.servando.android.ui.animation.AnimationStore;
@@ -52,6 +69,8 @@ public class SplashActivity extends Activity implements OnInitListener, Platform
 	private ServandoService mBoundService;
 	TextToSpeech tts;
 	private static final String DEBUG_TAG = SplashActivity.class.getSimpleName();
+
+	private static final String SERVANDO_ZIP_URL = "https://dl.dropbox.com/u/4213618/es.usc.citius.servando/ServandoPlatformData.zip";
 	Handler h = new Handler();
 
 	/**
@@ -69,38 +88,69 @@ public class SplashActivity extends Activity implements OnInitListener, Platform
 
 		if (ServandoService.isRunning())
 		{
-			Log.d(DEBUG_TAG, "Servando Service is already started.");
+			Log.d(DEBUG_TAG, "Servando is already started.");
 			startHomeActivity();
 			finish();
 		} else
 		{
+			Log.d(DEBUG_TAG, "Servando is not started");
 			setContentView(R.layout.splash);
-			Log.d(DEBUG_TAG, "Servando Service is not started.");
-			initializeUiResources();
-
 			loadingMessage = (TextView) findViewById(R.id.loading_message);
-			loadingMessage.setText("Configuring logs...");
-			configureLogs();
 
-			loadingMessage.setText("Configuring bluetooth...");
-			configureBluetooth();
-
-			loadingMessage.setText("Starting. Please wait...");
-
-			h.post(new Runnable()
+			h.postDelayed(new Runnable()
 			{
+
 				@Override
 				public void run()
 				{
-					startServandoService();
+					if (!ServandoStartConfig.getInstance().isPlatformSetupOnSDCard())
+					{
+
+						setupAppDir();
+					} else
+					{
+						startApplication();
+					}
 				}
-			});
-
-			tts = new TextToSpeech(this.getApplicationContext(), this);
-
-			// onReady();
+			}, 100);
 
 		}
+	}
+
+	private void setupAppDir()
+	{
+		Log.d(DEBUG_TAG, "Setting up app...");
+		new DownloadAndInstallServandoSetupFile().execute(SERVANDO_ZIP_URL);
+
+	}
+
+	private void startApplication()
+	{
+
+		Log.d(DEBUG_TAG, "Servando Service is not started.");
+
+		ServandoApplication.updateLocale(this);
+
+		initializeUiResources();
+
+		loadingMessage.setText("Configuring logs...");
+		configureLogs();
+
+		loadingMessage.setText("Configuring bluetooth...");
+		configureBluetooth();
+
+		loadingMessage.setText("Starting... Please wait.");
+
+		h.post(new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				startServandoService();
+			}
+		});
+
+		tts = new TextToSpeech(this.getApplicationContext(), this);
 	}
 
 	private void printLocalIpAddress()
@@ -332,6 +382,13 @@ public class SplashActivity extends Activity implements OnInitListener, Platform
 	}
 
 	@Override
+	public void onConfigurationChanged(Configuration newConfig)
+	{
+		super.onConfigurationChanged(newConfig);
+		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+	}
+
+	@Override
 	protected void onDestroy()
 	{
 		// UiUtils.showToast("unbind service", this);
@@ -357,71 +414,202 @@ public class SplashActivity extends Activity implements OnInitListener, Platform
 		Timer timer = new Timer();
 		loadingMessage.setText("Starting ...");
 		timer.schedule(initHomeTask, SPLASH_DELAY_IN_SECONDS * 1000);
-
 	}
 
-	// private void saveTestDeviceInfo()
-	// {
-	//
-	// DeviceInfo ecg = new DeviceInfo();
-	// ecg.setDeviceType(DeviceType.ELECTROCARDIOGRAPH);
-	// ecg.setAcquisitionFrecuency(250);
-	// ecg.setDeviceId("BT3_6");
-	// ecg.setDeviceName("BT3/6");
-	// ecg.setModel("Corscience BT3/6");
-	// ecg.setServiceName("ECG service");
-	// ecg.addSignal(new MITSignalSpecification(16, (short) 250, 95.057f, "mV", 12, "I"));
-	// ecg.addSignal(new MITSignalSpecification(16, (short) 250, 95.057f, "mV", 12, "II"));
-	// ecg.addSignal(new MITSignalSpecification(16, (short) 250, 95.057f, "mV", 12, "III"));
-	// ecg.addSensor(new Sensor("R"));
-	// ecg.addSensor(new Sensor("L"));
-	// ecg.addSensor(new Sensor("F"));
-	// ecg.addSensor(new Sensor("N"));
-	//
-	// DeviceInfo sa = new DeviceInfo();
-	// sa.setDeviceType(DeviceType.ELECTROCARDIOGRAPH);
-	// sa.setAcquisitionFrecuency(250);
-	// sa.setDeviceId("Nonin_4100");
-	// sa.setDeviceName("Nonin_Medical_Inc._");
-	// sa.setModel("Nonin 4100");
-	// sa.setServiceName("Nonin POD");
-	// sa.addSignal(new MITSignalSpecification(16, (short) 1, 100f, "%", 7, "SaO2"));
-	// sa.addSignal(new MITSignalSpecification(16, (short) 75, 254f, "#", 7, "Pleth"));
-	// sa.addSensor(new Sensor("SaO2"));
-	//
-	// DeviceInfo mit = new DeviceInfo();
-	// mit.setDeviceType(DeviceType.ELECTROCARDIOGRAPH);
-	// mit.setAcquisitionFrecuency(250);
-	// mit.setDeviceId("Ecg_MITSim");
-	// mit.setDeviceName("MITSimulator");
-	// mit.setModel("ECG");
-	// mit.setServiceName("ECG Service");
-	// mit.addSignal(new MITSignalSpecification(16, (short) 250, 200f, "mV", 12, "I"));
-	// mit.addSignal(new MITSignalSpecification(16, (short) 250, 200f, "mV", 12, "II"));
-	// mit.addSensor(new Sensor("R"));
-	// mit.addSensor(new Sensor("L"));
-	// mit.addSensor(new Sensor("F"));
-	// mit.addSensor(new Sensor("N"));
-	//
-	// try
-	// {
-	// String path = MedimServiceHelper.getInstance().getStorageHelper().createWorkingDirectory("devices");
-	// DeviceMgr.storeDeviceInfo(ecg, path);
-	// DeviceMgr.storeDeviceInfo(sa, path);
-	// DeviceMgr.storeDeviceInfo(mit, path);
-	//
-	// ecg = DeviceMgr.loadDeviceInfo(new File(path + "/" + ecg.getDeviceId() + ".deviceinfo"));
-	// sa = DeviceMgr.loadDeviceInfo(new File(path + "/" + sa.getDeviceId() + ".deviceinfo"));
-	// mit = DeviceMgr.loadDeviceInfo(new File(path + "/" + mit.getDeviceId() + ".deviceinfo"));
-	//
-	// DeviceMgr.storeDeviceInfo(ecg, path);
-	// DeviceMgr.storeDeviceInfo(sa, path);
-	// DeviceMgr.storeDeviceInfo(mit, path);
-	//
-	// } catch (Exception e)
-	// {
-	// e.printStackTrace();
-	// }
-	//
-	// }
+	private class DownloadAndInstallServandoSetupFile extends AsyncTask<String, Integer, String> {
+
+		@Override
+		protected String doInBackground(String... sUrl)
+		{
+
+			Log.d("Splash", "doInBackground...");
+			String externalStoragePath = Environment.getExternalStorageDirectory().getAbsolutePath();
+			String downloadFilePath = externalStoragePath + "/ServandoSetup.zip";
+			String unzipPath = externalStoragePath + ServandoStartConfig.getInstance().getPlatformInstallationPath() + "/";
+
+			try
+			{
+				Log.d("Splash", "Starting download...");
+				Log.d("Splash", "EEP: " + externalStoragePath);
+				Log.d("Splash", "DFP: " + downloadFilePath);
+				Log.d("Splash", "UZP: " + unzipPath);
+
+				h.post(new Runnable()
+				{
+					@Override
+					public void run()
+					{
+						loadingMessage.setText("Downloading data...");
+					}
+				});
+
+				URL url = new URL(sUrl[0]);
+				URLConnection connection = url.openConnection();
+				connection.setConnectTimeout(4000);
+				connection.connect();
+
+				int fileLength = connection.getContentLength();
+
+				// download the file
+				InputStream input = new BufferedInputStream(url.openStream());
+				OutputStream output = new FileOutputStream(downloadFilePath);
+
+				byte data[] = new byte[1024];
+				long total = 0;
+				int count;
+
+
+				while ((count = input.read(data)) != -1)
+				{
+					total += count;
+					// publishing the progress....
+					publishProgress((int) (total * 100 / fileLength));
+					output.write(data, 0, count);
+				}
+
+				output.flush();
+				output.close();
+				input.close();
+
+				Log.d("Splash", "Finished ZIP downloading");
+				// Unzip
+
+				File zip = new File(downloadFilePath);
+
+				Log.d("Splash", "Exist: " + zip.exists());
+
+				Log.d("Splash", "Unzipping to: " + unzipPath);
+
+				if (zip.exists())
+				{
+					File where = new File(unzipPath);
+
+					if (where.exists())
+					{
+						Log.d("Splash", "Deleting platform path...");
+						// deleteFiles(ServandoStartConfig.getInstance().getPlatformInstallationPath());
+					}
+
+					h.post(new Runnable()
+					{
+						@Override
+						public void run()
+						{
+							loadingMessage.setText("Setting up servando...");
+						}
+					});
+
+					new Decompress(zip.getAbsolutePath(), where.getAbsolutePath() + "/").unzip();
+
+					// zip.delete();
+				}
+
+			} catch (Exception e)
+			{
+			}
+			return null;
+		}
+
+		@Override
+		protected void onProgressUpdate(Integer... values)
+		{
+			super.onProgressUpdate(values);
+			loadingMessage.setText("Downloading data (" + values[0] + "%)");
+		}
+
+		@Override
+		protected void onPostExecute(String result)
+		{
+			super.onPostExecute(result);
+
+			startApplication();
+		}
+
+		@Override
+		protected void onPreExecute()
+		{
+			super.onPreExecute();
+			loadingMessage.setText("...");
+		}
+	}
+
+	public static void deleteFiles(String path)
+	{
+
+		Log.d("Splash", "Deleting platform path");
+
+		File file = new File(path);
+
+		if (file.exists())
+		{
+			String deleteCmd = "rm -r " + path;
+			Runtime runtime = Runtime.getRuntime();
+			try
+			{
+				runtime.exec(deleteCmd);
+			} catch (IOException e)
+			{
+			}
+		}
+	}
+
+	public class Decompress {
+
+		private String _zipFile;
+		private String _location;
+
+		public Decompress(String zipFile, String location)
+		{
+			_zipFile = zipFile;
+			_location = location;
+
+			_dirChecker("");
+		}
+
+		public void unzip()
+		{
+			try
+			{
+				FileInputStream fin = new FileInputStream(_zipFile);
+				ZipInputStream zin = new ZipInputStream(fin);
+				ZipEntry ze = null;
+				while ((ze = zin.getNextEntry()) != null)
+				{
+					Log.v("Decompress", "Unzipping " + ze.getName());
+
+					if (ze.isDirectory())
+					{
+						_dirChecker(ze.getName());
+					} else
+					{
+						FileOutputStream fout = new FileOutputStream(_location + ze.getName());
+						for (int c = zin.read(); c != -1; c = zin.read())
+						{
+							fout.write(c);
+						}
+
+						zin.closeEntry();
+						fout.close();
+					}
+
+				}
+				zin.close();
+			} catch (Exception e)
+			{
+				Log.e("Decompress", "unzip", e);
+			}
+
+		}
+
+		private void _dirChecker(String dir)
+		{
+			File f = new File(_location + dir);
+
+			if (!f.isDirectory())
+			{
+				f.mkdirs();
+			}
+		}
+	}
+
 }

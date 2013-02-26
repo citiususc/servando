@@ -12,6 +12,7 @@ import org.joda.time.Duration;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayout;
@@ -693,6 +694,13 @@ public class AgendaListActivity extends Activity {
 		{
 			return s.substring(0, 1).toUpperCase().concat(s.substring(1));
 		}
+	}
+
+	@Override
+	public void onConfigurationChanged(Configuration newConfig)
+	{
+		super.onConfigurationChanged(newConfig);
+		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 	}
 
 }

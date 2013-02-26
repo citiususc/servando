@@ -32,8 +32,11 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:divider="#ffffff"
+         
         android:drawSelectorOnTop="false" >
     </ListView>
+    
+<!--     android:transcriptMode="alwaysScroll" -->
 
     <TextView
         android:id="@android:id/empty"

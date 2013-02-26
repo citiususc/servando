@@ -7,6 +7,9 @@ import java.util.List;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.content.pm.ActivityInfo;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayout;
 import android.util.TypedValue;
@@ -18,6 +21,7 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.ViewAnimator;
+import es.usc.citius.servando.android.ServandoPlatformFacade;
 import es.usc.citius.servando.android.agenda.ProtocolEngineServiceBinder;
 import es.usc.citius.servando.android.app.R;
 import es.usc.citius.servando.android.app.uiHelper.AgendaUIHelper;
@@ -239,6 +243,21 @@ public class AgendaActivity extends Activity {
 		log.debug("Agenda:Loaded actions: " + loaded.size());
 		return loaded;
 
+	}
+
+	@Override
+	public void onConfigurationChanged(Configuration newConfig)
+	{
+		super.onConfigurationChanged(newConfig);
+		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+	}
+
+	public void onClickHome(View v)
+	{
+		Class<?> homeActivity = ServandoPlatformFacade.getInstance().getSettings().isPatient() ? PatientHomeActivity.class : HomeActivity.class;
+		final Intent intent = new Intent(this, homeActivity);
+		intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+		this.startActivity(intent);
 	}
 
 }

@@ -2,7 +2,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app1="http://schemas.android.com/apk/res/com.dashboardtest"
     android:id="@+id/patient_home_view"
-    style="@style/screenBackground"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical" >
@@ -53,7 +52,6 @@
             android:textColor="@color/background1"
             android:textStyle="bold"
             android:visibility="invisible" />
-
     </RelativeLayout>
 
     <RelativeLayout
@@ -149,18 +147,12 @@
         </RelativeLayout>
 
         <LinearLayout
+            android:id="@+id/center_region"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:layout_marginLeft="0dip"
-            android:layout_marginTop="125dip"
+            android:layout_marginTop="110dip"
             android:orientation="vertical" >
-
-            <LinearLayout
-                android:id="@+id/linearLayout4"
-                android:layout_width="fill_parent"
-                android:layout_height="60dip"
-                android:layout_below="@+id/patient_day_tv" >
-            </LinearLayout>
         </LinearLayout>
 
         <ImageView
@@ -213,19 +205,15 @@
                 android:layout_marginRight="5dip"
                 android:src="@drawable/hospital_h_w" />
 
-            <Button
-                android:id="@+id/Button1"
+            <include
+                android:id="@+id/Button1_ref"
                 android:layout_width="20dip"
                 android:layout_height="20dip"
                 android:layout_alignRight="@+id/bb_comunication"
                 android:layout_margin="10dip"
                 android:layout_marginBottom="20dip"
                 android:layout_marginRight="50dip"
-                android:background="@drawable/shape_notification_count"
-                android:enabled="false"
-                android:text="2"
-                android:textColor="#ffffff"
-                android:textSize="8dip" />
+                layout="@layout/count_indicator" />
 
             <Button
                 android:id="@+id/Button1"

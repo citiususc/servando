@@ -1,75 +1,122 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<manifest android:versionCode="1" android:versionName="1.0"
-    package="es.usc.citius.servando.android.app" xmlns:android="http://schemas.android.com/apk/res/android">
-    <uses-sdk android:minSdkVersion="7" android:targetSdkVersion="7"/>
-    <!-- PERMISSIONS DECLARATION -->
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.BLUETOOTH"/>
-    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
-    <uses-permission android:name="android.permission.VIBRATE"/>
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
-    <application android:icon="@drawable/logo_blanco_48"
-        android:label="@string/app_name" android:theme="@style/Theme.D1">
-        <activity android:label="@string/app_name"
-            android:launchMode="singleInstance" android:name=".activities.HomeActivity"/>
-        <activity android:label="@string/title_feature2"
-            android:launchMode="singleTask"
-            android:name=".activities.SwitcherActivity" android:theme="@style/Theme.D1">
-            <intent-filter>
-                <action android:name="es.usc.citius.servando.android.ACTION_APP_EXIT"/>
-                <action android:name="es.usc.citius.servando.android.NOTIFICATIONS_UPDATE"/>
-                <action android:name="android.bluetooth.adapter.action.STATE_CHANGED"/>
-            </intent-filter>
-        </activity>
-        <activity android:label="@string/title_about"
-            android:name=".activities.AboutActivity" android:theme="@style/Theme.D1"/>
-        <activity android:label="Settings"
-            android:name=".activities.SettingsActivity" android:theme="@style/Theme.D1"/>
-        <activity android:launchMode="singleInstance"
-            android:name=".activities.SplashActivity" android:theme="@android:style/Theme.Translucent.NoTitleBar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-                <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>
-        </activity>
-        <activity android:name=".activities.NotificationsActivity"/>
-        <activity android:launchMode="singleInstance" android:name=".activities.AgendaListActivity"/>
-        <activity android:launchMode="singleInstance" android:name=".activities.AdvicesListActivity"/>
-        <activity android:launchMode="singleInstance" android:name=".activities.MedicalActionsActivity"/>
-        <service android:name="es.usc.citius.servando.android.ui.ServandoService"/>
-        <service android:name="es.usc.citius.servando.android.agenda.ProtocolEngine"/>
-        <service android:name="es.usc.citius.servando.android.medim.ui.MedimBackgroundService"/>
-        <service android:name=".widget.UpdateWidgetService"/>
-        <receiver android:name="es.usc.citius.servando.android.app.widget.WidgetProvider">
-            <intent-filter>
-                <action android:name="es.usc.citius.servando.android.app.SERVANDO_APP_WIDGET_UPDATE"/>
-            </intent-filter>
-            <meta-data android:name="android.appwidget.provider" android:resource="@xml/widget_info"/>
-        </receiver>
-        <activity android:name=".TestCalendar"/>
-        <activity android:name=".activities.AgendaActivity"/>
-        <activity android:name=".MessageCompo">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW"/>
-                <action android:name="android.intent.action.SENDTO"/>
-                <data android:scheme="mailto"/>
-                <category android:name="android.intent.category.DEFAULT"/>
-                <category android:name="android.intent.category.BROWSABLE"/>
-            </intent-filter>
-            <intent-filter android:label="@string/app_name">
-                <action android:name="android.intent.action.SEND"/>
-                <data android:mimeType="*/*"/>
-                <category android:name="android.intent.category.DEFAULT"/>
-            </intent-filter>
-            <intent-filter android:label="@string/app_name">
-                <action android:name="android.intent.action.SEND_MULTIPLE"/>
-                <data android:mimeType="*/*"/>
-                <category android:name="android.intent.category.DEFAULT"/>
-            </intent-filter>
-        </activity>
-        <activity android:label="@string/app_name"
-            android:launchMode="singleInstance" android:name=".activities.PatientHomeActivity"/>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="es.usc.citius.servando.android.app"
+    android:versionCode="1"
+    android:versionName="1.0" >
 
+    <uses-sdk
+        android:minSdkVersion="7"
+        android:targetSdkVersion="7" />
+    <!-- PERMISSIONS DECLARATION -->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+
+    <application
+        android:name="es.usc.citius.servando.android.app.ServandoApplication"
+        android:icon="@drawable/logo_blanco_48"
+        android:label="@string/app_name"
+        android:theme="@style/Theme.D1" >
+        <activity
+            android:name=".activities.HomeActivity"
+            android:label="@string/app_name"
+            android:launchMode="singleInstance" />
+        <activity
+            android:name=".activities.SwitcherActivity"
+            android:label="@string/title_feature2"
+            android:launchMode="singleTask"
+            android:theme="@style/Theme.D1" >
+            <intent-filter>
+                <action android:name="es.usc.citius.servando.android.ACTION_APP_EXIT" />
+                <action android:name="es.usc.citius.servando.android.NOTIFICATIONS_UPDATE" />
+                <action android:name="android.bluetooth.adapter.action.STATE_CHANGED" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:configChanges="orientation|keyboardHidden"
+            android:name=".activities.AboutActivity"
+            android:label="@string/title_about"
+            android:theme="@style/Theme.D1" />
+        <activity
+            android:configChanges="orientation|keyboardHidden"
+            android:name=".activities.SettingsActivity"
+            android:label="Settings"
+            android:theme="@style/Theme.D1" />
+        <activity
+            android:configChanges="orientation|keyboardHidden"
+            android:name=".activities.SplashActivity"
+            android:launchMode="singleInstance"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".activities.NotificationsActivity" />
+        <activity
+            android:name=".activities.AgendaListActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:launchMode="singleInstance" />
+        <activity
+            android:name=".activities.AdvicesListActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:launchMode="singleInstance" />
+        <activity
+            android:name=".activities.MedicalActionsActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:launchMode="singleInstance" />
+
+        <service android:name="es.usc.citius.servando.android.ui.ServandoService" />
+        <service android:name="es.usc.citius.servando.android.agenda.ProtocolEngine" />
+        <service android:name="es.usc.citius.servando.android.medim.ui.MedimBackgroundService" />
+        <service android:name=".widget.UpdateWidgetService" />
+
+        <receiver android:name="es.usc.citius.servando.android.app.widget.WidgetProvider" >
+            <intent-filter>
+                <action android:name="es.usc.citius.servando.android.app.SERVANDO_APP_WIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widget_info" />
+        </receiver>
+
+        <activity android:name=".TestCalendar" />
+        <activity android:name=".activities.AgendaActivity" />
+        <activity android:name=".MessageCompo" >
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <action android:name="android.intent.action.SENDTO" />
+
+                <data android:scheme="mailto" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+            </intent-filter>
+            <intent-filter android:label="@string/app_name" >
+                <action android:name="android.intent.action.SEND" />
+
+                <data android:mimeType="*/*" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+            <intent-filter android:label="@string/app_name" >
+                <action android:name="android.intent.action.SEND_MULTIPLE" />
+
+                <data android:mimeType="*/*" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".activities.PatientHomeActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:label="@string/app_name"
+            android:launchMode="singleInstance" />
     </application>
+
 </manifest>

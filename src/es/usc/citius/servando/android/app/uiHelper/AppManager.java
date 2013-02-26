@@ -8,7 +8,6 @@ import android.content.Intent;
 import android.os.Process;
 import android.util.Log;
 import es.usc.citius.servando.android.ServandoPlatformFacade;
-import es.usc.citius.servando.android.agenda.MedicalActionExecutor;
 import es.usc.citius.servando.android.agenda.ProtocolEngine;
 import es.usc.citius.servando.android.app.ServandoIntent;
 import es.usc.citius.servando.android.medim.ui.MedimBackgroundService;
@@ -31,8 +30,6 @@ public class AppManager {
 	 */
 	public static void closeApplication(Context ctx)
 	{
-		// Remove notifications if any
-		MedicalActionExecutor.removeAllNotifications(ctx);
 		// Stop platform
 		ServandoPlatformFacade.getInstance().stop(ctx);
 

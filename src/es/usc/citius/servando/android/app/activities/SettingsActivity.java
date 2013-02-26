@@ -2,6 +2,8 @@ package es.usc.citius.servando.android.app.activities;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.pm.ActivityInfo;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -111,6 +113,13 @@ public class SettingsActivity extends ServandoActivity {
 	{
 		ServandoPlatformFacade.getInstance().getSettings().setServerUrl("");
 
+	}
+
+	@Override
+	public void onConfigurationChanged(Configuration newConfig)
+	{
+		super.onConfigurationChanged(newConfig);
+		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 	}
 
 }
