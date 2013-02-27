@@ -12,7 +12,9 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.content.LocalBroadcastManager;
@@ -30,6 +32,7 @@ import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
+import android.view.animation.Animation.AnimationListener;
 import android.view.animation.AnimationSet;
 import android.view.animation.TranslateAnimation;
 import android.widget.Button;
@@ -87,8 +90,9 @@ public class PatientHomeActivity extends Activity implements ProtocolEngineListe
 
 	Handler h;
 
-	private boolean isFirstTime = true;
 	private ProtocolEngine protocolEngine;
+
+	MedicalActionExecutionList advised;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -107,6 +111,70 @@ public class PatientHomeActivity extends Activity implements ProtocolEngineListe
 	protected void onNewIntent(Intent intent)
 	{
 		super.onNewIntent(intent);
+
+		int removing = intent.getIntExtra("removing", -1);
+
+		if (removing != -1)
+		{
+			int pendingCount = pendingActionsList.getChildCount();
+			for (int i = 0; i < pendingCount; i++)
+			{
+				final View v = pendingActionsList.getChildAt(i);
+				MedicalActionExecution e = (MedicalActionExecution) v.getTag();
+
+				if (e != null && e.getUniqueId() == removing)
+				{
+					Animation fadeOut = getFadeOutAnimation();
+					fadeOut.setAnimationListener(new AnimationListener()
+					{
+
+						@Override
+						public void onAnimationStart(Animation animation)
+						{
+
+						}
+
+						@Override
+						public void onAnimationRepeat(Animation animation)
+						{
+
+						}
+
+						@Override
+						public void onAnimationEnd(Animation animation)
+						{
+							if (advised != null && advised.getExecutions().size() > 1)
+							{
+								v.setVisibility(View.INVISIBLE);
+								LayoutParams lp = v.getLayoutParams();
+								lp.width = 1;
+								v.setLayoutParams(lp);
+							} else
+							{
+								hidePendingActionsView();
+							}
+						}
+					});
+
+					v.startAnimation(fadeOut);
+				}
+			}
+		}
+	}
+
+	private Animation getFadeOutAnimation()
+	{
+		Animation fadeOut = new AlphaAnimation(1, 0);
+		fadeOut.setDuration(1000);
+		fadeOut.setFillAfter(true);
+		return fadeOut;
+	}
+
+	private Animation getFadeInAnimation()
+	{
+		Animation fadeOut = new AlphaAnimation(0, 1);
+		fadeOut.setDuration(1000);
+		return fadeOut;
 	}
 
 	private void initComponents()
@@ -139,14 +207,6 @@ public class PatientHomeActivity extends Activity implements ProtocolEngineListe
 				startCommunications();
 			}
 		});
-
-		// // Advice a = new Advice("Angel", "Aquí van as mensaxes do informa diario que emite Servando", new Date());
-		// Advice a = ServandoAdviceMgr.getInstance().getHomeAdvice();
-		// if (a != null && !a.isSeen())
-		// {
-		// addToCenter(getAdviceView(a), true);
-		// }
-
 	}
 
 	private void addToCenter(View v, boolean removeAll)
@@ -381,14 +441,7 @@ public class PatientHomeActivity extends Activity implements ProtocolEngineListe
 	public void onConfigurationChanged(Configuration newConfig)
 	{
 		super.onConfigurationChanged(newConfig);
-
-		if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE)
-		{
-
-		} else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT)
-		{
-
-		}
+		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 	}
 
 	@Override
@@ -452,42 +505,53 @@ public class PatientHomeActivity extends Activity implements ProtocolEngineListe
 
 	private void updatePendingActions()
 	{
-		runOnUiThread(new Runnable()
+		h.post(new Runnable()
 		{
 			@Override
 			public void run()
 			{
-				log.debug("Updating pending actions list...");
-
-				logTrace();
-
-				MedicalActionExecutionList advised = ServandoPlatformFacade.getInstance().getProtocolEngine().getAdvisedActions();
-
-				log.debug("There are " + advised.getExecutions().size() + " pending actions");
-
-				pendingActionsCountText.setText("" + advised.getExecutions().size());
-
-				log.debug("Updating actions count text: " + advised.getExecutions().size() + "");
-
-				if (advised.getExecutions().size() > 0)
+				new AsyncTask<String, Integer, String>()
 				{
-					showPendingActionsView();
-					pendingActionsList.removeAllViews();
-					for (MedicalActionExecution m : advised.getExecutions())
+					@Override
+					protected String doInBackground(String... params)
 					{
-						log.debug("Adding launcher for action" + m.getUniqueId());
-						addPendingActionLauncher(m);
+
+						// this call can be blocking, so we must do it asynchronously
+						if (protocolEngine != null)
+							advised = protocolEngine.getAdvisedActions();
+						return null;
 					}
-					invalidateFullView();
 
-				} else
-				{
-					hidePendingActionsView();
-					invalidateFullView();
-				}
-				log.debug("Pending actions list updated (" + advised.getExecutions().size() + ")");
+					@Override
+					protected void onPostExecute(String result)
+					{
 
-				ServandoService.updateServandoNotification(PatientHomeActivity.this, false, false, " ");
+						if (protocolEngine != null && advised != null)
+						{
+							pendingActionsCountText.setText("" + advised.getExecutions().size());
+
+							if (advised.getExecutions().size() > 0)
+							{
+								showPendingActionsView();
+								pendingActionsList.removeAllViews();
+								for (MedicalActionExecution m : advised.getExecutions())
+								{
+									log.debug("Adding launcher for action" + m.getUniqueId());
+									addPendingActionLauncher(m);
+								}
+								invalidateFullView();
+
+							} else
+							{
+								hidePendingActionsView();
+								invalidateFullView();
+							}
+							log.debug("Pending actions list updated (" + advised.getExecutions().size() + ")");
+
+							ServandoService.updateServandoNotification(PatientHomeActivity.this, false, false, " ");
+						}
+					}
+				}.execute();
 			}
 		});
 
@@ -507,7 +571,39 @@ public class PatientHomeActivity extends Activity implements ProtocolEngineListe
 
 	private void hidePendingActionsView()
 	{
-		pendingLayout.setVisibility(View.INVISIBLE);
+		if (pendingLayout.getVisibility() == View.VISIBLE)
+		{
+
+			Animation fadeOut = getFadeOutAnimation();
+
+			fadeOut.setAnimationListener(new AnimationListener()
+			{
+
+				@Override
+				public void onAnimationStart(Animation animation)
+				{
+					// TODO Auto-generated method stub
+
+				}
+
+				@Override
+				public void onAnimationRepeat(Animation animation)
+				{
+					// TODO Auto-generated method stub
+
+				}
+
+				@Override
+				public void onAnimationEnd(Animation animation)
+				{
+					pendingLayout.setVisibility(View.INVISIBLE);
+				}
+			});
+
+			pendingLayout.startAnimation(fadeOut);
+
+		}
+
 	}
 
 	private void showPendingActionsView()
@@ -626,12 +722,11 @@ public class PatientHomeActivity extends Activity implements ProtocolEngineListe
 		TextView from = (TextView) v.findViewById(R.id.message_intro);
 		TextView msg = (TextView) v.findViewById(R.id.message_text);
 		TextView when = (TextView) v.findViewById(R.id.message_time);
-		
+
 		DisplayMetrics dm = new DisplayMetrics();
 		this.getWindowManager().getDefaultDisplay().getMetrics(dm);
 
-		int ellipsizeSize = ServandoPlatformFacade.getInstance().getProtocolEngine().getAdvisedActions().getExecutions().size() > 0 ? MAX_MSG_SIZE
-				: MAX_MSG_SIZE_NO_ACTIONS;
+		int ellipsizeSize = pendingLayout.getVisibility() == View.VISIBLE ? MAX_MSG_SIZE : MAX_MSG_SIZE_NO_ACTIONS;
 
 		String formattedMsg = advice.getMsg().length() < ellipsizeSize ? advice.getMsg() : (advice.getMsg().substring(0, ellipsizeSize) + "...");
 

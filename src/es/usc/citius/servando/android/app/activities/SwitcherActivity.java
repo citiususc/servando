@@ -119,16 +119,6 @@ public class SwitcherActivity extends FragmentActivity implements ServiceFragmen
 
 			if (currentExecution != null)
 			{
-				// Log.d(DEBUG_TAG, "Current execution: " + currentExecution.toString());
-				// new Timer().schedule(new TimerTask()
-				// {
-				// @Override
-				// public void run()
-				// {
-				// currentExecution.setResources(PlatformResources.with(Available.NONE));
-				// }
-				// }, 10000);
-
 				actionType = currentExecution.getAction().getId();
 				initContainer(actionType, currentExecution);
 				currentActionId = uniqueId;
@@ -321,7 +311,6 @@ public class SwitcherActivity extends FragmentActivity implements ServiceFragmen
 	@Override
 	public void onCloseFragment()
 	{
-		// TODO MedicalActionFragmentMgr.getInstance().removeFragment(actionId);
 		finish();
 	}
 

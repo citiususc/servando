@@ -6,6 +6,7 @@ import java.util.Locale;
 import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -21,7 +22,6 @@ public class ServandoApplication extends Application {
 	@Override
 	public void onConfigurationChanged(Configuration newConfig)
 	{
-		super.onConfigurationChanged(newConfig);
 		if (locale != null)
 		{
 			newConfig.locale = locale;
@@ -29,6 +29,9 @@ public class ServandoApplication extends Application {
 			getBaseContext().getResources().updateConfiguration(newConfig, getBaseContext().getResources().getDisplayMetrics());
 			Log.d(TAG, "Locale: " + locale.toString());
 		}
+
+		newConfig.orientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT;
+		super.onConfigurationChanged(newConfig);
 	}
 
 	@Override

@@ -16,6 +16,7 @@ import java.util.Enumeration;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
 import java.util.zip.ZipInputStream;
 
 import android.app.Activity;
@@ -35,7 +36,9 @@ import android.os.IBinder;
 import android.speech.tts.TextToSpeech;
 import android.speech.tts.TextToSpeech.OnInitListener;
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import es.usc.citius.servando.android.ServandoPlatformFacade;
 import es.usc.citius.servando.android.ServandoPlatformFacade.PlatformFacadeListener;
@@ -69,8 +72,8 @@ public class SplashActivity extends Activity implements OnInitListener, Platform
 	private ServandoService mBoundService;
 	TextToSpeech tts;
 	private static final String DEBUG_TAG = SplashActivity.class.getSimpleName();
-
-	private static final String SERVANDO_ZIP_URL = "https://dl.dropbox.com/u/4213618/es.usc.citius.servando/ServandoPlatformData.zip";
+	ProgressBar progressBar;
+	private static final String SERVANDO_ZIP_URL = "https://dl.dropbox.com/u/4213618/es.usc.citius.servando___/ServandoPlatformData.zip";
 	Handler h = new Handler();
 
 	/**
@@ -95,6 +98,8 @@ public class SplashActivity extends Activity implements OnInitListener, Platform
 		{
 			Log.d(DEBUG_TAG, "Servando is not started");
 			setContentView(R.layout.splash);
+			progressBar = (ProgressBar) findViewById(R.id.splash_progress);
+
 			loadingMessage = (TextView) findViewById(R.id.loading_message);
 
 			h.postDelayed(new Runnable()
@@ -418,14 +423,16 @@ public class SplashActivity extends Activity implements OnInitListener, Platform
 
 	private class DownloadAndInstallServandoSetupFile extends AsyncTask<String, Integer, String> {
 
+
+		String externalStoragePath = Environment.getExternalStorageDirectory().getAbsolutePath();
+		String downloadFilePath = externalStoragePath + "/ServandoSetup.zip";
+		String unzipPath = externalStoragePath + ServandoStartConfig.getInstance().getPlatformInstallationPath() + "/";
+		
 		@Override
 		protected String doInBackground(String... sUrl)
 		{
 
-			Log.d("Splash", "doInBackground...");
-			String externalStoragePath = Environment.getExternalStorageDirectory().getAbsolutePath();
-			String downloadFilePath = externalStoragePath + "/ServandoSetup.zip";
-			String unzipPath = externalStoragePath + ServandoStartConfig.getInstance().getPlatformInstallationPath() + "/";
+			
 
 			try
 			{
@@ -458,7 +465,6 @@ public class SplashActivity extends Activity implements OnInitListener, Platform
 				long total = 0;
 				int count;
 
-
 				while ((count = input.read(data)) != -1)
 				{
 					total += count;
@@ -470,42 +476,21 @@ public class SplashActivity extends Activity implements OnInitListener, Platform
 				output.flush();
 				output.close();
 				input.close();
-
-				Log.d("Splash", "Finished ZIP downloading");
-				// Unzip
-
-				File zip = new File(downloadFilePath);
-
-				Log.d("Splash", "Exist: " + zip.exists());
-
-				Log.d("Splash", "Unzipping to: " + unzipPath);
-
-				if (zip.exists())
-				{
-					File where = new File(unzipPath);
-
-					if (where.exists())
-					{
-						Log.d("Splash", "Deleting platform path...");
-						// deleteFiles(ServandoStartConfig.getInstance().getPlatformInstallationPath());
-					}
-
-					h.post(new Runnable()
-					{
-						@Override
-						public void run()
-						{
-							loadingMessage.setText("Setting up servando...");
-						}
-					});
-
-					new Decompress(zip.getAbsolutePath(), where.getAbsolutePath() + "/").unzip();
-
-					// zip.delete();
-				}
-
+				
 			} catch (Exception e)
 			{
+				Log.e("TAG", "Error", e);
+
+				h.post(new Runnable()
+				{
+					@Override
+					public void run()
+					{
+						findViewById(R.id.loading).setVisibility(View.INVISIBLE);
+						loadingMessage.setText("Update site not avaliable. Servando can not be started.");
+					}
+				});
+
 			}
 			return null;
 		}
@@ -514,21 +499,47 @@ public class SplashActivity extends Activity implements OnInitListener, Platform
 		protected void onProgressUpdate(Integer... values)
 		{
 			super.onProgressUpdate(values);
-			loadingMessage.setText("Downloading data (" + values[0] + "%)");
+			progressBar.setProgress(values[0]);
+			loadingMessage.setText("Downloading data... (" + values[0] + "%)");
 		}
 
 		@Override
 		protected void onPostExecute(String result)
 		{
 			super.onPostExecute(result);
+			hideProgressBar();
 
-			startApplication();
+			Log.d("TAG", "finish download");
+			
+			File zip = new File(downloadFilePath);
+
+			Log.d("Splash", "Exist: " + zip.exists());
+
+			Log.d("Splash", "Unzipping to: " + unzipPath);
+
+			if (zip.exists())
+			{
+				File where = new File(unzipPath);
+
+				if (where.exists())
+				{
+					Log.d("Splash", "Deleting platform path...");
+					// deleteFiles(ServandoStartConfig.getInstance().getPlatformInstallationPath());
+				}
+
+				new DecompressTask(zip.getAbsolutePath(), where.getAbsolutePath() + "/").execute();
+
+				// zip.delete();
+			}
+
+			// startApplication();
 		}
 
 		@Override
 		protected void onPreExecute()
 		{
 			super.onPreExecute();
+			showProgressBar();
 			loadingMessage.setText("...");
 		}
 	}
@@ -553,12 +564,14 @@ public class SplashActivity extends Activity implements OnInitListener, Platform
 		}
 	}
 
-	public class Decompress {
+	public class DecompressTask extends AsyncTask<String, Integer, String> {
 
 		private String _zipFile;
 		private String _location;
+		private int total;
+		private int max;
 
-		public Decompress(String zipFile, String location)
+		public DecompressTask(String zipFile, String location)
 		{
 			_zipFile = zipFile;
 			_location = location;
@@ -566,13 +579,30 @@ public class SplashActivity extends Activity implements OnInitListener, Platform
 			_dirChecker("");
 		}
 
-		public void unzip()
+		private void _dirChecker(String dir)
 		{
+			File f = new File(_location + dir);
+
+			if (!f.isDirectory())
+			{
+				f.mkdirs();
+			}
+		}
+
+		@Override
+		protected String doInBackground(String... params)
+		{
+
 			try
 			{
 				FileInputStream fin = new FileInputStream(_zipFile);
 				ZipInputStream zin = new ZipInputStream(fin);
 				ZipEntry ze = null;
+
+				ZipFile zipFile = new ZipFile(_zipFile);
+				max = zipFile.size();
+				progressBar.setMax(max);
+
 				while ((ze = zin.getNextEntry()) != null)
 				{
 					Log.v("Decompress", "Unzipping " + ze.getName());
@@ -592,24 +622,56 @@ public class SplashActivity extends Activity implements OnInitListener, Platform
 						fout.close();
 					}
 
+					total += 1;
+					// publishing the progress....
+					publishProgress((int) (total));
+
 				}
 				zin.close();
 			} catch (Exception e)
 			{
 				Log.e("Decompress", "unzip", e);
 			}
-
+			return null;
 		}
 
-		private void _dirChecker(String dir)
+		@Override
+		protected void onProgressUpdate(Integer... values)
 		{
-			File f = new File(_location + dir);
+			super.onProgressUpdate(values);
+			int progress = values[0];
+			progressBar.setProgress(progress);
+			loadingMessage.setText("Setting up Servando... (" + (int) (((float) progress / max) * 100) + "%)");
+		}
 
-			if (!f.isDirectory())
-			{
-				f.mkdirs();
-			}
+		@Override
+		protected void onPreExecute()
+		{
+			super.onPreExecute();
+			showProgressBar();
+			loadingMessage.setText("Setting up Servando...");
+		}
+
+		@Override
+		protected void onPostExecute(String result)
+		{
+			super.onPostExecute(result);
+			hideProgressBar();
+			Log.d("TAG", "finish unzip");
+			startApplication();
 		}
 	}
 
+	void showProgressBar()
+	{
+		progressBar.setProgress(0);
+		progressBar.setVisibility(View.VISIBLE);
+
+	}
+
+	void hideProgressBar()
+	{
+		progressBar.setProgress(0);
+		progressBar.setVisibility(View.INVISIBLE);
+	}
 }
