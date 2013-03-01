@@ -1,6 +1,7 @@
 package es.usc.citius.servando.android.app.activities;
 
 import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import org.joda.time.DateTime;
 
@@ -45,11 +46,13 @@ import android.widget.Toast;
 import es.usc.citius.servando.android.ServandoPlatformFacade;
 import es.usc.citius.servando.android.advices.Advice;
 import es.usc.citius.servando.android.advices.DailyReport;
+import es.usc.citius.servando.android.advices.storage.SQLiteAdviceDAO;
+import es.usc.citius.servando.android.advices.storage.SQLiteAdviceDAO.AdviceDAOListener;
 import es.usc.citius.servando.android.agenda.ProtocolEngine;
 import es.usc.citius.servando.android.agenda.ProtocolEngineListener;
 import es.usc.citius.servando.android.app.R;
 import es.usc.citius.servando.android.app.ServandoAdviceMgr;
-import es.usc.citius.servando.android.app.ServandoAdviceMgr.AdviceListener;
+import es.usc.citius.servando.android.app.ServandoAdviceMgr.HomeAdviceListener;
 import es.usc.citius.servando.android.app.uiHelper.AppManager;
 import es.usc.citius.servando.android.logging.ILog;
 import es.usc.citius.servando.android.logging.ServandoLoggerFactory;
@@ -61,7 +64,7 @@ import es.usc.citius.servando.android.ui.NotificationMgr;
 import es.usc.citius.servando.android.ui.ServandoService;
 import es.usc.citius.servando.android.util.UiUtils;
 
-public class PatientHomeActivity extends Activity implements ProtocolEngineListener, AdviceListener {
+public class PatientHomeActivity extends Activity implements ProtocolEngineListener, AdviceDAOListener, HomeAdviceListener {
 
 	private static int MAX_MSG_SIZE = 50;
 	private static int MAX_MSG_SIZE_NO_ACTIONS = 100;
@@ -84,6 +87,10 @@ public class PatientHomeActivity extends Activity implements ProtocolEngineListe
 	private LinearLayout pendingActionsList;
 	private RelativeLayout pendingLayout;
 
+	private Button messageCountIndicator;
+	private Button agendaCountIndicator;
+	private Button sympthonCountIndicator;
+
 	private boolean hasFocus = false;
 
 	private ImageButton coomunicationsButton;
@@ -105,6 +112,13 @@ public class PatientHomeActivity extends Activity implements ProtocolEngineListe
 		initComponents();
 		protocolEngine = ServandoPlatformFacade.getInstance().getProtocolEngine();
 		protocolEngine.addProtocolListener(this);
+
+		// SQLiteAdviceDAO.getInstance().add(new Advice("Doctor",
+		// "Hi Walter,\n you should be more careful with your diet.\n\nJohn", new Date()));
+		// SQLiteAdviceDAO.getInstance().add(new Advice("Doctor",
+		// "Hi Walter,\n you should be more careful with your diet.\n\nJohn", new Date()));
+
+		onHomeAdvice(new Advice("Doctor", "Hi Walter,\n you have to follow the protocol of drug administration.\n\nMike", new Date()));
 	}
 
 	@Override
@@ -143,16 +157,17 @@ public class PatientHomeActivity extends Activity implements ProtocolEngineListe
 						@Override
 						public void onAnimationEnd(Animation animation)
 						{
-							if (advised != null && advised.getExecutions().size() > 1)
+							if (advised != null && advised.getExecutions().size() >= 1)
 							{
 								v.setVisibility(View.INVISIBLE);
 								LayoutParams lp = v.getLayoutParams();
 								lp.width = 1;
 								v.setLayoutParams(lp);
-							} else
-							{
-								hidePendingActionsView();
 							}
+							// } else
+							// {
+							// hidePendingActionsView();
+							// }
 						}
 					});
 
@@ -191,6 +206,10 @@ public class PatientHomeActivity extends Activity implements ProtocolEngineListe
 		pendingActionsList = (LinearLayout) findViewById(R.id.pending_actions);
 		centerRegion = (LinearLayout) findViewById(R.id.center_region);
 		pendingLayout.setVisibility(View.INVISIBLE);
+
+		messageCountIndicator = (Button) findViewById(R.id.message_count_indicator);
+		agendaCountIndicator = (Button) findViewById(R.id.agenda_count_indicator);
+		sympthonCountIndicator = (Button) findViewById(R.id.sympthon_count_indicator);
 
 		coomunicationsButton = (ImageButton) findViewById(R.id.bb_comunication);
 
@@ -269,6 +288,42 @@ public class PatientHomeActivity extends Activity implements ProtocolEngineListe
 		LocalBroadcastManager.getInstance(this).registerReceiver(receiver, notificationFIlter);
 	}
 
+	private void updateIndicators()
+	{
+		h.post(new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				new AsyncTask<String, Integer, String>()
+				{
+					int messages = 0;
+
+					@Override
+					protected String doInBackground(String... params)
+					{
+						messages = DailyReport.getInstance().getNotSeen().size();
+						return null;
+					}
+
+					@Override
+					protected void onPostExecute(String result)
+					{
+						if (messages > 0)
+						{
+							messageCountIndicator.setVisibility(View.VISIBLE);
+							messageCountIndicator.setText("" + messages);
+						} else
+						{
+							messageCountIndicator.setVisibility(View.INVISIBLE);
+						}
+					}
+				}.execute();
+			}
+		});
+
+	}
+
 	private void updateNotifications()
 	{
 
@@ -299,6 +354,7 @@ public class PatientHomeActivity extends Activity implements ProtocolEngineListe
 	{
 		hasFocus = false;
 		ServandoAdviceMgr.getInstance().removeAdviceListener(this);
+		SQLiteAdviceDAO.getInstance().removeAdviceListener(this);
 		if (protocolEngine != null && protocolEngine.getAdvisedActions().getExecutions().size() > 0)
 		{
 			// ServandoService.updateServandoNotification(PatientHomeActivity.this, true, false, " ");
@@ -318,9 +374,11 @@ public class PatientHomeActivity extends Activity implements ProtocolEngineListe
 		super.onResume();
 		hasFocus = true;
 		ServandoAdviceMgr.getInstance().addAdviceListener(this);
+		SQLiteAdviceDAO.getInstance().addAdviceListener(this);
 		log.debug("onResume");
 		updatePendingActions();
 		showHomeAdvice();
+		updateIndicators();
 	}
 
 	@Override
@@ -752,7 +810,10 @@ public class PatientHomeActivity extends Activity implements ProtocolEngineListe
 			}
 		}
 
-		ServandoAdviceMgr.getInstance().getHomeAdvice().setSeen(true);
+		if (ServandoAdviceMgr.getInstance().getHomeAdvice() != null)
+		{
+			ServandoAdviceMgr.getInstance().getHomeAdvice().setSeen(true);
+		}
 
 	}
 
@@ -774,21 +835,28 @@ public class PatientHomeActivity extends Activity implements ProtocolEngineListe
 	}
 
 	@Override
-	public void onAdvice(final Advice advice)
+	public void onHomeAdvice(final Advice advice)
 	{
-		runOnUiThread(new Runnable()
+
+		h.post(new Runnable()
 		{
 			@Override
 			public void run()
 			{
-				centerRegion.removeAllViews();
 
+				centerRegion.removeAllViews();
 				if (advice != null && !advice.isSeen())
 				{
 					addToCenter(getAdviceView(advice), true);
 				}
 			}
 		});
+	}
+
+	@Override
+	public void onAdviceAdded(Advice advice)
+	{
+		updateIndicators();
 	}
 
 }

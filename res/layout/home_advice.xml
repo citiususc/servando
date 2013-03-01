@@ -50,7 +50,10 @@
             android:layout_marginTop="0dip"
             android:background="@drawable/message_shape"
             android:orientation="vertical"
-            android:padding="10dip"
+            android:paddingRight="10dip"
+            android:paddingTop="10dip"
+            android:paddingLeft="10dip"
+            android:paddingBottom="0dip"
             android:scrollbars="none" >
 
             <TextView
@@ -60,7 +63,7 @@
                 android:text="Ana:"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textColor="@color/background1"
-                android:textSize="25dip" />
+                android:textSize="20dp" />
 
             <TextView
                 android:id="@+id/message_text"
@@ -94,6 +97,7 @@
         android:layout_alignRight="@+id/user_icon"
         android:layout_below="@+id/user_icon"
         android:layout_marginTop="-10dip"
-        layout="@layout/count_indicator" />
+        layout="@layout/count_indicator"
+        android:visibility="invisible" />
 
 </RelativeLayout>

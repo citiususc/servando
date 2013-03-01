@@ -239,7 +239,9 @@ public class AgendaActivity extends Activity {
 
 	private List<MedicalActionExecution> loadDayActions()
 	{
-		List<MedicalActionExecution> loaded = ProtocolEngineServiceBinder.getInstance().getProtocolEngine().getDayActions(new GregorianCalendar());
+		List<MedicalActionExecution> loaded = ProtocolEngineServiceBinder.getInstance()
+																			.getProtocolEngine()
+																			.getFilteredDayActions(new GregorianCalendar());
 		log.debug("Agenda:Loaded actions: " + loaded.size());
 		return loaded;
 

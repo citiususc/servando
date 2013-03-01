@@ -22,7 +22,7 @@
     </LinearLayout>
 
     <TextView
-        android:id="@+id/textView1"
+        android:id="@+id/no_advices_msg"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:background="@color/background2"

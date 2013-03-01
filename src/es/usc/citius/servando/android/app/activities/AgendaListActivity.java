@@ -85,7 +85,7 @@ public class AgendaListActivity extends Activity {
 		grid = (GridLayout) findViewById(R.id.grid);
 		orientation = getResources().getConfiguration().orientation;
 
-		executions = ProtocolEngineServiceBinder.getInstance().getProtocolEngine().getDayActions(new GregorianCalendar());
+		executions = ProtocolEngineServiceBinder.getInstance().getProtocolEngine().getFilteredDayActions(new GregorianCalendar());
 		initializeEventDurations();
 
 		int needColumns = getNeedColumns();

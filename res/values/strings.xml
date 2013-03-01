@@ -51,6 +51,12 @@
 
     <string name="message_welcome">"Welcome to Servando Platform!"</string>
 
+    <string name="no_advices_msg">No advices</string>
+
+    <string name="pending_actions">pending actions</string>
+
+    <string name="welcome">Welcome</string>
+
 
 </resources>
 

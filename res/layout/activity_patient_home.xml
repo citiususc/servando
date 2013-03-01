@@ -58,7 +58,7 @@
         android:id="@+id/header_layout"
         android:layout_width="wrap_content"
         android:layout_height="fill_parent"
-        android:background="#112072b9" >
+        android:background="#ffffff" >
 
         <LinearLayout
             android:id="@+id/linearLayout2"
@@ -85,7 +85,7 @@
                     android:layout_height="fill_parent"
                     android:layout_marginLeft="10dip"
                     android:gravity="center"
-                    android:text="Benvido,"
+                    android:text="@string/welcome"
                     android:textColor="#666666"
                     android:textSize="14dip" />
 
@@ -151,7 +151,7 @@
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:layout_marginLeft="0dip"
-            android:layout_marginTop="110dip"
+            android:layout_marginTop="100dip"
             android:orientation="vertical" >
         </LinearLayout>
 
@@ -205,18 +205,23 @@
                 android:layout_marginRight="5dip"
                 android:src="@drawable/hospital_h_w" />
 
-            <include
-                android:id="@+id/Button1_ref"
+            <Button
+                android:id="@+id/message_count_indicator"
                 android:layout_width="20dip"
                 android:layout_height="20dip"
                 android:layout_alignRight="@+id/bb_comunication"
                 android:layout_margin="10dip"
                 android:layout_marginBottom="20dip"
                 android:layout_marginRight="50dip"
-                layout="@layout/count_indicator" />
+                android:background="@drawable/shape_notification_count"
+                android:enabled="false"
+                android:text="2"
+                android:textColor="#ffffff"
+                android:textSize="8dip"
+                android:visibility="invisible" />
 
             <Button
-                android:id="@+id/Button1"
+                android:id="@+id/agenda_count_indicator"
                 android:layout_width="20dip"
                 android:layout_height="20dip"
                 android:layout_alignRight="@+id/bb_agenda"
@@ -231,7 +236,7 @@
                 android:visibility="invisible" />
 
             <Button
-                android:id="@+id/Button1"
+                android:id="@+id/sympthon_count_indicator"
                 android:layout_width="20dip"
                 android:layout_height="20dip"
                 android:layout_alignRight="@+id/bb_nursery"
@@ -242,7 +247,8 @@
                 android:enabled="false"
                 android:text="2"
                 android:textColor="#ffffff"
-                android:textSize="8dip" />
+                android:textSize="8dip"
+                android:visibility="invisible" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -295,7 +301,7 @@
                     android:layout_height="15dip"
                     android:layout_marginLeft="5dip"
                     android:gravity="center_vertical"
-                    android:text="actuacións pendentes"
+                    android:text="@string/pending_actions"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:textColor="#444444"
                     android:textSize="12dip" />

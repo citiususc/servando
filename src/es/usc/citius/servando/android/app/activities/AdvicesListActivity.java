@@ -47,17 +47,33 @@ public class AdvicesListActivity extends ListActivity implements View.OnClickLis
 
 		getListView().setOnItemClickListener(new AdviceClickListener());
 
+		showOrHideNoAdvicesMsg();
+	}
+
+	private void showOrHideNoAdvicesMsg()
+	{
+
+		View noAdviceMsg = findViewById(R.id.no_advices_msg);
+		if (DailyReport.getInstance().getNotSeen().size() == 0 && !showSeenMessages)
+		{
+			noAdviceMsg.setVisibility(View.VISIBLE);
+		} else
+		{
+			noAdviceMsg.setVisibility(View.INVISIBLE);
+		}
+
 	}
 
 	private class AdviceClickListener implements AdapterView.OnItemClickListener {
 		@Override
 		public void onItemClick(AdapterView<?> parent, View view, int position, long id)
 		{
-			Advice a = advices.get(position);
+
 
 		}
 
 	}
+
 
 	@Override
 	public void onWindowFocusChanged(boolean hasFocus)
@@ -95,6 +111,7 @@ public class AdvicesListActivity extends ListActivity implements View.OnClickLis
 		{
 			showSeenMessages = !showSeenMessages;
 			adapter.notifyDataSetChanged();
+			showOrHideNoAdvicesMsg();
 		}
 
 		return true;
@@ -190,6 +207,7 @@ public class AdvicesListActivity extends ListActivity implements View.OnClickLis
 		{
 			ServandoAdviceMgr.getInstance().getHomeAdvice().setSeen(true);
 		}
+		showOrHideNoAdvicesMsg();
 	}
 
 }

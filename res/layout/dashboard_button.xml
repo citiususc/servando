@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Button xmlns:android="http://schemas.android.com/apk/res/android"
     style="@style/DashboardButton"
-    android:drawableTop="@drawable/home_button1"
+    android:drawableTop="@drawable/ic_action_weight"
     />

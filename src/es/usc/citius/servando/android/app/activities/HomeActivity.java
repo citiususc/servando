@@ -213,7 +213,7 @@ public class HomeActivity extends Activity {
 
 		try
 		{
-			agenda.loadDayActions();
+			agenda.start();
 
 		} catch (Exception e)
 		{
@@ -253,7 +253,7 @@ public class HomeActivity extends Activity {
 		} else if (id == R.id.menu_agenda)
 		{
 			ProtocolEngine agenda = ProtocolEngineServiceBinder.getInstance().getProtocolEngine();
-			agenda.loadDayActions();
+			agenda.start();
 		} else
 		{
 			UiUtils.showToast("Unknown option", this);
