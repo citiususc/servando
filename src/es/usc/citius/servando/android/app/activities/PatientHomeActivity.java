@@ -46,13 +46,13 @@ import android.widget.Toast;
 import es.usc.citius.servando.android.ServandoPlatformFacade;
 import es.usc.citius.servando.android.advices.Advice;
 import es.usc.citius.servando.android.advices.DailyReport;
+import es.usc.citius.servando.android.advices.ServandoAdviceMgr;
+import es.usc.citius.servando.android.advices.ServandoAdviceMgr.HomeAdviceListener;
 import es.usc.citius.servando.android.advices.storage.SQLiteAdviceDAO;
 import es.usc.citius.servando.android.advices.storage.SQLiteAdviceDAO.AdviceDAOListener;
 import es.usc.citius.servando.android.agenda.ProtocolEngine;
 import es.usc.citius.servando.android.agenda.ProtocolEngineListener;
 import es.usc.citius.servando.android.app.R;
-import es.usc.citius.servando.android.app.ServandoAdviceMgr;
-import es.usc.citius.servando.android.app.ServandoAdviceMgr.HomeAdviceListener;
 import es.usc.citius.servando.android.app.uiHelper.AppManager;
 import es.usc.citius.servando.android.logging.ILog;
 import es.usc.citius.servando.android.logging.ServandoLoggerFactory;
@@ -760,13 +760,40 @@ public class PatientHomeActivity extends Activity implements ProtocolEngineListe
 	@Override
 	public void onLoadDayActions()
 	{
-		// updatePendingActionsOnEvent();
+		if (hasFocus)
+		{
+			updatePendingActions();
+			h.post(new Runnable()
+			{
+
+				@Override
+				public void run()
+				{
+					toast("Loading day actions...");
+					DateTime now = DateTime.now();
+					dayText.setText("" + now.getDayOfMonth());
+					monthText.setText("" + now.toString("MMM"));
+				}
+			});
+		}
 	}
 
 	@Override
 	public void onProtocolChanged()
 	{
-		// updatePendingActionsOnEvent();
+		if (hasFocus)
+		{
+			updatePendingActions();
+			h.post(new Runnable()
+			{
+
+				@Override
+				public void run()
+				{
+					toast("Applying protocol changes...");
+				}
+			});
+		}
 
 	}
 
@@ -807,6 +834,7 @@ public class PatientHomeActivity extends Activity implements ProtocolEngineListe
 			} else
 			{
 				startCommunications();
+
 			}
 		}
 

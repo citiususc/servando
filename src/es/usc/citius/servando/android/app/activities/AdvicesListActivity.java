@@ -23,9 +23,9 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import es.usc.citius.servando.android.advices.Advice;
 import es.usc.citius.servando.android.advices.DailyReport;
+import es.usc.citius.servando.android.advices.ServandoAdviceMgr;
 import es.usc.citius.servando.android.advices.storage.SQLiteAdviceDAO;
 import es.usc.citius.servando.android.app.R;
-import es.usc.citius.servando.android.app.ServandoAdviceMgr;
 
 public class AdvicesListActivity extends ListActivity implements View.OnClickListener {
 
