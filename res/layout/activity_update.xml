@@ -1,0 +1,66 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/servando_blue"
+    android:gravity="center_vertical"
+    tools:context=".UpdateActivity" >
+
+    <TextView
+        android:id="@+id/loading_message"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:text="Loading ..."
+        android:textColor="@color/background1"
+        android:textSize="20dip"
+        android:visibility="invisible" />
+
+    <ProgressBar
+        android:id="@+id/splash_progress"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="3dip"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="0dip"
+        android:background="@color/foreground1"
+        android:progress="0"
+        android:progressDrawable="@drawable/splash_progress"
+        android:visibility="invisible" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+
+        <ImageView
+            android:id="@+id/imageView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="30dip"
+            android:scaleType="fitCenter"
+            android:src="@drawable/servando_platform_splash" />
+
+        <TextView
+            android:id="@+id/info"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dip"
+            android:layout_marginRight="20dip"
+            android:gravity="center"
+            android:text="Hai actualizacións dispoñibles. Por favor, pulse actualizar para obter a versión máis recente do software,"
+            android:textColor="@color/background1"
+            android:textSize="20dip" />
+
+        <Button
+            android:id="@+id/updateButton"
+            style="@style/ServandoWhiteButton"
+            android:layout_width="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="40dip"
+            android:text="Actualizar"
+            android:textSize="18dip" />
+
+    </LinearLayout>
+
+</RelativeLayout>

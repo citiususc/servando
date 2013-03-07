@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
+import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import es.usc.citius.servando.android.settings.StorageModule;
@@ -15,9 +16,13 @@ import es.usc.citius.servando.android.util.ServandoLocaleUtils;
 
 public class ServandoApplication extends Application {
 
+	public static int version = 1;
+
 	private static final String TAG = ServandoApplication.class.getSimpleName();
 
 	public static Locale locale = null;
+
+	private static Handler h = new Handler();
 
 	@Override
 	public void onConfigurationChanged(Configuration newConfig)
@@ -64,5 +69,8 @@ public class ServandoApplication extends Application {
 			ctx.getApplicationContext().getResources().updateConfiguration(config, ctx.getApplicationContext().getResources().getDisplayMetrics());
 		}
 	}
+
+
+
 
 }

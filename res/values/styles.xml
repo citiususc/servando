@@ -86,6 +86,20 @@
         <item name="android:shadowRadius">2</item>
         <item name="android:background">@drawable/blue_button</item>
     </style>
+    
+    
+    <style name="ServandoWhiteButton">
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">#333333</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:shadowColor">#ececec</item>
+        <item name="android:shadowDx">1</item>
+        <item name="android:shadowDy">1</item>
+        <item name="android:shadowRadius">2</item>
+        <item name="android:background">@drawable/white_button</item>
+    </style>
 
 
      <style name="BoldText">
@@ -183,4 +197,7 @@
     <!-- <item name="android:text">Default</item> -->
     <!-- </style> -->
 
+    <style name="styleName" parent="@style/ServandoLightBlueButton">
+        <item name="android:layout_marginBottom">40dip</item>
+    </style>
 </resources>

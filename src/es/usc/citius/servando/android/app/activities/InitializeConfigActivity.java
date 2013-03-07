@@ -11,8 +11,8 @@ import es.usc.citius.servando.android.medim.Drivers.DeviceMgr;
 import es.usc.citius.servando.android.medim.model.devices.DeviceInfo;
 import es.usc.citius.servando.android.medim.model.devices.DeviceType;
 import es.usc.citius.servando.android.medim.model.devices.Sensor;
-import es.usc.citius.servando.android.medim.util.BluetoothUtils;
 import es.usc.citius.servando.android.models.MIT.MITSignalSpecification;
+import es.usc.citius.servando.android.util.BluetoothUtils;
 
 public class InitializeConfigActivity extends Activity {
 

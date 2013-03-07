@@ -66,7 +66,7 @@ public class SettingsActivity extends ServandoActivity {
 								@Override
 								public void onClick(DialogInterface dialog, int id)
 								{
-									AppManager.closeApplication(SettingsActivity.this);
+									AppManager.restartApplication(SettingsActivity.this);
 									finish();
 								}
 							})

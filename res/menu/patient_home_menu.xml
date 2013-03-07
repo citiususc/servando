@@ -20,5 +20,10 @@
         android:id="@+id/menu_close"
         android:icon="@drawable/ic_menu_close"
         android:title="Exit"/>
+    
+     <item
+        android:id="@+id/menu_reinstall"
+        android:icon="@drawable/ic_menu_close"
+        android:title="Reinstall"/>
 
 </menu>

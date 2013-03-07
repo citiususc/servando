@@ -28,6 +28,8 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 import es.usc.citius.servando.android.ServandoPlatformFacade;
+import es.usc.citius.servando.android.agenda.PlatformResources;
+import es.usc.citius.servando.android.agenda.PlatformResources.Available;
 import es.usc.citius.servando.android.agenda.ProtocolEngineServiceBinder;
 import es.usc.citius.servando.android.app.R;
 import es.usc.citius.servando.android.app.ServandoIntent;
@@ -199,7 +201,23 @@ public class SwitcherActivity extends FragmentActivity implements ServiceFragmen
 			setServiceTitle(a.getDisplayName());
 			view = newView;
 			previousUid = uid;
+
+			if (exec != null)
+			{
+				if (exec.getResources().conflictWith(PlatformResources.with(Available.BLUETOOTH)))
+				{
+					enableBluetoothIfDisabled();
+				}
+			}
 		}
+	}
+
+	private void enableBluetoothIfDisabled()
+	{
+		Intent intent = new Intent();
+		intent.setClassName("es.usc.citius.servando.android.app", "es.usc.citius.servando.android.app.EnableBluetoothActivity");
+		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+		startActivity(intent);
 	}
 
 	private void registerBroadcastReceivers()

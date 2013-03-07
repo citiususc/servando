@@ -25,6 +25,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.graphics.drawable.AnimationDrawable;
@@ -44,7 +45,6 @@ import es.usc.citius.servando.android.ServandoPlatformFacade;
 import es.usc.citius.servando.android.ServandoPlatformFacade.PlatformFacadeListener;
 import es.usc.citius.servando.android.app.R;
 import es.usc.citius.servando.android.app.ServandoApplication;
-import es.usc.citius.servando.android.medim.util.BluetoothUtils;
 import es.usc.citius.servando.android.models.protocol.MedicalAction;
 import es.usc.citius.servando.android.models.protocol.MedicalActionMgr;
 import es.usc.citius.servando.android.models.services.IPlatformService;
@@ -52,6 +52,7 @@ import es.usc.citius.servando.android.settings.ServandoStartConfig;
 import es.usc.citius.servando.android.ui.NotificationMgr;
 import es.usc.citius.servando.android.ui.ServandoService;
 import es.usc.citius.servando.android.ui.animation.AnimationStore;
+import es.usc.citius.servando.android.util.BluetoothUtils;
 
 /**
  * This activity shows a splash screen and performs the necesary configurations (bluethooth enabling, logs, ...)
@@ -73,7 +74,7 @@ public class SplashActivity extends Activity implements OnInitListener, Platform
 	TextToSpeech tts;
 	private static final String DEBUG_TAG = SplashActivity.class.getSimpleName();
 	ProgressBar progressBar;
-	private static final String SERVANDO_ZIP_URL = "https://dl.dropbox.com/u/4213618/es.usc.citius.servando___/ServandoPlatformData.zip";
+
 	Handler h = new Handler();
 
 	/**
@@ -125,7 +126,7 @@ public class SplashActivity extends Activity implements OnInitListener, Platform
 	private void setupAppDir()
 	{
 		Log.d(DEBUG_TAG, "Setting up app...");
-		new DownloadAndInstallServandoSetupFile().execute(SERVANDO_ZIP_URL);
+		new DownloadAndInstallServandoSetupFile().execute();
 
 	}
 
@@ -141,8 +142,8 @@ public class SplashActivity extends Activity implements OnInitListener, Platform
 		loadingMessage.setText("Configuring logs...");
 		configureLogs();
 
-		loadingMessage.setText("Configuring bluetooth...");
-		configureBluetooth();
+		// loadingMessage.setText("Configuring bluetooth...");
+		// configureBluetooth();
 
 		loadingMessage.setText("Starting... Please wait.");
 
@@ -423,16 +424,13 @@ public class SplashActivity extends Activity implements OnInitListener, Platform
 
 	private class DownloadAndInstallServandoSetupFile extends AsyncTask<String, Integer, String> {
 
-
 		String externalStoragePath = Environment.getExternalStorageDirectory().getAbsolutePath();
 		String downloadFilePath = externalStoragePath + "/ServandoSetup.zip";
 		String unzipPath = externalStoragePath + ServandoStartConfig.getInstance().getPlatformInstallationPath() + "/";
-		
+
 		@Override
 		protected String doInBackground(String... sUrl)
 		{
-
-			
 
 			try
 			{
@@ -450,13 +448,42 @@ public class SplashActivity extends Activity implements OnInitListener, Platform
 					}
 				});
 
-				URL url = new URL(sUrl[0]);
-				URLConnection connection = url.openConnection();
-				connection.setConnectTimeout(4000);
-				connection.connect();
+				URL url = null;
+				URLConnection connection = null;
+				String urlStr = "";
+				try
+				{
+					SharedPreferences prefs = getSharedPreferences("servando", Context.MODE_PRIVATE);
+					String patientId = prefs.getString("patient_id", null);
+					Log.d(DEBUG_TAG, "Patient id: " + patientId);
+
+					if(patientId != null){
+						urlStr = ServandoStartConfig.getInstance()
+													.get(ServandoStartConfig.SDCARD_PATIENT_DATA_URL)
+													.replaceAll("%PATIENT_ID%", patientId);
+					}else{
+						urlStr = ServandoStartConfig.getInstance().get(ServandoStartConfig.SDCARD_DATA_URL);	
+					}
+					
+					url = new URL(urlStr);
+					connection = url.openConnection();
+					connection.setConnectTimeout(4000);
+					connection.connect();
+				} catch (Exception e)
+				{
+					Log.d(DEBUG_TAG, "Cannot download data for patient ");
+					// try with generic data
+					url = new URL(ServandoStartConfig.getInstance().get(ServandoStartConfig.SDCARD_DATA_URL));
+					connection = url.openConnection();
+					connection.setConnectTimeout(4000);
+					connection.connect();
+
+				}
+
 
 				int fileLength = connection.getContentLength();
 
+				Log.d(DEBUG_TAG, "Downloading " + fileLength + "bytes of data from " + urlStr);
 				// download the file
 				InputStream input = new BufferedInputStream(url.openStream());
 				OutputStream output = new FileOutputStream(downloadFilePath);
@@ -476,7 +503,7 @@ public class SplashActivity extends Activity implements OnInitListener, Platform
 				output.flush();
 				output.close();
 				input.close();
-				
+
 			} catch (Exception e)
 			{
 				Log.e("TAG", "Error", e);
@@ -510,7 +537,7 @@ public class SplashActivity extends Activity implements OnInitListener, Platform
 			hideProgressBar();
 
 			Log.d("TAG", "finish download");
-			
+
 			File zip = new File(downloadFilePath);
 
 			Log.d("Splash", "Exist: " + zip.exists());

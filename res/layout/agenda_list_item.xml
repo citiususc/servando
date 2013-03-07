@@ -124,14 +124,14 @@
             android:layout_height="fill_parent"
             android:layout_alignParentTop="true"
             android:layout_marginLeft="5dip"
-            android:layout_toLeftOf="@+id/button1"
+            android:layout_toLeftOf="@+id/updateButton"
             android:layout_toRightOf="@+id/ImageButton01"
             android:text="Event full description"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textColor="@color/foreground2" />
 
         <ImageButton
-            android:id="@+id/button1"
+            android:id="@+id/updateButton"
             style="@style/ServandoBlueButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
