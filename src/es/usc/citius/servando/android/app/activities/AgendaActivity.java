@@ -119,7 +119,8 @@ public class AgendaActivity extends Activity {
 		eventTimeWindow = (TextView) findViewById(R.id.evant_detail_timewindow);
 
 		screenOrientation = getResources().getConfiguration().orientation;
-
+		
+		agendaList.setEmptyView(findViewById(R.id.empty));
 	}
 
 	/**

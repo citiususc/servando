@@ -55,5 +55,6 @@
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_enable_bluetooth">EnableBluetoothActivity</string>
+    <string name="agenda_no_actions_in_list">No actions planned for today</string>
 
 </resources>

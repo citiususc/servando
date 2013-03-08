@@ -77,12 +77,11 @@
             </android.support.v7.widget.GridLayout>
         </ScrollView>
 
-        <ListView
-            android:id="@+id/agenda_list_view"
+        <include
+            android:id="@+id/agenda_list_view_ref"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:drawSelectorOnTop="false" >
-        </ListView>
+            layout="@layout/agenda_list_view_layout" />
 
         <include
             android:id="@+id/event_details_view_ref"
