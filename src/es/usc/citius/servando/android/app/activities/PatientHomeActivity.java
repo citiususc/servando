@@ -56,6 +56,7 @@ import es.usc.citius.servando.android.alerts.AlertMsg;
 import es.usc.citius.servando.android.alerts.AlertType;
 import es.usc.citius.servando.android.app.R;
 import es.usc.citius.servando.android.app.UpdateActivity;
+import es.usc.citius.servando.android.app.sympthom.SymptomListActivity;
 import es.usc.citius.servando.android.app.uiHelper.AppManager;
 import es.usc.citius.servando.android.logging.ILog;
 import es.usc.citius.servando.android.logging.ServandoLoggerFactory;
@@ -97,6 +98,7 @@ public class PatientHomeActivity extends Activity implements ProtocolEngineListe
 	private boolean hasFocus = false;
 
 	private ImageButton coomunicationsButton;
+	private ImageButton sympthomsButton;
 
 	Handler h;
 
@@ -215,6 +217,7 @@ public class PatientHomeActivity extends Activity implements ProtocolEngineListe
 		sympthonCountIndicator = (Button) findViewById(R.id.sympthon_count_indicator);
 
 		coomunicationsButton = (ImageButton) findViewById(R.id.bb_comunication);
+		sympthomsButton = (ImageButton) findViewById(R.id.bb_nursery);
 
 		// Initialize values
 		patientNameText.setText(ServandoPlatformFacade.getInstance().getPatient().getName());
@@ -227,6 +230,15 @@ public class PatientHomeActivity extends Activity implements ProtocolEngineListe
 			public void onClick(View v)
 			{
 				startCommunications();
+			}
+		});
+
+		sympthomsButton.setOnClickListener(new OnClickListener()
+		{
+			@Override
+			public void onClick(View v)
+			{
+				startSympthoms();
 			}
 		});
 	}
@@ -440,6 +452,14 @@ public class PatientHomeActivity extends Activity implements ProtocolEngineListe
 		startActivity(intent);
 	}
 
+	private void startSympthoms()
+	{
+		Intent intent = new Intent(getApplicationContext(), SymptomListActivity.class);
+		intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+		intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+		startActivity(intent);
+	}
+
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item)
 	{
@@ -488,6 +508,7 @@ public class PatientHomeActivity extends Activity implements ProtocolEngineListe
 		intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 		startActivity(intent);
 	}
+
 
 	private void showUpdates()
 	{

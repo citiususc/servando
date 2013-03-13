@@ -25,6 +25,14 @@
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowContentOverlay">@null</item>
     </style>
+    
+     <style name="pillowRatingBar" parent="@android:style/Widget.RatingBar">
+        <item name="android:progressDrawable">@drawable/pillow_ratingbar_full</item>
+        <item name="android:minHeight">100dip</item>
+        <item name="android:maxHeight">100dip</item>
+    </style>
+    
+     
 
     <style name="HomeButton">
         <item name="android:layout_gravity">center_vertical</item>

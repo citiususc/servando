@@ -140,6 +140,14 @@
             android:name="es.usc.citius.servando.android.app.EnableBluetoothActivity"
             android:label="@string/title_activity_enable_bluetooth" >
         </activity>
+        <activity
+            android:name="es.usc.citius.servando.android.app.sympthom.SymptomListActivity"
+            android:label="@string/title_activity_sympthom_list" >
+        </activity>
+        <activity
+            android:name="es.usc.citius.servando.android.app.sympthom.SympthomActivity"
+            android:label="@string/title_activity_sympthom" >
+        </activity>
     </application>
 
 </manifest>

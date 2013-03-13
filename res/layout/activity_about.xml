@@ -84,7 +84,7 @@
                 android:src="@drawable/logo_citius_big" />
 
             <ImageView
-                android:id="@+id/imageView1"
+                android:id="@+id/envelope"
                 android:layout_width="100dip"
                 android:layout_height="100dip"
                 android:layout_margin="20dip"

@@ -38,7 +38,7 @@ public abstract class ServandoActivity extends Activity {
 
 		if (getActionBarTitle() != null)
 		{
-			((TextView) findViewById(R.id.service_title_tv)).setText(getActionBarTitle());
+			setActionBarTitle(getActionBarTitle());
 		}
 
 		LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -47,11 +47,22 @@ public abstract class ServandoActivity extends Activity {
 		container.addView(content);
 
 		registerNotificationReceiver();
+
+		onBaseCreated(getIntent());
 	}
 
 	protected abstract int getViewId();
 
 	protected abstract String getActionBarTitle();
+
+	protected void setActionBarTitle(String title)
+	{
+		((TextView) findViewById(R.id.service_title_tv)).setText(title);
+	}
+
+	protected void onBaseCreated(Intent intent)
+	{
+	};
 
 	@Override
 	protected void onDestroy()

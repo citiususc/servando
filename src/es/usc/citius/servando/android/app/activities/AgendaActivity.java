@@ -7,6 +7,8 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
 
+import org.joda.time.DateTime;
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -21,12 +23,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ViewAnimator;
 import es.usc.citius.servando.android.ServandoPlatformFacade;
 import es.usc.citius.servando.android.agenda.ProtocolEngineServiceBinder;
@@ -60,6 +65,7 @@ public class AgendaActivity extends Activity {
 	private ImageButton dayViewButton;
 	private ViewAnimator animator;
 	private GridLayout grid;
+	private ScrollView agendaScroll;
 
 	private int screenOrientation;
 	private AgendaUIHelper uiHelper;
@@ -83,6 +89,8 @@ public class AgendaActivity extends Activity {
 	private List<MedicalActionExecution> actions;
 
 	private int lastView = -1;
+
+	private float heightInPx;
 
 	/**
 	 * @see android.app.Activity#onCreate(Bundle)
@@ -112,7 +120,7 @@ public class AgendaActivity extends Activity {
 		agendaList = (ListView) findViewById(R.id.agenda_list_view);
 		backButton = (Button) findViewById(R.id.backButton);
 		goButton = (Button) findViewById(R.id.goButton);
-
+		agendaScroll = (ScrollView) findViewById(R.id.agenda_calendar_day_view);
 		eventName = (TextView) findViewById(R.id.event_details_name);
 		eventDesc = (TextView) findViewById(R.id.event_details_description);
 		eventTime = (TextView) findViewById(R.id.event_detail_time);
@@ -198,6 +206,7 @@ public class AgendaActivity extends Activity {
 	protected void onResume()
 	{
 		updateList();
+		scrollToNow();
 		super.onResume();
 	}
 
@@ -210,11 +219,11 @@ public class AgendaActivity extends Activity {
 		// Gat a layout inflater
 		LayoutInflater li = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		// Current hour of day
-		int hour = GregorianCalendar.getInstance().get(Calendar.HOUR_OF_DAY);
+		int hour = DateTime.now().getHourOfDay();
 		// Screen width in pixels
 		int widthPixels = getResources().getDisplayMetrics().widthPixels;
 		// Screen height in pixels
-		float heightInPx = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, getResources().getDimension(R.dimen.day_view_height),
+		heightInPx = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, getResources().getDimension(R.dimen.day_view_height),
 				getResources().getDisplayMetrics());
 
 		float innerHeightInPx = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, getResources().getDimension(R.dimen.day_view_inner_height),
@@ -227,6 +236,7 @@ public class AgendaActivity extends Activity {
 		grid.setRowCount(uiHelper.getRows());
 		grid.setColumnCount(uiHelper.getColumns());
 
+		View now = null;
 		// add hour labels to first column
 		for (int i = 0; i < uiHelper.getRows(); i++)
 		{
@@ -237,7 +247,12 @@ public class AgendaActivity extends Activity {
 				tv.setMinimumWidth((int) widthIn1Row);
 				tv.setWidth((int) widthIn1Row);
 
-				tv.setText((i < 10 ? "0" : "") + i / 2 + ":00");
+				if (i / 2 == hour)
+				{
+					now = tv;
+				}
+
+				tv.setText((i < 20 ? "0" : "") + i / 2 + ":00");
 				uiHelper.addView(grid, tv, i / 2, 0);
 			}
 			uiHelper.addHorizontalSpacer(this, li, grid, i, heightInPx);
@@ -285,6 +300,39 @@ public class AgendaActivity extends Activity {
 		}
 		grid.invalidate();
 
+		final View v = now;
+		grid.postDelayed(new Runnable()
+		{
+
+			@Override
+			public void run()
+			{
+				Animation anim = AnimationStore.getInstance().getComeIn();
+				anim.setFillAfter(true);
+				v.startAnimation(anim);
+
+			}
+
+		}, 200);
+
+	}
+
+	void scrollToNow()
+	{
+		if (currentView == VIEW_GENDA_CALENDAR_DAY)
+		{
+			final int px = (int) (DateTime.now().getHourOfDay() * heightInPx);
+			Toast.makeText(this, "Scroll: " + px, Toast.LENGTH_SHORT).show();
+			agendaScroll.post(new Runnable()
+			{
+				@Override
+				public void run()
+				{
+					agendaScroll.scrollBy(0, px);
+				}
+			});
+
+		}
 	}
 
 	private void onClickAction(MedicalActionExecution target)

@@ -56,5 +56,12 @@
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_enable_bluetooth">EnableBluetoothActivity</string>
     <string name="agenda_no_actions_in_list">No actions planned for today</string>
+    <string name="title_activity_sympthom_list">SympthomListActivity</string>
+    <string name="sympthom_activity_title">Sympthoms</string>
+    <string name="title_activity_sympthom">SympthomActivity</string>
+    <string name="symptom_send_button_text">Send symptom</string>
+    <string name="symptom_default_comment">Comment:</string>
+    <string name="sending_symptom">Sending symptom...</string>
+    <string name="symptom_pillow_title">Indicate below the number of pillows needed to sleep comfortably</string>
 
 </resources>

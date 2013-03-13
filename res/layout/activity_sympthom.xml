@@ -1,0 +1,30 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:gravity="bottom"
+    tools:context=".SympthomActivity" >
+
+    <FrameLayout
+        android:id="@+id/symptom_view_stub"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="58dip" >
+
+    </FrameLayout>
+
+    <Button
+        android:id="@+id/symptom_send_button"
+        style="@style/ServandoBlueButton"
+        android:layout_width="fill_parent"
+        android:layout_height="50dip"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="3dip"
+        android:layout_marginLeft="3dip"
+        android:layout_marginRight="3dip"
+        android:layout_marginTop="3dip"
+        android:text="@string/symptom_send_button_text" />
+
+</RelativeLayout>
