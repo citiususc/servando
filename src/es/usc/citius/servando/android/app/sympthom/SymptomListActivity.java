@@ -32,6 +32,8 @@ public class SymptomListActivity extends Activity implements OnClickListener {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_sympthom_list);
 
+		SymptomStore.getInstance().loadSymptoms(this);
+
 		symptoms = SymptomStore.getInstance().getAll();
 
 		list = (ListView) findViewById(R.id.sympthom_list_view);

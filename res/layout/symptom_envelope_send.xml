@@ -9,7 +9,7 @@
     android:orientation="vertical" >
 
     <TextView
-        android:id="@+id/textView1"
+        android:id="@+id/sending_sympton_message"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
@@ -21,16 +21,31 @@
         android:textColor="@color/foreground2"
         android:textSize="22dip" />
 
+     <ImageView
+         android:id="@+id/envelope_success"
+         android:layout_width="wrap_content"
+         android:layout_height="120dip"
+         android:layout_centerHorizontal="true"
+         android:layout_below="@+id/sending_sympton_message"
+         android:layout_marginBottom="40dip"
+         android:layout_marginTop="20dip"
+         android:scaleType="fitStart"
+         android:src="@drawable/envelope_success"
+         android:visibility="invisible" />
+     
     <ImageView
         android:id="@+id/envelope"
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="120dip"
         android:layout_alignParentLeft="true"
-        android:layout_below="@+id/textView1"
+        android:layout_below="@+id/sending_sympton_message"
         android:layout_marginBottom="40dip"
-        android:layout_marginLeft="5dip"
+        android:layout_marginLeft="10dip"
+        android:layout_marginRight="10dip"
         android:layout_marginTop="20dip"
         android:scaleType="fitStart"
         android:src="@drawable/envelope" />
+    
+    
 
 </RelativeLayout>

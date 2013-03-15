@@ -3,6 +3,7 @@ package es.usc.citius.servando.android.app.sympthom;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -12,7 +13,10 @@ import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
 import android.view.animation.TranslateAnimation;
+import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.TextView;
+import es.usc.citius.servando.android.ServandoPlatformFacade;
 import es.usc.citius.servando.android.alerts.AlertMsg;
 import es.usc.citius.servando.android.alerts.AlertType;
 import es.usc.citius.servando.android.app.R;
@@ -24,10 +28,13 @@ public class SympthomActivity extends ServandoActivity {
 	Symptom symptom;
 	View concreteSymptomView;
 	FrameLayout container;
+	Handler h;
+	private Button sendButton;
 
 	@Override
 	protected void onBaseCreated(Intent intent)
 	{
+
 		container = (FrameLayout) findViewById(R.id.symptom_view_stub);
 
 		String symptomId = intent.getStringExtra("symptom_id");
@@ -39,9 +46,11 @@ public class SympthomActivity extends ServandoActivity {
 			setActionBarTitle(symptom.getName());
 		}
 
-		toast("Sympthom:" + symptomId + ", " + symptom.getName());
+		// toast("Sympthom:" + symptomId + ", " + symptom.getName());
 
-		findViewById(R.id.symptom_send_button).setOnClickListener(new OnClickListener()
+		sendButton = (Button) findViewById(R.id.symptom_send_button);
+
+		sendButton.setOnClickListener(new OnClickListener()
 		{
 			@Override
 			public void onClick(View v)
@@ -49,6 +58,8 @@ public class SympthomActivity extends ServandoActivity {
 				onClickSymptomSend();
 			}
 		});
+
+		h = new Handler();
 	}
 
 	@Override
@@ -68,14 +79,13 @@ public class SympthomActivity extends ServandoActivity {
 	@Override
 	protected String getActionBarTitle()
 	{
-		return "Sympthom";
+		return getString(R.string.symptoms);
 	}
 
 	void setConcreteSymptomView(Symptom s)
 	{
 		Log.d("Symptom", "Setting concrete sympthom view");
 
-		Log.d("Symptom", "Setting concrete sympthom view");
 		LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		concreteSymptomView = inflater.inflate(s.getViewMgr().getView(), null);
 		container.removeAllViews();
@@ -86,13 +96,14 @@ public class SympthomActivity extends ServandoActivity {
 	private void onClickSymptomSend()
 	{
 		symptom.getViewMgr().completeFromView(concreteSymptomView, symptom);
+		Log.d("TAG", "Symptom desc: " + symptom.getDescription());
 		new SendSymptomTask().execute(symptom);
 	}
 
 	private void startEnvelopeAnim()
 	{
 		LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		View envelopeAnimView = inflater.inflate(R.layout.symptom_envelope_send, null);
+		final View envelopeAnimView = inflater.inflate(R.layout.symptom_envelope_send, null);
 		container.removeAllViews();
 		envelopeAnimView.setVisibility(View.INVISIBLE);
 		container.addView(envelopeAnimView);
@@ -103,35 +114,47 @@ public class SympthomActivity extends ServandoActivity {
 
 		Animation envelopeAnim = getEnvelopeAnim();
 		envelopeAnim.setDuration(1000);
-		envelopeAnim.setStartOffset(100);
-		envelopeAnim.setRepeatCount(3);
+		envelopeAnim.setStartOffset(200);
+		envelopeAnim.setRepeatCount(2);
 		envelopeAnim.setAnimationListener(new AnimationListener()
 		{
 
 			@Override
 			public void onAnimationStart(Animation animation)
 			{
-				// TODO Auto-generated method stub
+				sendButton.setText(R.string.sending_symptom);
+				sendButton.setEnabled(false);
+				((TextView) findViewById(R.id.sending_sympton_message)).setText(R.string.sending_symptom);
 
 			}
 
 			@Override
 			public void onAnimationRepeat(Animation animation)
 			{
-				// TODO Auto-generated method stub
-
 			}
 
 			@Override
 			public void onAnimationEnd(Animation animation)
 			{
-				toast("Symptom sent!");
-				finish();
+				sendButton.setEnabled(true);
+				sendButton.setText(R.string.accept);
+				sendButton.setOnClickListener(new OnClickListener()
+				{
+
+					@Override
+					public void onClick(View v)
+					{
+						finish();
+
+					}
+				});
+				envelopeAnimView.findViewById(R.id.envelope_success).setVisibility(View.VISIBLE);
+				envelopeAnimView.findViewById(R.id.envelope).setVisibility(View.INVISIBLE);
+				((TextView) findViewById(R.id.sending_sympton_message)).setText(R.string.sending_symptom_success);
 			}
 		});
 
 		findViewById(R.id.envelope).startAnimation(envelopeAnim);
-
 
 	}
 
@@ -148,13 +171,15 @@ public class SympthomActivity extends ServandoActivity {
 		{
 			Symptom s = params[0];
 			AlertMsg a = alertFromSymptom(s);
-			// ServandoPlatformFacade.getInstance().alert(a);
+			ServandoPlatformFacade.getInstance().alert(a);
 			return true;
 		}
 
 		private AlertMsg alertFromSymptom(Symptom s)
 		{
-			return new AlertMsg.Builder().setType(AlertType.SYMPTOM).setDescription(s.getDescription()).setDisplayName(s.getName()).create();
+			String comment = getResources().getString(R.string.alert_patient_comment);
+			String alertDesc = s.getDescription() + (s.getPatientComment() != null ? (". " + comment + s.getDescription()) : "");
+			return new AlertMsg.Builder().setType(AlertType.SYMPTOM).setDescription(alertDesc).setDisplayName(s.getName()).create();
 		}
 
 		@Override
@@ -169,7 +194,7 @@ public class SympthomActivity extends ServandoActivity {
 	{
 		Animation outtoRight = new TranslateAnimation(Animation.RELATIVE_TO_PARENT, 0.0f, Animation.RELATIVE_TO_PARENT, +1.0f,
 				Animation.RELATIVE_TO_PARENT, 0.0f, Animation.RELATIVE_TO_PARENT, 0.0f);
-		outtoRight.setDuration(500);
+		outtoRight.setDuration(600);
 		outtoRight.setInterpolator(new AccelerateInterpolator());
 		return outtoRight;
 	}

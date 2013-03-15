@@ -62,6 +62,32 @@
     <string name="symptom_send_button_text">Send symptom</string>
     <string name="symptom_default_comment">Comment:</string>
     <string name="sending_symptom">Sending symptom...</string>
+    <string name="sending_symptom_success">Symptom successfully sent!</string>
+    <string name="accept">Accept</string>
+    <string name="symptom_comment_hint">Type a comment here if you want to datail symptom....</string>
+    <string name="alert_patient_comment">Patient comment:</string>
+    
+    
+     <string name="symptoms">Symptoms</string>
+    <string name="symptom_pillow">Pillow number</string>
+    <string name="symptom_headache">Headache</string>
+    <string name="symptom_edema">Edema</string>
+    <string name="symptom_dizziness">Dizziness</string>
+    
     <string name="symptom_pillow_title">Indicate below the number of pillows needed to sleep comfortably</string>
+    <string name="symptom_pillow_description">Patinet needs %1$s pillows to sleep confortably</string>
+    <string name="symptom_edema_description">The patient says he has edema in %1$s</string>
+    <string name="symptom_headache_description">The patient says he has headache</string>
+    <string name="symptom_dizziness_description">The patient says he has dizziness</string>
+    <string name="symptom_dizziness_title">If not well and want to communicate symptoms of dizziness or nausea, press send symptom.</string>
+    <string name="symptom_edema_title">If you have edema symptoms, say where and press send to submit them.</string>
+    <string name="symptom_headache_title">If you want to communicate headache, press send symptom.</string>
+    
+     <string-array name="symptom_edema_location">
+        <item>Ankle</item>
+        <item>Arm</item>
+        <item>Hand</item>
+        <item>Leg</item>
+    </string-array>
 
 </resources>

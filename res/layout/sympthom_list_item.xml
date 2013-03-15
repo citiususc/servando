@@ -7,13 +7,13 @@
 
     <ImageView
         android:id="@+id/envelope"
-        android:layout_width="70dip"
+        android:layout_width="40dip"
         android:layout_height="70dip"
         android:layout_alignParentLeft="true"
         android:layout_centerVertical="true"
-        android:layout_marginLeft="10dip"
+        android:layout_marginLeft="20dip"
         android:layout_marginTop="10dip"
-        android:src="@drawable/app_icon" />
+        android:src="@drawable/envelope_icon" />
 
     <TextView
         android:id="@+id/sympthom_name"

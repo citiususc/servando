@@ -146,6 +146,7 @@
         </activity>
         <activity
             android:name="es.usc.citius.servando.android.app.sympthom.SympthomActivity"
+            android:windowSoftInputMode="stateHidden"
             android:label="@string/title_activity_sympthom" >
         </activity>
     </application>

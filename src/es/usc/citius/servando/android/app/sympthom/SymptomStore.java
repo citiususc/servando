@@ -1,10 +1,12 @@
 package es.usc.citius.servando.android.app.sympthom;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import android.content.Context;
+import es.usc.citius.servando.android.app.R;
 
 public class SymptomStore {
 
@@ -24,7 +26,7 @@ public class SymptomStore {
 	{
 		symptoms = new HashMap<String, Symptom>();
 		// TODO: load from file
-		loadSymptoms(null);
+
 	}
 
 	private Map<String, Symptom> symptoms;
@@ -32,21 +34,39 @@ public class SymptomStore {
 	/**
 	 * Symptoms map
 	 */
-	public void loadSymptoms(File f)
+	public void loadSymptoms(Context ctx)
 	{
-		Symptom headache = new Symptom.Builder().setId("headache")
-												.setName("Dor de cabeza")
-												.setDescription("Dor de cabeza moderado")
-												.create();
+		if (symptoms.isEmpty())
+		{
+			Symptom headache = new Symptom.Builder().setId("headache")
+													.setName(ctx.getString(R.string.symptom_headache))
+													.setDescription("Dor de cabeza moderado")
+													.setViewMgr(new HeadacheSymptomMgr())
+													.create();
 
-		Symptom pillows = new Symptom.Builder().setId("pillowNumber")
-												.setName("Número de almofadas")
-												.setDescription("Precísanse aumentar o número de almofadas pra durmir")
-												.setViewMgr(new PillowSymptomMgr())
-												.create();
+			Symptom pillows = new Symptom.Builder().setId("pillowNumber")
+													.setName(ctx.getString(R.string.symptom_pillow))
+													.setDescription("Precísanse aumentar o número de almofadas pra durmir")
+													.setViewMgr(new PillowSymptomMgr())
+													.create();
 
-		symptoms.put(headache.getId(), headache);
-		symptoms.put(pillows.getId(), pillows);
+			Symptom dizziness = new Symptom.Builder().setId("dizziness")
+														.setName(ctx.getString(R.string.symptom_dizziness))
+														.setDescription("Síntomas de mareos ou náuseas")
+														.setViewMgr(new DizzinessSymptomMgr())
+														.create();
+
+			Symptom edema = new Symptom.Builder().setId("edema")
+													.setName(ctx.getString(R.string.symptom_edema))
+													.setDescription("Síntomas de edema")
+													.setViewMgr(new EdemaSymptomMgr())
+													.create();
+
+			symptoms.put(headache.getId(), headache);
+			symptoms.put(pillows.getId(), pillows);
+			symptoms.put(dizziness.getId(), dizziness);
+			symptoms.put(edema.getId(), edema);
+		}
 	}
 
 	/**

@@ -188,20 +188,28 @@ public class SwitcherActivity extends FragmentActivity implements ServiceFragmen
 			newView.setExecution(exec);
 			menuItems = newView.getMenuItems();
 
+			log.debug("111");
 			FragmentManager fMgr = getSupportFragmentManager();
 			FragmentTransaction ft = fMgr.beginTransaction();
 			ft.setTransitionStyle(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
 			if (view != null)
 			{
 				ft.remove(view);
+				log.debug("Removing previous view");
 			}
+
+			log.debug("Adding new view");
 			ft.add(R.id.container, newView);
 			ft.commitAllowingStateLoss();
 
 			setServiceTitle(a.getDisplayName());
+
+			log.debug("111");
+
 			view = newView;
 			previousUid = uid;
 
+			log.debug("111");
 			if (exec != null)
 			{
 				if (exec.getResources().conflictWith(PlatformResources.with(Available.BLUETOOTH)))
@@ -209,6 +217,7 @@ public class SwitcherActivity extends FragmentActivity implements ServiceFragmen
 					enableBluetoothIfDisabled();
 				}
 			}
+			log.debug("111");
 		}
 	}
 
@@ -422,6 +431,13 @@ public class SwitcherActivity extends FragmentActivity implements ServiceFragmen
 
 			Toast.makeText(this, "Voice recognizer not present", Toast.LENGTH_SHORT).show();
 		}
+	}
+
+	@Override
+	protected void onPause()
+	{
+		log.debug("OnPause");
+		super.onPause();
 	}
 
 	@Override
