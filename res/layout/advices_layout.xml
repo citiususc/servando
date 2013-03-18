@@ -23,7 +23,7 @@
 
             <TextView
                 style="@style/TitleBarText"
-                android:text="Messages" />
+                android:text="@string/advices_list_header" />
         </LinearLayout>
 
         <RelativeLayout

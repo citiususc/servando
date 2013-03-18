@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <resources>
-
     <string name="hello">Choose one of the features below.</string>
     <string name="app_name">Servando</string>
     <string name="description_logo">Demo</string>
@@ -31,14 +30,8 @@
     <string name="feature6_intro">Feature 6 content goes here.</string>
     <string name="about_intro">    Servando is an open and distributed telemedicine platform, initially developed by the intelligent systems research group in the Centro de Información en Tecnoloxías da Información (CITIUS) of the University of Santiago de Compostela.</string>
     <string name="search_intro">Content for the Search page goes here.</string>
-    <string name="start_monitoring_button_text">Start monitoring</string>
-    <string name="monitoring_stopped_description">Monitoring stopped.</string>
-    <string name="monitoring_running_description">Monitoring in progress...</string>
-    <string name="medim_instructions_first">Place the sensors as indicated below</string>
     <string name="next_1_2">1/2  \u003E\u003E</string>
     <string name="back_2_2">\u003C\u003C 2/2</string>
-    <string name="medim_instructions_second">Then turn on the electrocardiograph by pressing the power button</string>
-    <string name="instructions_close">Close</string>
     <string name="medical_actions">Medical actions</string>
     <string name="notifications_list_title">Notifications</string>
     <string name="service_hint">Service hint</string>
@@ -64,18 +57,21 @@
     <string name="sending_symptom">Sending symptom...</string>
     <string name="sending_symptom_success">Symptom successfully sent!</string>
     <string name="accept">Accept</string>
+    <string name="back_button">Back</string>
+    <string name="doitnow_button">Do it now</string>
     <string name="symptom_comment_hint">Type a comment here if you want to datail symptom....</string>
     <string name="alert_patient_comment">Patient comment:</string>
+    <string name="advices_list_header">Messages</string>
+    <string name="show_seen_messages">Show seen messages</string>
     
-    
-     <string name="symptoms">Symptoms</string>
+    <string name="symptoms">Symptoms</string>
     <string name="symptom_pillow">Pillow number</string>
     <string name="symptom_headache">Headache</string>
     <string name="symptom_edema">Edema</string>
     <string name="symptom_dizziness">Dizziness</string>
     
     <string name="symptom_pillow_title">Indicate below the number of pillows needed to sleep comfortably</string>
-    <string name="symptom_pillow_description">Patinet needs %1$s pillows to sleep confortably</string>
+    <string name="symptom_pillow_description">Patient needs %1$s pillows to sleep comfortably</string>
     <string name="symptom_edema_description">The patient says he has edema in %1$s</string>
     <string name="symptom_headache_description">The patient says he has headache</string>
     <string name="symptom_dizziness_description">The patient says he has dizziness</string>
@@ -89,5 +85,11 @@
         <item>Hand</item>
         <item>Leg</item>
     </string-array>
+    
+     <string name="menu_settings">Settings</string>
+     <string name="menu_doctor_view">Doctor View</string>
+     <string name="menu_exit">Exit</string>
+     <string name="menu_help">Help</string>
+    
 
 </resources>

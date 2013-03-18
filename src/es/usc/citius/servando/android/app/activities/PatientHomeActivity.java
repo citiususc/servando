@@ -52,8 +52,6 @@ import es.usc.citius.servando.android.advices.storage.SQLiteAdviceDAO;
 import es.usc.citius.servando.android.advices.storage.SQLiteAdviceDAO.AdviceDAOListener;
 import es.usc.citius.servando.android.agenda.ProtocolEngine;
 import es.usc.citius.servando.android.agenda.ProtocolEngineListener;
-import es.usc.citius.servando.android.alerts.AlertMsg;
-import es.usc.citius.servando.android.alerts.AlertType;
 import es.usc.citius.servando.android.app.R;
 import es.usc.citius.servando.android.app.UpdateActivity;
 import es.usc.citius.servando.android.app.sympthom.SymptomListActivity;
@@ -484,15 +482,6 @@ public class PatientHomeActivity extends Activity implements ProtocolEngineListe
 		{
 			showDialog(DOCTOR_DIALOG);
 
-		} else if (id == R.id.menu_reinstall)
-		{
-			// showUpdates();
-
-			AlertMsg alert = new AlertMsg(AlertType.PROTOCOL_NON_COMPILANCE, "Alerta de proba", "Descrición da alerta");
-			alert.addParameter("action", "peso");
-
-			ServandoPlatformFacade.getInstance().alert(alert);
-
 		} else
 		{
 			UiUtils.showToast("Unknown option", this);
@@ -508,7 +497,6 @@ public class PatientHomeActivity extends Activity implements ProtocolEngineListe
 		intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 		startActivity(intent);
 	}
-
 
 	private void showUpdates()
 	{

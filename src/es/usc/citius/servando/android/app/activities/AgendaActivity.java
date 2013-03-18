@@ -31,7 +31,6 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.Toast;
 import android.widget.ViewAnimator;
 import es.usc.citius.servando.android.ServandoPlatformFacade;
 import es.usc.citius.servando.android.agenda.ProtocolEngineServiceBinder;
@@ -127,7 +126,7 @@ public class AgendaActivity extends Activity {
 		eventTimeWindow = (TextView) findViewById(R.id.evant_detail_timewindow);
 
 		screenOrientation = getResources().getConfiguration().orientation;
-		
+
 		agendaList.setEmptyView(findViewById(R.id.empty));
 	}
 
@@ -171,7 +170,6 @@ public class AgendaActivity extends Activity {
 	{
 		if (v != currentView)
 		{
-
 
 			if (currentView == VIEW_AGENDA_ACTION_DETAILS)
 			{
@@ -322,7 +320,6 @@ public class AgendaActivity extends Activity {
 		if (currentView == VIEW_GENDA_CALENDAR_DAY)
 		{
 			final int px = (int) (DateTime.now().getHourOfDay() * heightInPx);
-			Toast.makeText(this, "Scroll: " + px, Toast.LENGTH_SHORT).show();
 			agendaScroll.post(new Runnable()
 			{
 				@Override

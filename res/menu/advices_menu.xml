@@ -4,6 +4,6 @@
     <item
         android:id="@+id/menu_advices_show_seen"
         android:icon="@drawable/eye_open"
-        android:title="Show seen messages"/>
+        android:title="@string/show_seen_messages"/>
 
 </menu>

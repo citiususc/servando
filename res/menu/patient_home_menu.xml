@@ -4,26 +4,21 @@
     <item
         android:id="@+id/menu_settings"
         android:icon="@android:drawable/ic_menu_preferences"
-        android:title="Settings"/>
+        android:title="@string/menu_settings"/>
+    
+    <item
+        android:id="@+id/menu_help"
+        android:icon="@android:drawable/ic_menu_help"
+        android:title="@string/menu_help"/>
 
     <item
         android:id="@+id/menu_doctor_view"
         android:icon="@android:drawable/ic_dialog_info"
-        android:title="Doctor view"/>
-
-    <item
-        android:id="@+id/menu_help"
-        android:icon="@android:drawable/ic_menu_help"
-        android:title="Help"/>
+        android:title="@string/menu_doctor_view"/>
 
     <item
         android:id="@+id/menu_close"
         android:icon="@drawable/ic_menu_close"
-        android:title="Exit"/>
-    
-     <item
-        android:id="@+id/menu_reinstall"
-        android:icon="@drawable/ic_menu_close"
-        android:title="Reinstall"/>
+        android:title="@string/menu_exit"/>
 
 </menu>

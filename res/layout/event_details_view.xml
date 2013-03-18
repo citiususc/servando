@@ -97,7 +97,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="20dip"
         android:layout_marginLeft="20dip"
-        android:text="Back" />
+        android:text="@string/back_button" />
 
     <Button
         android:id="@+id/goButton"
@@ -111,7 +111,7 @@
         android:layout_marginRight="20dip"
         android:drawablePadding="5dip"
         android:drawableRight="@drawable/ic_action_start_white"
-        android:text="Do it now" />
+        android:text="@string/doitnow_button" />
 
     <ImageView
         android:id="@+id/event_icon"
