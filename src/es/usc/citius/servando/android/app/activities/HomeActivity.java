@@ -244,17 +244,19 @@ public class HomeActivity extends Activity {
 			intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 			startActivity(intent);
 
-		} else if (id == R.id.menu_help)
-		{
-			UiUtils.showToast("Help selected", this);
-		} else if (id == R.id.menu_close)
-		{
-			exit();
-		} else if (id == R.id.menu_agenda)
-		{
-			ProtocolEngine agenda = ProtocolEngineServiceBinder.getInstance().getProtocolEngine();
-			agenda.start();
-		} else
+		}
+		// else if (id == R.id.menu_help)
+		// {
+		// UiUtils.showToast("Help selected", this);
+		// } else if (id == R.id.menu_close)
+		// {
+		// exit();
+		// } else if (id == R.id.menu_agenda)
+		// {
+		// ProtocolEngine agenda = ProtocolEngineServiceBinder.getInstance().getProtocolEngine();
+		// agenda.start();
+		// }
+		else
 		{
 			UiUtils.showToast("Unknown option", this);
 			return super.onOptionsItemSelected(item);

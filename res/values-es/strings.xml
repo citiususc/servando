@@ -45,7 +45,7 @@
     <string name="message_welcome">"Bienvenido a la plataforma Servando!"</string>
     <string name="no_advices_msg">No hay mensajes</string>
     <!-- Patient activity -->
-    <string name="welcome">Bienvenido</string>
+    <string name="welcome">Bienvenido/a</string>
     <string name="pending_actions">acciones pendientes</string>
     <!-- SÍNTOMAS -->
 	<string name="title_activity_sympthom_list">SympthomListActivity</string>
@@ -86,9 +86,19 @@
     </string-array>
     
 	<string name="menu_settings">Ajustes</string>
-    <string name="menu_doctor_view">Vista Médico</string>
+    <string name="menu_doctor_view">Avanzado</string>
     <string name="menu_exit">Salir</string>
     <string name="menu_help">Ayuda</string>
+    
+    <string name="close_dialog_message">Si apaga Servando se interrumpirá el protocolo médico y dejará de recibir avisos. Está seguro de que desea continuar?</string>
+     <string name="close_dialog_title">Cuidado...</string>
+     <string name="close_dialog_yes">Si, cerrar</string>
+     <string name="close_dialog_no">Cancelar</string>
+     
+     <string name="exit_dialog_title">Espere, por favor</string>
+     <string name="exit_dialog_message">Cerrando Servando...</string>
+     <string name="doctor_view_dialog_title">Se requiere autenticación</string>
+     <string name="doctor_view_dialog_message">Introduzca su contraseña para acceder a los servicios avanzados de Servando</string>
     
     
 

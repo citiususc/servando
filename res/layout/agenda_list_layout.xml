@@ -226,7 +226,7 @@
                     android:src="@drawable/ic_clock" />
 
                 <TextView
-                    android:id="@+id/TextView01"
+                    android:id="@+id/therapy_time"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dip"

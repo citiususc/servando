@@ -1,24 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
 
-    <item
-        android:id="@+id/menu_settings"
-        android:icon="@android:drawable/ic_menu_preferences"
-        android:title="@string/menu_settings"/>
+<!--     <item -->
+<!--         android:id="@+id/menu_settings" -->
+<!--         android:icon="@android:drawable/ic_menu_preferences" -->
+<!--         android:title="@string/menu_settings"/> -->
     
-    <item
-        android:id="@+id/menu_help"
-        android:icon="@android:drawable/ic_menu_help"
-        android:title="@string/menu_help"/>
+<!--     <item -->
+<!--         android:id="@+id/menu_help" -->
+<!--         android:icon="@android:drawable/ic_menu_help" -->
+<!--         android:title="@string/menu_help"/> -->
 
     <item
         android:id="@+id/menu_doctor_view"
-        android:icon="@android:drawable/ic_dialog_info"
+        android:icon="@drawable/keys"
         android:title="@string/menu_doctor_view"/>
 
     <item
         android:id="@+id/menu_close"
-        android:icon="@drawable/ic_menu_close"
+        android:icon="@drawable/power"
         android:title="@string/menu_exit"/>
 
 </menu>

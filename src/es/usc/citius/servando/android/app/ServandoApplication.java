@@ -11,6 +11,7 @@ import android.content.res.Configuration;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.util.Log;
+import es.usc.citius.servando.android.app.exception.AppExceptionHandler;
 import es.usc.citius.servando.android.settings.StorageModule;
 import es.usc.citius.servando.android.util.ServandoLocaleUtils;
 
@@ -42,7 +43,7 @@ public class ServandoApplication extends Application {
 	@Override
 	public void onCreate()
 	{
-		// updateLocale(this);
+		Thread.setDefaultUncaughtExceptionHandler(new AppExceptionHandler(this));
 	}
 
 	public static void updateLocale(Context ctx)

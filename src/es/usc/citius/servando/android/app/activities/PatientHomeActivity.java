@@ -1,13 +1,14 @@
 package es.usc.citius.servando.android.app.activities;
 
+import java.io.File;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 
 import org.joda.time.DateTime;
 
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -19,6 +20,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.content.LocalBroadcastManager;
+import android.text.method.PasswordTransformationMethod;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
@@ -52,6 +54,7 @@ import es.usc.citius.servando.android.advices.storage.SQLiteAdviceDAO;
 import es.usc.citius.servando.android.advices.storage.SQLiteAdviceDAO.AdviceDAOListener;
 import es.usc.citius.servando.android.agenda.ProtocolEngine;
 import es.usc.citius.servando.android.agenda.ProtocolEngineListener;
+import es.usc.citius.servando.android.app.CrashActivity;
 import es.usc.citius.servando.android.app.R;
 import es.usc.citius.servando.android.app.UpdateActivity;
 import es.usc.citius.servando.android.app.sympthom.SymptomListActivity;
@@ -61,6 +64,7 @@ import es.usc.citius.servando.android.logging.ServandoLoggerFactory;
 import es.usc.citius.servando.android.models.protocol.MedicalActionExecution;
 import es.usc.citius.servando.android.models.protocol.MedicalActionExecutionList;
 import es.usc.citius.servando.android.models.services.IPlatformService;
+import es.usc.citius.servando.android.settings.StorageModule;
 import es.usc.citius.servando.android.ui.Iconnable;
 import es.usc.citius.servando.android.ui.NotificationMgr;
 import es.usc.citius.servando.android.ui.ServandoService;
@@ -107,21 +111,37 @@ public class PatientHomeActivity extends Activity implements ProtocolEngineListe
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
-		log.debug("onCreate");
+
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_patient_home);
+
+
 		registerNotificationReceiver();
 		h = new Handler();
 		initComponents();
+
 		protocolEngine = ServandoPlatformFacade.getInstance().getProtocolEngine();
 		protocolEngine.addProtocolListener(this);
 
-		// SQLiteAdviceDAO.getInstance().add(new Advice("Doctor",
-		// "Hi Walter,\n you should be more careful with your diet.\n\nJohn", new Date()));
-		// SQLiteAdviceDAO.getInstance().add(new Advice("Doctor",
-		// "Hi Walter,\n you should be more careful with your diet.\n\nJohn", new Date()));
+		checkCrashReport();
 
-		onHomeAdvice(new Advice("Doctor", "Hi Walter,\n you have to follow the protocol of drug administration.\n\nMike", new Date()));
+
+
+	}
+
+	private void checkCrashReport()
+	{
+		File trace = new File(StorageModule.getInstance().getPlatformLogsPath() + "/crash_trace.txt");
+		if (trace.exists())
+		{
+			Intent intent = new Intent(getApplicationContext(), CrashActivity.class);
+			intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+			intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+			intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+			startActivity(intent);
+
+		}
+
 	}
 
 	@Override
@@ -471,10 +491,6 @@ public class PatientHomeActivity extends Activity implements ProtocolEngineListe
 			intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
 			intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 			startActivity(intent);
-
-		} else if (id == R.id.menu_help)
-		{
-			UiUtils.showToast("Help selected", this);
 		} else if (id == R.id.menu_close)
 		{
 			exit();
@@ -509,8 +525,35 @@ public class PatientHomeActivity extends Activity implements ProtocolEngineListe
 
 	private void exit()
 	{
-		AppManager.closeApplication(this);
-		finish();
+
+		AlertDialog.Builder builder = new AlertDialog.Builder(PatientHomeActivity.this);
+		AlertDialog confirm = null;
+
+		DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener()
+		{
+			@Override
+			public void onClick(DialogInterface dialog, int which)
+			{
+				switch (which) {
+				case DialogInterface.BUTTON_POSITIVE:
+					ProgressDialog.show(PatientHomeActivity.this, getString(R.string.exit_dialog_title), getString(R.string.exit_dialog_message));
+					AppManager.closeApplication(PatientHomeActivity.this);
+					dialog.dismiss();
+					break;
+				case DialogInterface.BUTTON_NEGATIVE:
+					dialog.dismiss();
+					break;
+				}
+			}
+		};
+
+		confirm = builder.setMessage(R.string.close_dialog_message)
+							.setPositiveButton(R.string.close_dialog_yes, dialogClickListener)
+							.setNegativeButton(R.string.close_dialog_no, dialogClickListener)
+							.create();
+
+		confirm.show();
+
 	}
 
 	/**
@@ -541,26 +584,38 @@ public class PatientHomeActivity extends Activity implements ProtocolEngineListe
 	{
 		if (id == DOCTOR_DIALOG)
 		{
+			// Advice a = null;
+			//
+			// a.getId();
+
+			LayoutInflater li = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+			final View view = li.inflate(R.layout.password_dialog_layout, null);
+
 			// Set an EditText view to get user input
 			final EditText input = new EditText(this);
+			input.setText("");
+			// input.setInputType(InputType.TYPE_CLASS_NUMBER);
+			input.setTransformationMethod(PasswordTransformationMethod.getInstance());
 
 			AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
-			builder.setView(input);
-
-			builder.setMessage("Enter your password")
-
-			.setPositiveButton("Done", new DialogInterface.OnClickListener()
+			builder.setView(view);
+			builder.setInverseBackgroundForced(true);
+			builder.setPositiveButton(R.string.accept, new DialogInterface.OnClickListener()
 			{
 				@Override
 				public void onClick(DialogInterface dialog, int id)
 				{
-					Log.d(DEBUG_TAG, "Input text: " + input.getText());
-					// if (input.getText().equals("admin"))
-					// {
-					showDoctorHome();
-					// }
-					dialog.dismiss();
+					String pass = ((TextView) view.findViewById(R.id.password_field)).getText().toString();
+					Log.d(DEBUG_TAG, "Input text: " + pass);
+					if ("serv4ndo".equalsIgnoreCase(pass))
+					{
+						showDoctorHome();
+						dialog.dismiss();
+					} else
+					{
+						toast("Wrong password!");
+					}
 				}
 			}).setNegativeButton("Cancel", new DialogInterface.OnClickListener()
 			{

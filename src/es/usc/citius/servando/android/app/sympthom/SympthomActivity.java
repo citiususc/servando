@@ -46,8 +46,6 @@ public class SympthomActivity extends ServandoActivity {
 			setActionBarTitle(symptom.getName());
 		}
 
-		// toast("Sympthom:" + symptomId + ", " + symptom.getName());
-
 		sendButton = (Button) findViewById(R.id.symptom_send_button);
 
 		sendButton.setOnClickListener(new OnClickListener()
@@ -177,8 +175,9 @@ public class SympthomActivity extends ServandoActivity {
 
 		private AlertMsg alertFromSymptom(Symptom s)
 		{
-			String comment = getResources().getString(R.string.alert_patient_comment);
-			String alertDesc = s.getDescription() + (s.getPatientComment() != null ? (". " + comment + s.getDescription()) : "");
+			String beforeComment = getResources().getString(R.string.alert_patient_comment);
+			String patientComment = s.getPatientComment() != null ? (". " + beforeComment + " " + s.getPatientComment()) : "";
+			String alertDesc = s.getDescription() + patientComment;
 			return new AlertMsg.Builder().setType(AlertType.SYMPTOM).setDescription(alertDesc).setDisplayName(s.getName()).create();
 		}
 

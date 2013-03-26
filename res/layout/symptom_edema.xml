@@ -40,10 +40,10 @@
             android:src="@drawable/symptom_edema" />
 
         <TextView
-            android:id="@+id/TextView01"
+            android:id="@+id/therapy_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/textView2"
+            android:layout_below="@+id/sending_report"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="84dp"
             android:text="Edema"
@@ -51,7 +51,7 @@
             android:textSize="20sp" />
 
         <TextView
-            android:id="@+id/textView2"
+            android:id="@+id/sending_report"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"

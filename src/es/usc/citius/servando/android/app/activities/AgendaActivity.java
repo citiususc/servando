@@ -334,8 +334,9 @@ public class AgendaActivity extends Activity {
 
 	private void onClickAction(MedicalActionExecution target)
 	{
-		updateActionDetailsView(target);
-		setActiveView(VIEW_AGENDA_ACTION_DETAILS);
+		// TODO Uncomment to show action details
+		// updateActionDetailsView(target);
+		// setActiveView(VIEW_AGENDA_ACTION_DETAILS);
 	}
 
 	private void updateActionDetailsView(final MedicalActionExecution target)

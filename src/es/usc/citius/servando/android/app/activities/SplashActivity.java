@@ -20,9 +20,12 @@ import java.util.zip.ZipFile;
 import java.util.zip.ZipInputStream;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.bluetooth.BluetoothAdapter;
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
@@ -38,6 +41,7 @@ import android.speech.tts.TextToSpeech;
 import android.speech.tts.TextToSpeech.OnInitListener;
 import android.util.Log;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -77,6 +81,8 @@ public class SplashActivity extends Activity implements OnInitListener, Platform
 
 	Handler h = new Handler();
 
+	String patientFolder;
+
 	/**
 	 * @see android.app.Activity#onCreate(Bundle)
 	 */
@@ -90,6 +96,7 @@ public class SplashActivity extends Activity implements OnInitListener, Platform
 
 		Log.d(DEBUG_TAG, "Starting splash ...");
 
+
 		if (ServandoService.isRunning())
 		{
 			Log.d(DEBUG_TAG, "Servando is already started.");
@@ -99,8 +106,10 @@ public class SplashActivity extends Activity implements OnInitListener, Platform
 		{
 			Log.d(DEBUG_TAG, "Servando is not started");
 			setContentView(R.layout.splash);
-			progressBar = (ProgressBar) findViewById(R.id.splash_progress);
 
+
+
+			progressBar = (ProgressBar) findViewById(R.id.splash_progress);
 			loadingMessage = (TextView) findViewById(R.id.loading_message);
 
 			h.postDelayed(new Runnable()
@@ -111,7 +120,6 @@ public class SplashActivity extends Activity implements OnInitListener, Platform
 				{
 					if (!ServandoStartConfig.getInstance().isPlatformSetupOnSDCard())
 					{
-
 						setupAppDir();
 					} else
 					{
@@ -126,7 +134,34 @@ public class SplashActivity extends Activity implements OnInitListener, Platform
 	private void setupAppDir()
 	{
 		Log.d(DEBUG_TAG, "Setting up app...");
-		new DownloadAndInstallServandoSetupFile().execute();
+
+		final EditText editText = new EditText(this);
+
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+		builder.setView(editText);
+		builder.setInverseBackgroundForced(true);
+		builder.setPositiveButton(R.string.accept, new DialogInterface.OnClickListener()
+		{
+			@Override
+			public void onClick(DialogInterface dialog, int id)
+			{
+				patientFolder = editText.getText().toString();
+				new DownloadAndInstallServandoSetupFile().execute();
+
+			}
+		}).setNegativeButton("Cancel", new DialogInterface.OnClickListener()
+		{
+			@Override
+			public void onClick(DialogInterface dialog, int id)
+			{
+				dialog.dismiss();
+				finish();
+			}
+		});
+
+		Dialog dialog = builder.create();
+		dialog.show();
 
 	}
 
@@ -457,14 +492,22 @@ public class SplashActivity extends Activity implements OnInitListener, Platform
 					String patientId = prefs.getString("patient_id", null);
 					Log.d(DEBUG_TAG, "Patient id: " + patientId);
 
-					if(patientId != null){
+					if (patientFolder != null)
+					{
+						urlStr = ServandoStartConfig.getInstance()
+													.get(ServandoStartConfig.SDCARD_PATIENT_DATA_URL)
+													.replaceAll("%PATIENT_ID%", patientFolder);
+					} else if (patientId != null)
+					{
 						urlStr = ServandoStartConfig.getInstance()
 													.get(ServandoStartConfig.SDCARD_PATIENT_DATA_URL)
 													.replaceAll("%PATIENT_ID%", patientId);
-					}else{
-						urlStr = ServandoStartConfig.getInstance().get(ServandoStartConfig.SDCARD_DATA_URL);	
+
+					} else
+					{
+						urlStr = ServandoStartConfig.getInstance().get(ServandoStartConfig.SDCARD_DATA_URL);
 					}
-					
+
 					url = new URL(urlStr);
 					connection = url.openConnection();
 					connection.setConnectTimeout(4000);
@@ -479,7 +522,6 @@ public class SplashActivity extends Activity implements OnInitListener, Platform
 					connection.connect();
 
 				}
-
 
 				int fileLength = connection.getContentLength();
 

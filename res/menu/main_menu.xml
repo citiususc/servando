@@ -6,19 +6,19 @@
         android:icon="@android:drawable/ic_menu_preferences"
         android:title="@string/menu_settings"/>
 
-    <item
-        android:id="@+id/menu_agenda"
-        android:icon="@android:drawable/ic_menu_preferences"
-        android:title="Start agenda"/>
+<!--     <item -->
+<!--         android:id="@+id/menu_agenda" -->
+<!--         android:icon="@android:drawable/ic_menu_preferences" -->
+<!--         android:title="Start agenda"/> -->
 
-    <item
-        android:id="@+id/menu_help"
-        android:icon="@android:drawable/ic_menu_help"
-        android:title="@string/menu_help"/>
+<!--     <item -->
+<!--         android:id="@+id/menu_help" -->
+<!--         android:icon="@android:drawable/ic_menu_help" -->
+<!--         android:title="@string/menu_help"/> -->
 
-    <item
-        android:id="@+id/menu_close"
-        android:icon="@drawable/ic_menu_close"
-        android:title="@string/menu_exit"/>
+<!--     <item -->
+<!--         android:id="@+id/menu_close" -->
+<!--         android:icon="@drawable/ic_menu_close" -->
+<!--         android:title="@string/menu_exit"/> -->
 
 </menu>

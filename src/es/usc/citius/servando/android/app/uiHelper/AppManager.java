@@ -48,7 +48,6 @@ public class AppManager {
 		// Send broadcast to close all open activities
 		Log.d(DEBUG_TAG, "Sending exit broadcast");
 		ctx.sendBroadcast(new Intent(ServandoIntent.ACTION_APP_EXIT));
-
 		// Schedule app proccess stop in 3 secs
 		new Timer().schedule(new TimerTask()
 		{
@@ -58,7 +57,7 @@ public class AppManager {
 				Log.d(DEBUG_TAG, "Stopping app task.");
 				Process.killProcess(Process.myPid());
 			}
-		}, 2000);
+		}, 2500);
 	}
 
 	public static void restartApplication(Context ctx)
@@ -68,7 +67,7 @@ public class AppManager {
 		// get a Calendar object with current time
 		Calendar cal = Calendar.getInstance();
 		// add 5 minutes to the calendar objectx
-		cal.add(Calendar.SECOND, 5);
+		cal.add(Calendar.SECOND, 4);
 		Intent intent = new Intent(ctx, RestartReceiver.class);
 		// In reality, you would want to have a static variable for the request code instead of 192837
 		PendingIntent sender = PendingIntent.getBroadcast(ctx, 192837, intent, PendingIntent.FLAG_UPDATE_CURRENT);

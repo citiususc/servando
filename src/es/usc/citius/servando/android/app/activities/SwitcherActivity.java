@@ -216,6 +216,9 @@ public class SwitcherActivity extends FragmentActivity implements ServiceFragmen
 				{
 					enableBluetoothIfDisabled();
 				}
+			} else if (actionType.equals("sao2") || actionType.equals("ecg"))
+			{
+				enableBluetoothIfDisabled();
 			}
 			log.debug("111");
 		}

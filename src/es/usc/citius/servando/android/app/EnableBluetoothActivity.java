@@ -35,4 +35,24 @@ public class EnableBluetoothActivity extends Activity {
 		}
 	}
 
+	// @Override
+	// protected void onActivityResult(int requestCode, int resultCode, Intent data)
+	// {
+	//
+	// super.onActivityResult(requestCode, resultCode, data);
+	//
+	// // si é de bluetooth
+	// if (requestCode == 1)
+	// {
+	// if (resultCode == Activity.RESULT_OK)
+	// {
+	// BluetoothUtils.getInstance().setAdapter()
+	// } else if (resultCode == Activity.RESULT_CANCELED)
+	// {
+	// Toast.makeText(this, "Cannot enable bluetooth", Toast.LENGTH_SHORT).show();
+	// }
+	// }
+	//
+	// }
+
 }
