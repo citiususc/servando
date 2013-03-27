@@ -77,12 +77,13 @@
 	<string name="symptom_dizziness_title">Si no se encuentra bien y desea comunicar síntomas de mareos o náuseas pulse el botón enviar.</string>
 	<string name="symptom_edema_title">Si tiene edemas indique dónde y pulse enviar.</string>
 	<string name="symptom_headache_title">Si desea comunicar dolor de cabeza pulse enviar.</string>
-	
+	<string name="select_button">Seleccione dónde</string>
+	<string name="and">y</string>
+	<string name="unspecified">NO ESPECIFICADO</string>
 	<string-array name="symptom_edema_location">
-        <item>Tobillo</item>
-        <item>Brazo</item>
-        <item>Mano</item>
-        <item>Pierna</item>
+        <item>tobillo</item>
+        <item>pierna</item>
+        <item>abdomen</item>
     </string-array>
     
 	<string name="menu_settings">Ajustes</string>

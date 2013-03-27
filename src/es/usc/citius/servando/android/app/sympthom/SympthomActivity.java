@@ -86,9 +86,11 @@ public class SympthomActivity extends ServandoActivity {
 
 		LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		concreteSymptomView = inflater.inflate(s.getViewMgr().getView(), null);
+		s.getViewMgr().onViewCreated(concreteSymptomView);
 		container.removeAllViews();
 		container.addView(concreteSymptomView);
 		container.invalidate();
+
 	}
 
 	private void onClickSymptomSend()

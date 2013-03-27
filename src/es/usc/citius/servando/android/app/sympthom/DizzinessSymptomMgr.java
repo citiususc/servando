@@ -13,6 +13,12 @@ public class DizzinessSymptomMgr implements SymptomViewMgr {
 	}
 
 	@Override
+	public void onViewCreated(View v)
+	{
+
+	}
+
+	@Override
 	public void completeFromView(View v, Symptom symptom)
 	{
 		String comment = ((EditText) v.findViewById(R.id.symptom_comment)).getText().toString();
@@ -20,7 +26,5 @@ public class DizzinessSymptomMgr implements SymptomViewMgr {
 		symptom.setPatientComment(comment);
 		symptom.setDescription(v.getResources().getString(R.string.symptom_dizziness_description));
 	}
-
-
 
 }

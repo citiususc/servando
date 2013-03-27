@@ -77,12 +77,14 @@
     <string name="symptom_dizziness_title">If not well and want to communicate symptoms of dizziness or nausea, press send symptom.</string>
     <string name="symptom_edema_title">If you have edema symptoms, say where and press send to submit them.</string>
     <string name="symptom_headache_title">If you want to communicate headache, press send symptom.</string>
+    <string name="select_button">Select where</string>
+    <string name="and">and</string>
+    <string name="unspecified">UNSPECIFIED</string>
 
     <string-array name="symptom_edema_location">
-        <item>Ankle</item>
-        <item>Arm</item>
-        <item>Hand</item>
-        <item>Leg</item>
+        <item>ankle</item>
+        <item>leg</item>
+        <item>abdomen</item>
     </string-array>
 
     <string name="menu_settings">Settings</string>
