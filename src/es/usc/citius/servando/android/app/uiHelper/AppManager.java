@@ -27,8 +27,8 @@ public class AppManager {
 
 	private static final String DEBUG_TAG = AppManager.class.getSimpleName();
 
-
 	private static Context lastContext;
+
 	/**
 	 * Close aplication
 	 * 
@@ -37,17 +37,25 @@ public class AppManager {
 	public static void closeApplication(Context ctx)
 	{
 		// Stop platform
-		ServandoPlatformFacade.getInstance().stop(ctx);
+		try
+		{
+			Log.d(DEBUG_TAG, "Closing application...");
+			ServandoPlatformFacade.getInstance().stop(ctx);
 
-		// Stop background service
-		ctx.stopService(new Intent(ctx, ServandoService.class));
-		ctx.stopService(new Intent(ctx, MedimBackgroundService.class));
-		ctx.stopService(new Intent(ctx, ProtocolEngine.class));
+			// Stop background service
+			ctx.stopService(new Intent(ctx, ServandoService.class));
+			ctx.stopService(new Intent(ctx, MedimBackgroundService.class));
+			ctx.stopService(new Intent(ctx, ProtocolEngine.class));
 
-		NotificationMgr.getInstance().setServandoService(null);
-		// Send broadcast to close all open activities
-		Log.d(DEBUG_TAG, "Sending exit broadcast");
-		ctx.sendBroadcast(new Intent(ServandoIntent.ACTION_APP_EXIT));
+			NotificationMgr.getInstance().setServandoService(null);
+			// Send broadcast to close all open activities
+			Log.d(DEBUG_TAG, "Sending exit broadcast");
+			ctx.sendBroadcast(new Intent(ServandoIntent.ACTION_APP_EXIT));
+
+		} catch (Exception e)
+		{
+			Log.e("AppManager", "Error closing app", e);
+		}
 		// Schedule app proccess stop in 3 secs
 		new Timer().schedule(new TimerTask()
 		{
@@ -58,10 +66,13 @@ public class AppManager {
 				Process.killProcess(Process.myPid());
 			}
 		}, 2500);
+
 	}
 
 	public static void restartApplication(Context ctx)
 	{
+
+		Log.d(DEBUG_TAG, "Restarting application...");
 
 		closeApplication(ctx);
 		// get a Calendar object with current time
@@ -76,7 +87,5 @@ public class AppManager {
 		AlarmManager am = (AlarmManager) ctx.getSystemService(Context.ALARM_SERVICE);
 		am.set(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), sender);
 	}
-
-
 
 }

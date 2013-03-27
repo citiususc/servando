@@ -160,7 +160,7 @@ public class AdvicesListActivity extends ListActivity implements View.OnClickLis
 				{
 					transparentLayer.setVisibility(View.INVISIBLE);
 					seen.setVisibility(View.VISIBLE);
-					seen.setOnClickListener(new OnClickListener()
+					v.setOnClickListener(new OnClickListener()
 					{
 						@Override
 						public void onClick(View v)

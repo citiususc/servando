@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app1="http://schemas.android.com/apk/res/com.dashboardtest"
     android:id="@+id/patient_home_view"
+    style="@style/BoldText"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical" >
@@ -58,7 +59,7 @@
         android:id="@+id/header_layout"
         android:layout_width="wrap_content"
         android:layout_height="fill_parent"
-       >
+        android:gravity="center_horizontal" >
 
         <LinearLayout
             android:id="@+id/center_region"
@@ -334,6 +335,18 @@
                 </LinearLayout>
             </HorizontalScrollView>
         </RelativeLayout>
+
+        <es.usc.citius.servando.android.ui.CustomDigitalClock
+            android:id="@+id/clock"
+            style="@style/BoldText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="95dip"
+            android:text="DigitalClock"
+            android:textColor="@color/foreground1"
+            android:textSize="70sp"
+            android:typeface="sans" />
 
     </RelativeLayout>
 

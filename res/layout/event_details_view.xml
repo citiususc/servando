@@ -4,92 +4,26 @@
     android:id="@+id/event_details_view"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:gravity="center_vertical" >
+    android:gravity="center" >
 
     <TextView
         android:id="@+id/event_details_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        style="@style/BoldText"
+        android:layout_width="fill_parent"
+        android:layout_height="40dip"
         android:layout_alignParentTop="true"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="20dip"
+        android:layout_marginLeft="10dip"
+        android:layout_marginTop="30dip"
         android:layout_toRightOf="@+id/event_icon"
         android:text="Event"
+        android:gravity="center_vertical"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textColor="@color/title_background" />
-
-    <LinearLayout
-        android:id="@+id/time_list"
-        android:layout_width="70dip"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_centerVertical="false"
-        android:layout_marginRight="10dip"
-        android:background="@color/background1"
-        android:gravity="top"
-        android:orientation="vertical"
-        android:paddingTop="20dip" >
-
-        <ImageView
-            android:id="@+id/ImageView01"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:src="@drawable/ic_clock" />
-
-        <TextView
-            android:id="@+id/event_detail_time"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dip"
-            android:text="15:22 pm"
-            android:textAppearance="?android:attr/textAppearanceSmall" />
-
-        <ImageView
-            android:id="@+id/envelope"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:layout_gravity="center"
-            android:layout_marginTop="20dip"
-            android:src="@drawable/ic_duration" />
-
-        <TextView
-            android:id="@+id/evant_detail_timewindow"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="5dip"
-            android:text="30 min"
-            android:textAppearance="?android:attr/textAppearanceSmall" />
-    </LinearLayout>
-
-    <TextView
-        android:id="@+id/event_details_description"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/event_name"
-        android:layout_marginBottom="80dip"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="15dp"
-        android:layout_marginTop="60dip"
-        android:layout_toLeftOf="@+id/ImageButton01"
-        android:text="Event description asdasdas dsa dsa d sa dasd asd asdsadsa asd sad sad sad sa dsa dsad asd sa"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:textColor="@color/foreground2"
-        android:textSize="20dip" />
-
-    <ImageButton
-        android:id="@+id/ImageButton01"
-        android:layout_width="1px"
-        android:layout_height="fill_parent"
-        android:layout_marginBottom="80dip"
-        android:layout_marginTop="5dip"
-        android:layout_toLeftOf="@+id/time_list"
-        android:background="@drawable/separator_gradient" />
+        android:textColor="@color/title_background"
+        android:textSize="25dip" />
 
     <Button
         android:id="@+id/backButton"
-        style="@style/ServandoBlueButton"
+        style="@style/ServandoWhiteButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
@@ -105,7 +39,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
+        
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="20dip"
         android:layout_marginRight="20dip"
@@ -116,11 +50,96 @@
     <ImageView
         android:id="@+id/event_icon"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="40dip"
         android:layout_alignParentLeft="true"
         android:layout_alignTop="@+id/event_name"
         android:layout_marginLeft="20dip"
+        android:layout_marginTop="30dip"
+        android:src="@drawable/ic_clock" />
+
+    <LinearLayout
+        android:id="@+id/time_list"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
         android:layout_marginTop="20dip"
-        android:src="@drawable/ic_cardio" />
+        android:background="@color/background1"
+        android:gravity="top"
+        android:orientation="horizontal"
+        android:paddingTop="20dip" >
+
+        <LinearLayout
+            android:id="@+id/cont1"
+            android:layout_width="150dip"
+            android:layout_height="200dip"
+            android:orientation="vertical" >
+
+            <ImageView
+                android:id="@+id/ImageView01"
+                android:layout_width="50dip"
+                android:layout_height="50dip"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_calendar" />
+
+            <TextView
+                android:id="@+id/finish_at"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="25dip"
+                android:gravity="center"
+                android:text="@string/action_finish_at"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textSize="18dip" />
+
+            <TextView
+                android:id="@+id/event_detail_time"
+                style="@style/BoldText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="15dip"
+                android:text="20:00h"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textColor="@color/foreground2"
+                android:textSize="27dip" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/cont2"
+            android:layout_width="150dip"
+            android:layout_height="200dip"
+            android:layout_gravity="center"
+            android:orientation="vertical" >
+
+            <ImageView
+                android:id="@+id/envelope"
+                android:layout_width="50dip"
+                android:layout_height="50dip"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_duration" />
+
+            <TextView
+                android:id="@+id/TextView02"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="25dip"
+                android:gravity="center"
+                android:text="@string/action_remaining"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textSize="18dip" />
+
+            <TextView
+                android:id="@+id/evant_detail_timewindow"
+                style="@style/BoldText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="15dip"
+                android:text="23 min"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textColor="@color/foreground2"
+                android:textSize="27dip" />
+        </LinearLayout>
+    </LinearLayout>
 
 </RelativeLayout>

@@ -53,6 +53,7 @@ import es.usc.citius.servando.android.models.protocol.MedicalAction;
 import es.usc.citius.servando.android.models.protocol.MedicalActionMgr;
 import es.usc.citius.servando.android.models.services.IPlatformService;
 import es.usc.citius.servando.android.settings.ServandoStartConfig;
+import es.usc.citius.servando.android.sound.SoundHelper;
 import es.usc.citius.servando.android.ui.NotificationMgr;
 import es.usc.citius.servando.android.ui.ServandoService;
 import es.usc.citius.servando.android.ui.animation.AnimationStore;
@@ -252,6 +253,7 @@ public class SplashActivity extends Activity implements OnInitListener, Platform
 	private void initializeUiResources()
 	{
 		AnimationStore.getInstance().initialize(this);
+		SoundHelper.initSounds(this);
 
 	}
 

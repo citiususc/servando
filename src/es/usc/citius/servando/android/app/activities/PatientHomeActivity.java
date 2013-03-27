@@ -31,6 +31,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.view.animation.AlphaAnimation;
@@ -97,6 +98,8 @@ public class PatientHomeActivity extends Activity implements ProtocolEngineListe
 	private Button agendaCountIndicator;
 	private Button sympthonCountIndicator;
 
+	private View clock;
+
 	private boolean hasFocus = false;
 
 	private ImageButton coomunicationsButton;
@@ -115,7 +118,6 @@ public class PatientHomeActivity extends Activity implements ProtocolEngineListe
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_patient_home);
 
-
 		registerNotificationReceiver();
 		h = new Handler();
 		initComponents();
@@ -124,8 +126,6 @@ public class PatientHomeActivity extends Activity implements ProtocolEngineListe
 		protocolEngine.addProtocolListener(this);
 
 		checkCrashReport();
-
-
 
 	}
 
@@ -237,6 +237,8 @@ public class PatientHomeActivity extends Activity implements ProtocolEngineListe
 		coomunicationsButton = (ImageButton) findViewById(R.id.bb_comunication);
 		sympthomsButton = (ImageButton) findViewById(R.id.bb_nursery);
 
+		clock = findViewById(R.id.clock);
+
 		// Initialize values
 		patientNameText.setText(ServandoPlatformFacade.getInstance().getPatient().getName());
 		dayText.setText("" + now.getDayOfMonth());
@@ -277,6 +279,16 @@ public class PatientHomeActivity extends Activity implements ProtocolEngineListe
 
 		centerRegion.startAnimation(animation);
 		centerRegion.setVisibility(View.VISIBLE);
+	}
+
+	void showClock()
+	{
+		clock.setVisibility(View.VISIBLE);
+	}
+
+	void hideClock()
+	{
+		clock.setVisibility(View.INVISIBLE);
 	}
 
 	// private void addPendingActionLauncherTest()
@@ -410,12 +422,31 @@ public class PatientHomeActivity extends Activity implements ProtocolEngineListe
 		SQLiteAdviceDAO.getInstance().addAdviceListener(this);
 		log.debug("onResume");
 		updatePendingActions();
-		showHomeAdvice();
+		Advice advice = ServandoAdviceMgr.getInstance().getHomeAdvice();
+		if (advice != null)
+		{
+			showHomeAdvice(advice);
+		} else
+		{
+			showClock();
+		}
 		updateIndicators();
 
 		DateTime now = DateTime.now();
 		dayText.setText("" + now.getDayOfMonth());
 		monthText.setText("" + now.toString("MMM"));
+
+		// h.postDelayed(new Runnable()
+		// {
+		//
+		// @Override
+		// public void run()
+		// {
+		// Advice a = new Advice("Ana", "Esto é unha proba, sae cada minuto.", new java.util.Date(), false);
+		// SQLiteAdviceDAO.getInstance().add(a);
+		// ServandoAdviceMgr.getInstance().setHomeAdvice(a);
+		// }
+		// }, 10000);
 	}
 
 	@Override
@@ -448,10 +479,7 @@ public class PatientHomeActivity extends Activity implements ProtocolEngineListe
 
 	public void onClickAgenda(View v)
 	{
-		Intent intent = new Intent(getApplicationContext(), AgendaActivity.class);
-		intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-		intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-		startActivity(intent);
+		startAgenda(-1);
 	}
 
 	public void onClickNotifications(View v)
@@ -459,6 +487,19 @@ public class PatientHomeActivity extends Activity implements ProtocolEngineListe
 		Intent intent = new Intent(getApplicationContext(), NotificationsActivity.class);
 		intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
 		intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+		startActivity(intent);
+	}
+
+	private void startAgenda(int actionId)
+	{
+		log.debug("Starting agenda, action: " + actionId);
+		Intent intent = new Intent(getApplicationContext(), AgendaActivity.class);
+		intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+		intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+		if (actionId != -1)
+		{
+			intent.putExtra("action_id", actionId);
+		}
 		startActivity(intent);
 	}
 
@@ -801,8 +842,22 @@ public class PatientHomeActivity extends Activity implements ProtocolEngineListe
 			public void onClick(View v)
 			{
 				MedicalActionExecution exec = ((MedicalActionExecution) v.getTag());
+				// Duration timeToFinish = new Duration(DateTime.now(), new
+				// DateTime(exec.getStartDate()).plusSeconds((int) exec.getTimeWindow()));
+				// toast("Caducará en " + timeToFinish.getStandardMinutes() + " minutos");
+				startAgenda(exec.getUniqueId());
+
+			}
+		});
+		b.setOnLongClickListener(new OnLongClickListener()
+		{
+			@Override
+			public boolean onLongClick(View v)
+			{
+				MedicalActionExecution exec = ((MedicalActionExecution) v.getTag());
 				log.debug(exec.getAction().getDisplayName() + " clicked");
 				showMedicalActionActivity(exec.getUniqueId());
+				return true;
 			}
 		});
 
@@ -878,7 +933,7 @@ public class PatientHomeActivity extends Activity implements ProtocolEngineListe
 
 	}
 
-	private View getAdviceView(Advice advice)
+	private View getAdviceView(final Advice advice)
 	{
 
 		SimpleDateFormat sdf = new SimpleDateFormat("EEE dd, HH:mm");
@@ -899,6 +954,19 @@ public class PatientHomeActivity extends Activity implements ProtocolEngineListe
 		from.setText(advice.getSender() + ":");
 		msg.setText(formattedMsg);
 		when.setText(sdf.format(advice.getDate()));
+
+		v.setOnClickListener(new OnClickListener()
+		{
+			@Override
+			public void onClick(View v)
+			{
+				hideHomeAdvice();
+				SQLiteAdviceDAO.getInstance().markAsSeen(advice);
+				ServandoAdviceMgr.getInstance().setHomeAdvice(null);
+				showClock();
+			}
+		});
+
 		return v;
 	}
 
@@ -926,11 +994,11 @@ public class PatientHomeActivity extends Activity implements ProtocolEngineListe
 
 	}
 
-	private void showHomeAdvice()
+	private void showHomeAdvice(Advice advice)
 	{
-		hideHomeAdvice();
 
-		Advice advice = ServandoAdviceMgr.getInstance().getHomeAdvice();
+		hideHomeAdvice();
+		hideClock();
 
 		if (advice != null && !advice.isSeen())
 		{
@@ -941,6 +1009,7 @@ public class PatientHomeActivity extends Activity implements ProtocolEngineListe
 	private void hideHomeAdvice()
 	{
 		centerRegion.removeAllViews();
+		showClock();
 	}
 
 	@Override
@@ -949,21 +1018,36 @@ public class PatientHomeActivity extends Activity implements ProtocolEngineListe
 
 		h.post(new Runnable()
 		{
+
 			@Override
 			public void run()
 			{
-
-				centerRegion.removeAllViews();
-				if (advice != null && !advice.isSeen())
+				if (advice != null)
 				{
-					addToCenter(getAdviceView(advice), true);
+
+					hideClock();
+					centerRegion.removeAllViews();
+					if (advice != null && !advice.isSeen())
+					{
+						addToCenter(getAdviceView(advice), true);
+					}
+				} else
+				{
+					hideHomeAdvice();
 				}
 			}
 		});
+
 	}
 
 	@Override
 	public void onAdviceAdded(Advice advice)
+	{
+		updateIndicators();
+	}
+
+	@Override
+	public void onAdviceSeen(Advice advice)
 	{
 		updateIndicators();
 	}

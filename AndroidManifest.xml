@@ -22,7 +22,7 @@
         android:theme="@style/Theme.D1" >
         <meta-data
             android:name="version"
-            android:value="1" />
+            android:value="3" />
 
         <activity
             android:name="es.usc.citius.servando.android.app.activities.HomeActivity"

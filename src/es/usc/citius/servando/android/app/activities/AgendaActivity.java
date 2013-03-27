@@ -8,6 +8,9 @@ import java.util.GregorianCalendar;
 import java.util.List;
 
 import org.joda.time.DateTime;
+import org.joda.time.Duration;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 
 import android.app.Activity;
 import android.content.Context;
@@ -72,7 +75,7 @@ public class AgendaActivity extends Activity {
 	private Button backButton;
 
 	private TextView eventName;
-	private TextView eventDesc;
+	// private TextView eventDesc;
 	private TextView eventTime;
 	private TextView eventTimeWindow;
 
@@ -105,6 +108,24 @@ public class AgendaActivity extends Activity {
 		uiHelper = new AgendaUIHelper(actions, false);
 		updateUiActions(actions);
 		setActiveView(currentView);
+
+		int actionId = getIntent().getIntExtra("action_id", -1);
+
+		log.debug("OnNewIntent, actionId: " + actionId);
+		if (actionId != -1)
+		{
+			MedicalActionExecution e = getMedicalAction(actionId);
+			if (e != null)
+			{
+				onClickAction(e);
+			}
+		}
+	}
+
+	@Override
+	protected void onNewIntent(Intent intent)
+	{
+
 	}
 
 	/**
@@ -121,7 +142,7 @@ public class AgendaActivity extends Activity {
 		goButton = (Button) findViewById(R.id.goButton);
 		agendaScroll = (ScrollView) findViewById(R.id.agenda_calendar_day_view);
 		eventName = (TextView) findViewById(R.id.event_details_name);
-		eventDesc = (TextView) findViewById(R.id.event_details_description);
+		// eventDesc = (TextView) findViewById(R.id.event_details_description);
 		eventTime = (TextView) findViewById(R.id.event_detail_time);
 		eventTimeWindow = (TextView) findViewById(R.id.evant_detail_timewindow);
 
@@ -162,6 +183,19 @@ public class AgendaActivity extends Activity {
 		});
 	}
 
+	private MedicalActionExecution getMedicalAction(int id)
+	{
+		for (MedicalActionExecution e : actions)
+		{
+			log.debug("Action: " + e.getUniqueId());
+			if (e.getUniqueId() == id)
+			{
+				return e;
+			}
+		}
+		return null;
+	}
+
 	/**
 	 * 
 	 * @param v the view to set
@@ -173,8 +207,8 @@ public class AgendaActivity extends Activity {
 
 			if (currentView == VIEW_AGENDA_ACTION_DETAILS)
 			{
-				animator.setInAnimation(AnimationStore.getInstance().getComeIn());
-				animator.setOutAnimation(AnimationStore.getInstance().getGoBack());
+				animator.setInAnimation(null);// AnimationStore.getInstance().getComeIn());
+				animator.setOutAnimation(null);// AnimationStore.getInstance().getGoBack());
 			} else
 			{
 				boolean moveToRight = v > currentView;
@@ -189,8 +223,8 @@ public class AgendaActivity extends Activity {
 					animator.setOutAnimation(AnimationStore.getInstance().getSlideOutToRigth());
 				} else
 				{
-					animator.setInAnimation(AnimationStore.getInstance().getComeIn());
-					animator.setOutAnimation(AnimationStore.getInstance().getGoBack());
+					animator.setInAnimation(null);// AnimationStore.getInstance().getComeIn());
+					animator.setOutAnimation(null);// AnimationStore.getInstance().getGoBack());
 				}
 			}
 
@@ -211,6 +245,22 @@ public class AgendaActivity extends Activity {
 	private void updateUiActions(List<MedicalActionExecution> actions)
 	{
 		int[][] actionLayoutInfo = uiHelper.getActionLayoutInfo();
+		// int[] icons = new int[actionLayoutInfo.length];
+		//
+		// try
+		// {
+		// for (int i = 0; i < actionLayoutInfo.length; i++)
+		// {
+		// MedicalActionExecution e = actions.get(i);
+		// if (e.getAction().getProvider() instanceof Iconnable)
+		// {
+		// icons[i] = ((Iconnable) e.getAction().getProvider()).getIconResourceId();
+		// }
+		// }
+		// } catch (Exception e)
+		// {
+		// e.printStackTrace();
+		// }
 
 		System.out.println(Arrays.toString(actionLayoutInfo[0]));
 		System.out.println(Arrays.toString(actionLayoutInfo[1]));
@@ -264,20 +314,21 @@ public class AgendaActivity extends Activity {
 			int eventDuration = actionLayoutInfo[1][i];
 
 			LinearLayout item = (LinearLayout) li.inflate(R.layout.agenda_grid_item, null);
+
 			item.setId(Integer.parseInt(10 + "" + i));
 			item.setLayoutParams(new LinearLayout.LayoutParams((int) widthInPx, (int) (eventDuration * heightInPx)));
 			item.setMinimumHeight((int) (eventDuration * heightInPx));
 			item.setMinimumWidth((int) widthInPx);
 			item.setTag(actions.get(i));
 
-			TextView textview = (TextView) item.findViewById(R.id.title);
+			// TextView textview = (TextView) item.findViewById(R.id.title);
 			ImageButton button = (ImageButton) item.findViewById(R.id.icon);
 			button.setTag(actions.get(i));
-
+			//
 			// Ellipsize action text
 			String text = actions.get(i).getTitle().length() <= 10 ? actions.get(i).getTitle() : actions.get(i).getTitle().substring(0, 10) + "...";
 
-			textview.setText(text);
+			// textview.setText("");
 			button.setImageDrawable(getResources().getDrawable(actions.get(i).getIcon()));
 
 			button.setMinimumHeight((int) (eventDuration * innerHeightInPx));
@@ -335,16 +386,34 @@ public class AgendaActivity extends Activity {
 	private void onClickAction(MedicalActionExecution target)
 	{
 		// TODO Uncomment to show action details
-		// updateActionDetailsView(target);
-		// setActiveView(VIEW_AGENDA_ACTION_DETAILS);
+		updateActionDetailsView(target);
+		setActiveView(VIEW_AGENDA_ACTION_DETAILS);
 	}
 
 	private void updateActionDetailsView(final MedicalActionExecution target)
 	{
+		DateTimeFormatter fmt = DateTimeFormat.forPattern("HH:mm");
+
 		log.debug("Targe: " + target.toString());
 
 		eventName.setText(target.getAction().getDisplayName());
-		eventDesc.setText(target.getAction().getDescription());
+
+		Duration timeToFinish = new Duration(DateTime.now(), new DateTime(target.getStartDate()).plusSeconds((int) target.getTimeWindow()));
+
+		Duration timeToStart = new Duration(DateTime.now(), new DateTime(target.getStartDate()));
+
+		((TextView) findViewById(R.id.finish_at)).setText(target.getState() == MedicalActionState.NotStarted ? getString(R.string.action_start_at)
+				: getString(R.string.action_finish_at));
+
+		if (target.getState() == MedicalActionState.NotStarted)
+		{
+			eventTime.setText(new DateTime(target.getStartDate()).toString(fmt) + " h");
+			eventTimeWindow.setText(formatDuration(timeToStart));
+		} else
+		{
+			eventTime.setText(new DateTime(target.getStartDate()).plusSeconds((int) target.getTimeWindow()).toString(fmt) + " h");
+			eventTimeWindow.setText(formatDuration(timeToFinish));
+		}
 
 		if (target.getAction().getProvider() instanceof Iconnable)
 		{
@@ -364,10 +433,26 @@ public class AgendaActivity extends Activity {
 				public void onClick(View v)
 				{
 					showMedicalActionActivity(target.getUniqueId());
+					finish();
 				}
 			});
 		}
 
+	}
+
+	private String formatDuration(Duration d)
+	{
+
+		String duration = "";
+		long hours = d.getStandardHours();
+		long minutes = d.getStandardMinutes();
+		if (hours > 0)
+		{
+			duration += hours + "h ";
+			minutes -= hours * 60;
+		}
+		duration += minutes + "min ";
+		return duration;
 	}
 
 	private void showMedicalActionActivity(int actionId)

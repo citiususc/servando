@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:grid="http://schemas.android.com/apk/res/es.usc.citius.servando.android.app"
+    android:id="@+id/event_details_view"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:gravity="center_vertical" >
+
+    <TextView
+        android:id="@+id/event_details_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="20dip"
+        android:layout_toRightOf="@+id/event_icon"
+        android:text="Event"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="@color/title_background" />
+
+    <LinearLayout
+        android:id="@+id/time_list"
+        android:layout_width="70dip"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="false"
+        android:layout_marginRight="10dip"
+        android:background="@color/background1"
+        android:gravity="top"
+        android:orientation="vertical"
+        android:paddingTop="20dip" >
+
+        <ImageView
+            android:id="@+id/ImageView01"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:src="@drawable/ic_clock" />
+
+        <TextView
+            android:id="@+id/event_detail_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dip"
+            android:text="15:22 pm"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+
+        <ImageView
+            android:id="@+id/envelope"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dip"
+            android:src="@drawable/ic_duration" />
+
+        <TextView
+            android:id="@+id/evant_detail_timewindow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="5dip"
+            android:text="30 min"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/event_details_description"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/event_name"
+        android:layout_marginBottom="80dip"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="60dip"
+        android:layout_toLeftOf="@+id/ImageButton01"
+        android:text="Event description asdasdas dsa dsa d sa dasd asd asdsadsa asd sad sad sad sa dsa dsad asd sa"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textColor="@color/foreground2"
+        android:textSize="20dip" />
+
+    <ImageButton
+        android:id="@+id/ImageButton01"
+        android:layout_width="1px"
+        android:layout_height="fill_parent"
+        android:layout_marginBottom="80dip"
+        android:layout_marginTop="5dip"
+        android:layout_toLeftOf="@+id/time_list"
+        android:background="@drawable/separator_gradient" />
+
+    <Button
+        android:id="@+id/backButton"
+        style="@style/ServandoBlueButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="20dip"
+        android:layout_marginLeft="20dip"
+        android:text="@string/back_button" />
+
+    <Button
+        android:id="@+id/goButton"
+        style="@style/ServandoBlueButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="20dip"
+        android:layout_marginRight="20dip"
+        android:drawablePadding="5dip"
+        android:drawableRight="@drawable/ic_action_start_white"
+        android:text="@string/doitnow_button" />
+
+    <ImageView
+        android:id="@+id/event_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignTop="@+id/event_name"
+        android:layout_marginLeft="20dip"
+        android:layout_marginTop="20dip"
+        android:src="@drawable/ic_cardio" />
+
+</RelativeLayout>
