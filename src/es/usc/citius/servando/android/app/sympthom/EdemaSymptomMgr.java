@@ -138,4 +138,11 @@ public class EdemaSymptomMgr implements SymptomViewMgr {
 		symptom.setDescription(description);
 	}
 
+	@Override
+	public String getButtonText()
+	{
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

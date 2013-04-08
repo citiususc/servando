@@ -27,4 +27,11 @@ public class DizzinessSymptomMgr implements SymptomViewMgr {
 		symptom.setDescription(v.getResources().getString(R.string.symptom_dizziness_description));
 	}
 
+	@Override
+	public String getButtonText()
+	{
+		// TODO Auto-generated method stub
+		return "Enviar mareos";
+	}
+
 }

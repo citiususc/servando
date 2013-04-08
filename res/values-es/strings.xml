@@ -68,6 +68,11 @@
 	<string name="symptom_headache">Dolor de cabeza</string>
 	<string name="symptom_edema">Edema</string>
 	<string name="symptom_dizziness">Mareos</string>
+	<string name="symptom_emergency">Urgencias</string>
+	
+	<string name="symptom_emergency_title">Pulse el botón para indicar que ha tenido que acudir a urgencias.</string>
+	<string name="symptom_emergency_description">El paciente indica que ha tenido que acudir a los servicios de urgencias.</string>
+	<string name="symptom_emergency_button_text">Notificar</string>
 	
 	<string name="symptom_pillow_title">Indique a continuación el número de almohadas que necesita para dormir</string>
 	<string name="symptom_pillow_description">El paciente necesita %1$s almohadas para dormir cómodamente</string>

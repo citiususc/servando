@@ -28,4 +28,11 @@ public class HeadacheSymptomMgr implements SymptomViewMgr {
 
 	}
 
+	@Override
+	public String getButtonText()
+	{
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

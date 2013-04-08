@@ -14,4 +14,6 @@ public interface SymptomViewMgr {
 
 	public void completeFromView(View v, Symptom symptom);
 
+	public String getButtonText();
+
 }

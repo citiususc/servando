@@ -69,6 +69,12 @@
     <string name="symptom_headache">Headache</string>
     <string name="symptom_edema">Edema</string>
     <string name="symptom_dizziness">Dizziness</string>
+    <string name="symptom_emergency">Emergency</string>
+	
+	<string name="symptom_emergency_title">Press the button to alert the doctor that you went to emergency service.</string>
+	<string name="symptom_emergency_description">The patient went to emergency service.</string>
+	<string name="symptom_emergency_button_text">Notify</string>
+    
     <string name="symptom_pillow_title">Indicate below the number of pillows needed to sleep comfortably</string>
     <string name="symptom_pillow_description">Patient needs %1$s pillows to sleep comfortably</string>
     <string name="symptom_edema_description">The patient says he has edema in %1$s</string>
