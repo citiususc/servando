@@ -28,6 +28,21 @@ public class ServandoApplication extends Application {
 	@Override
 	public void onConfigurationChanged(Configuration newConfig)
 	{
+		SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
+		String lang = null;
+		try
+		{
+			lang = settings.getString("lang", null);
+			if (lang != null)
+			{
+				locale = new Locale(ServandoLocaleUtils.getValidLocale(lang));
+			}
+		} catch (Exception e)
+		{
+			e.printStackTrace();
+			lang = null;
+		}
+
 		if (locale != null)
 		{
 			newConfig.locale = locale;
@@ -48,7 +63,6 @@ public class ServandoApplication extends Application {
 
 	public static void updateLocale(Context ctx)
 	{
-
 		SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(ctx);
 
 		Configuration config = ctx.getApplicationContext().getResources().getConfiguration();
@@ -69,9 +83,8 @@ public class ServandoApplication extends Application {
 			config.locale = locale;
 			ctx.getApplicationContext().getResources().updateConfiguration(config, ctx.getApplicationContext().getResources().getDisplayMetrics());
 		}
+
+		settings.edit().putString("lang", lang).commit();
 	}
-
-
-
 
 }

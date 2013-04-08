@@ -17,6 +17,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
+import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -25,18 +26,22 @@ import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ViewAnimator;
 import es.usc.citius.servando.android.ServandoPlatformFacade;
-import es.usc.citius.servando.android.agenda.ProtocolEngineServiceBinder;
+import es.usc.citius.servando.android.agenda.ProtocolEngine;
+import es.usc.citius.servando.android.agenda.ProtocolEngineListener;
 import es.usc.citius.servando.android.app.R;
 import es.usc.citius.servando.android.app.uiHelper.AgendaUIHelper;
 import es.usc.citius.servando.android.logging.ILog;
@@ -46,7 +51,7 @@ import es.usc.citius.servando.android.models.protocol.MedicalActionState;
 import es.usc.citius.servando.android.ui.Iconnable;
 import es.usc.citius.servando.android.ui.animation.AnimationStore;
 
-public class AgendaActivity extends Activity {
+public class AgendaActivity extends Activity implements ProtocolEngineListener {
 
 	/**
 	 * Servando paltform logger for this class
@@ -83,6 +88,8 @@ public class AgendaActivity extends Activity {
 
 	Handler h = new Handler();
 
+	MedicalActionExecution current;
+
 	List<MedicalActionExecution> list;
 
 	// Action details component references
@@ -102,6 +109,11 @@ public class AgendaActivity extends Activity {
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.agenda_dayview_layout);
+		setupUI();
+	}
+
+	private void setupUI()
+	{
 		initializeComponents();
 		initializeEvents();
 		actions = loadDayActions();
@@ -112,12 +124,16 @@ public class AgendaActivity extends Activity {
 		int actionId = getIntent().getIntExtra("action_id", -1);
 
 		log.debug("OnNewIntent, actionId: " + actionId);
+
 		if (actionId != -1)
 		{
 			MedicalActionExecution e = getMedicalAction(actionId);
 			if (e != null)
 			{
 				onClickAction(e);
+			} else
+			{
+				Toast.makeText(getApplicationContext(), "Action not found", Toast.LENGTH_SHORT).show();
 			}
 		}
 	}
@@ -237,6 +253,7 @@ public class AgendaActivity extends Activity {
 	@Override
 	protected void onResume()
 	{
+		ProtocolEngine.getInstance().addProtocolListener(this);
 		updateList();
 		scrollToNow();
 		super.onResume();
@@ -350,6 +367,8 @@ public class AgendaActivity extends Activity {
 		grid.invalidate();
 
 		final View v = now;
+		((TextView) v).setTextColor(getResources().getColor(R.color.servando_blue));
+		((TextView) v).setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
 		grid.postDelayed(new Runnable()
 		{
 
@@ -392,33 +411,43 @@ public class AgendaActivity extends Activity {
 
 	private void updateActionDetailsView(final MedicalActionExecution target)
 	{
+		current = target;
+
 		DateTimeFormatter fmt = DateTimeFormat.forPattern("HH:mm");
 
 		log.debug("Targe: " + target.toString());
 
 		eventName.setText(target.getAction().getDisplayName());
 
-		Duration timeToFinish = new Duration(DateTime.now(), new DateTime(target.getStartDate()).plusSeconds((int) target.getTimeWindow()));
-
-		Duration timeToStart = new Duration(DateTime.now(), new DateTime(target.getStartDate()));
+		eventName.setOnLongClickListener(new OnLongClickListener()
+		{
+			@Override
+			public boolean onLongClick(View v)
+			{
+				Toast.makeText(getApplicationContext(), "Status: " + target.getState(), Toast.LENGTH_SHORT).show();
+				return true;
+			}
+		});
 
 		((TextView) findViewById(R.id.finish_at)).setText(target.getState() == MedicalActionState.NotStarted ? getString(R.string.action_start_at)
 				: getString(R.string.action_finish_at));
 
 		if (target.getState() == MedicalActionState.NotStarted)
 		{
+			Duration timeToStart = new Duration(DateTime.now(), new DateTime(target.getStartDate()).plusMinutes(1));
 			eventTime.setText(new DateTime(target.getStartDate()).toString(fmt) + " h");
 			eventTimeWindow.setText(formatDuration(timeToStart));
 		} else
 		{
+			Duration timeToFinish = new Duration(DateTime.now(), new DateTime(target.getStartDate()).plusSeconds((int) target.getTimeWindow() + 60));
 			eventTime.setText(new DateTime(target.getStartDate()).plusSeconds((int) target.getTimeWindow()).toString(fmt) + " h");
 			eventTimeWindow.setText(formatDuration(timeToFinish));
 		}
 
 		if (target.getAction().getProvider() instanceof Iconnable)
 		{
-			// ((ImageView) findViewById(R.id.event_icon)).setImageDrawable(getResources().getDrawable(
-			// ((Iconnable) target.getAction().getProvider()).getIconResourceId()));
+
+			((ImageView) findViewById(R.id.event_icon)).setImageDrawable(getResources().getDrawable(target.getIcon()));
 		}
 
 		if (!(target.getState() == MedicalActionState.Uncompleted))
@@ -466,9 +495,7 @@ public class AgendaActivity extends Activity {
 
 	private List<MedicalActionExecution> loadDayActions()
 	{
-		List<MedicalActionExecution> loaded = ProtocolEngineServiceBinder.getInstance()
-																			.getProtocolEngine()
-																			.getFilteredDayActions(new GregorianCalendar());
+		List<MedicalActionExecution> loaded = ProtocolEngine.getInstance().getFilteredDayActions(new GregorianCalendar());
 		log.debug("Agenda:Loaded actions: " + loaded.size());
 		return loaded;
 
@@ -599,33 +626,6 @@ public class AgendaActivity extends Activity {
 						public void onClick(View v)
 						{
 
-							// ViewSwitcher vs = ((ViewSwitcher) v);
-							// if (vs.getDisplayedChild() == 0)
-							// {
-							//
-							// ListView list = (ListView) v.getParent();
-							// for (int i = 0; i < list.getChildCount(); i++)
-							// {
-							// View current = list.getChildAt(i);
-							// if (current.findViewById(R.id.main_view) != null)
-							// {
-							// ViewSwitcher sw = (ViewSwitcher) current;
-							// if (sw.getDisplayedChild() == 1)
-							// {
-							// sw.setInAnimation(AnimationStore.getInstance().getSlideInFromLeft());
-							// sw.setOutAnimation(AnimationStore.getInstance().getSlideOutToRigth());
-							// sw.setDisplayedChild(0);
-							// }
-							// }
-							// }
-							// vs.setInAnimation(AnimationStore.getInstance().getSlideInFromRigth());
-							// vs.setOutAnimation(AnimationStore.getInstance().getSlideOutToLeft());
-							// } else
-							// {
-							// vs.setInAnimation(AnimationStore.getInstance().getSlideInFromLeft());
-							// vs.setOutAnimation(AnimationStore.getInstance().getSlideOutToRigth());
-							// }
-							// vs.showNext();
 							if (position >= 0 && position < list.size())
 							{
 								onClickAction(list.get(position));
@@ -707,6 +707,75 @@ public class AgendaActivity extends Activity {
 		{
 			return s.substring(0, 1).toUpperCase().concat(s.substring(1));
 		}
+	}
+
+	@Override
+	public void onExecutionStart(MedicalActionExecution target)
+	{
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void onExecutionAbort(MedicalActionExecution target)
+	{
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void onExecutionFinish(MedicalActionExecution target)
+	{
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void onLoadDayActions()
+	{
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void onProtocolChanged()
+	{
+		h.post(new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				((ViewGroup) findViewById(R.id.relativeLayoutAgenda)).removeAllViewsInLayout();
+				setContentView(R.layout.agenda_dayview_layout);
+				setupUI();
+			}
+		});
+
+	}
+
+	@Override
+	public void onProtocolEngineStart()
+	{
+
+
+	}
+
+	@Override
+	public void onReminder(long minutes)
+	{
+		if (currentView == VIEW_AGENDA_ACTION_DETAILS && current != null)
+		{
+			updateActionDetailsView(current);
+		}
+
+	}
+
+	@Override
+	protected void onPause()
+	{
+		// TODO Auto-generated method stub
+		super.onPause();
+		ProtocolEngine.getInstance().removeProtocolListener(this);
 	}
 
 }

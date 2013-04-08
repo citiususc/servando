@@ -30,7 +30,7 @@ import android.widget.Toast;
 import es.usc.citius.servando.android.ServandoPlatformFacade;
 import es.usc.citius.servando.android.agenda.PlatformResources;
 import es.usc.citius.servando.android.agenda.PlatformResources.Available;
-import es.usc.citius.servando.android.agenda.ProtocolEngineServiceBinder;
+import es.usc.citius.servando.android.agenda.ProtocolEngine;
 import es.usc.citius.servando.android.app.R;
 import es.usc.citius.servando.android.app.ServandoIntent;
 import es.usc.citius.servando.android.app.fragments.MedicalActionFragmentMgr;
@@ -42,12 +42,10 @@ import es.usc.citius.servando.android.models.protocol.MedicalActionMgr;
 import es.usc.citius.servando.android.ui.ActionExecutionViewFactory;
 import es.usc.citius.servando.android.ui.FragmentViewMenuItem;
 import es.usc.citius.servando.android.ui.NotificationMgr;
-import es.usc.citius.servando.android.ui.ServandoService;
 import es.usc.citius.servando.android.ui.ServiceFragmentView;
 import es.usc.citius.servando.android.ui.ServiceFragmentView.ServiceFragmentCloseListener;
 
-/**
- * TODO: Comment
+/*Comment
  * 
  * @author Ángel Piñeiro
  * 
@@ -117,7 +115,7 @@ public class SwitcherActivity extends FragmentActivity implements ServiceFragmen
 
 		if (uniqueId != -1 && uniqueId != currentActionId)
 		{
-			currentExecution = ProtocolEngineServiceBinder.getInstance().getProtocolEngine().getExecutingAction(uniqueId);
+			currentExecution = ProtocolEngine.getInstance().getExecutingAction(uniqueId);
 
 			if (currentExecution != null)
 			{
@@ -234,7 +232,7 @@ public class SwitcherActivity extends FragmentActivity implements ServiceFragmen
 
 	private void registerBroadcastReceivers()
 	{
-		IntentFilter notificationFIlter = new IntentFilter(ServandoService.NOTIFICATIONS_UPDATE);
+		IntentFilter notificationFIlter = new IntentFilter(ServandoPlatformFacade.NOTIFICATIONS_UPDATE);
 		notificationReceiver = new NotificationsReceiver();
 		this.registerReceiver(notificationReceiver, notificationFIlter);
 

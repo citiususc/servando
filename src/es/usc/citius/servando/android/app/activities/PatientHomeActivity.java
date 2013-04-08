@@ -24,7 +24,6 @@ import android.text.method.PasswordTransformationMethod;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -68,7 +67,6 @@ import es.usc.citius.servando.android.models.services.IPlatformService;
 import es.usc.citius.servando.android.settings.StorageModule;
 import es.usc.citius.servando.android.ui.Iconnable;
 import es.usc.citius.servando.android.ui.NotificationMgr;
-import es.usc.citius.servando.android.ui.ServandoService;
 import es.usc.citius.servando.android.util.UiUtils;
 
 public class PatientHomeActivity extends Activity implements ProtocolEngineListener, AdviceDAOListener, HomeAdviceListener {
@@ -328,7 +326,7 @@ public class PatientHomeActivity extends Activity implements ProtocolEngineListe
 
 	private void registerNotificationReceiver()
 	{
-		IntentFilter notificationFIlter = new IntentFilter(ServandoService.NOTIFICATIONS_UPDATE);
+		IntentFilter notificationFIlter = new IntentFilter(ServandoPlatformFacade.NOTIFICATIONS_UPDATE);
 		receiver = new NotificationsReceiver();
 		LocalBroadcastManager.getInstance(this).registerReceiver(receiver, notificationFIlter);
 	}
@@ -435,6 +433,9 @@ public class PatientHomeActivity extends Activity implements ProtocolEngineListe
 		DateTime now = DateTime.now();
 		dayText.setText("" + now.getDayOfMonth());
 		monthText.setText("" + now.toString("MMM"));
+
+		int id = android.os.Process.myPid();
+		log.debug("HomeActivity PID: " + id);
 
 		// h.postDelayed(new Runnable()
 		// {
@@ -672,16 +673,16 @@ public class PatientHomeActivity extends Activity implements ProtocolEngineListe
 		return super.onCreateDialog(id);
 	}
 
-	@Override
-	public boolean onKeyDown(int keyCode, KeyEvent event)
-	{
-		if (keyCode == KeyEvent.KEYCODE_BACK)
-		{
-			finish();
-			return true;
-		}
-		return super.onKeyDown(keyCode, event);
-	}
+	// @Override
+	// public boolean onKeyDown(int keyCode, KeyEvent event)
+	// {
+	// if (keyCode == KeyEvent.KEYCODE_BACK)
+	// {
+	// finish();
+	// return true;
+	// }
+	// return super.onKeyDown(keyCode, event);
+	// }
 
 	public class NotificationsReceiver extends BroadcastReceiver {
 		@Override
@@ -733,10 +734,11 @@ public class PatientHomeActivity extends Activity implements ProtocolEngineListe
 							{
 								hidePendingActionsView();
 								invalidateFullView();
+								ServandoPlatformFacade.getInstance().unrequireUserAttention(getApplicationContext());
 							}
 							log.debug("Pending actions list updated (" + advised.getExecutions().size() + ")");
 
-							ServandoService.updateServandoNotification(PatientHomeActivity.this, false, false, " ");
+							// ServandoService.updateServandoNotification(PatientHomeActivity.this, false, false, " ");
 						}
 					}
 				}.execute();
@@ -1050,6 +1052,29 @@ public class PatientHomeActivity extends Activity implements ProtocolEngineListe
 	public void onAdviceSeen(Advice advice)
 	{
 		updateIndicators();
+	}
+
+	@Override
+	public void onProtocolEngineStart()
+	{
+
+	}
+
+	@Override
+	public void onReminder(final long minutes)
+	{
+		if (hasFocus)
+		{
+			h.post(new Runnable()
+			{
+
+				@Override
+				public void run()
+				{
+					toast("Alguna acción terminará en " + minutes + (minutes == 1 ? " minuto " : " minutos"));
+				}
+			});
+		}
 	}
 
 }

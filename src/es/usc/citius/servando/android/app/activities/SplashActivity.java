@@ -22,12 +22,9 @@ import java.util.zip.ZipInputStream;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.bluetooth.BluetoothAdapter;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
@@ -36,7 +33,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
-import android.os.IBinder;
 import android.speech.tts.TextToSpeech;
 import android.speech.tts.TextToSpeech.OnInitListener;
 import android.util.Log;
@@ -47,17 +43,15 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import es.usc.citius.servando.android.ServandoPlatformFacade;
 import es.usc.citius.servando.android.ServandoPlatformFacade.PlatformFacadeListener;
+import es.usc.citius.servando.android.agenda.ServandoBackgroundService;
 import es.usc.citius.servando.android.app.R;
-import es.usc.citius.servando.android.app.ServandoApplication;
 import es.usc.citius.servando.android.models.protocol.MedicalAction;
 import es.usc.citius.servando.android.models.protocol.MedicalActionMgr;
 import es.usc.citius.servando.android.models.services.IPlatformService;
 import es.usc.citius.servando.android.settings.ServandoStartConfig;
 import es.usc.citius.servando.android.sound.SoundHelper;
 import es.usc.citius.servando.android.ui.NotificationMgr;
-import es.usc.citius.servando.android.ui.ServandoService;
 import es.usc.citius.servando.android.ui.animation.AnimationStore;
-import es.usc.citius.servando.android.util.BluetoothUtils;
 
 /**
  * This activity shows a splash screen and performs the necesary configurations (bluethooth enabling, logs, ...)
@@ -75,7 +69,7 @@ public class SplashActivity extends Activity implements OnInitListener, Platform
 
 	private boolean mIsBound;
 	private TextView loadingMessage;
-	private ServandoService mBoundService;
+
 	TextToSpeech tts;
 	private static final String DEBUG_TAG = SplashActivity.class.getSimpleName();
 	ProgressBar progressBar;
@@ -98,7 +92,7 @@ public class SplashActivity extends Activity implements OnInitListener, Platform
 		Log.d(DEBUG_TAG, "Starting splash ...");
 
 
-		if (ServandoService.isRunning())
+		if (ServandoPlatformFacade.isStarted())
 		{
 			Log.d(DEBUG_TAG, "Servando is already started.");
 			startHomeActivity();
@@ -107,15 +101,11 @@ public class SplashActivity extends Activity implements OnInitListener, Platform
 		{
 			Log.d(DEBUG_TAG, "Servando is not started");
 			setContentView(R.layout.splash);
-
-
-
 			progressBar = (ProgressBar) findViewById(R.id.splash_progress);
 			loadingMessage = (TextView) findViewById(R.id.loading_message);
 
 			h.postDelayed(new Runnable()
 			{
-
 				@Override
 				public void run()
 				{
@@ -171,9 +161,9 @@ public class SplashActivity extends Activity implements OnInitListener, Platform
 
 		Log.d(DEBUG_TAG, "Servando Service is not started.");
 
-		ServandoApplication.updateLocale(this);
+		// ServandoApplication.updateLocale(this);
 
-		initializeUiResources();
+		// initializeUiResources();
 
 		loadingMessage.setText("Configuring logs...");
 		configureLogs();
@@ -183,14 +173,27 @@ public class SplashActivity extends Activity implements OnInitListener, Platform
 
 		loadingMessage.setText("Starting... Please wait.");
 
-		h.post(new Runnable()
+		// h.post(new Runnable()
+		// {
+		// @Override
+		// public void run()
+		// {
+		// startServandoService();
+
+		try
 		{
-			@Override
-			public void run()
-			{
-				startServandoService();
-			}
-		});
+			ServandoPlatformFacade.getInstance().addListener(this);
+
+			// ServandoPlatformFacade.getInstance().start(getApplicationContext());
+			startService(new Intent(getApplicationContext(), ServandoBackgroundService.class));
+
+		} catch (Exception e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		// }
+		// });
 
 		tts = new TextToSpeech(this.getApplicationContext(), this);
 	}
@@ -221,16 +224,6 @@ public class SplashActivity extends Activity implements OnInitListener, Platform
 			Log.e(DEBUG_TAG, ex.toString());
 		}
 		return null;
-	}
-
-	@Override
-	protected void onNewIntent(Intent intent)
-	{
-		// UiUtils.showToast("onNewIntent", this);
-		if (intent.getAction().equals(UNBIND_SERVANDO_SERVICE))
-		{
-			doUnbindService();
-		}
 	}
 
 	@Override
@@ -281,18 +274,18 @@ public class SplashActivity extends Activity implements OnInitListener, Platform
 	/**
 	 * Starts Servando Service
 	 */
-	private void startServandoService()
-	{
-		ServandoPlatformFacade.getInstance().addListener(this);
-
-		if (!ServandoService.isRunning())
-		{
-			Log.d(DEBUG_TAG, "Invoking servando service...");
-			Intent intent = new Intent(SplashActivity.this, ServandoService.class);
-			startService(intent);
-			doBindService();
-		}
-	}
+	// private void startServandoService()
+	// {
+	// ServandoPlatformFacade.getInstance().addListener(this);
+	//
+	// if (!ServandoService.isRunning())
+	// {
+	// Log.d(DEBUG_TAG, "Invoking servando service...");
+	// Intent intent = new Intent(SplashActivity.this, ServandoService.class);
+	// startService(intent);
+	// doBindService();
+	// }
+	// }
 
 	/**
 	 *
@@ -307,23 +300,23 @@ public class SplashActivity extends Activity implements OnInitListener, Platform
 	/**
 	 *
 	 */
-	private void configureBluetooth()
-	{
-		// Get the adapter
-		BluetoothAdapter btAdapter = BluetoothAdapter.getDefaultAdapter();
-		if (btAdapter == null)
-		{
-			throw new NullPointerException("Device not supports bluetooth");
-		}
-		// gardamos o adaptador para futuros usos
-		BluetoothUtils.getInstance().setAdapter(btAdapter);
-		// If Bluetooth is not yet enabled, enable it
-		if (!btAdapter.isEnabled())
-		{
-			Intent enableBluetooth = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-			startActivityForResult(enableBluetooth, ENABLE_BLUETOOTH);
-		}
-	}
+	// private void configureBluetooth()
+	// {
+	// // Get the adapter
+	// BluetoothAdapter btAdapter = BluetoothAdapter.getDefaultAdapter();
+	// if (btAdapter == null)
+	// {
+	// throw new NullPointerException("Device not supports bluetooth");
+	// }
+	// // gardamos o adaptador para futuros usos
+	// BluetoothUtils.getInstance().setAdapter(btAdapter);
+	// // If Bluetooth is not yet enabled, enable it
+	// if (!btAdapter.isEnabled())
+	// {
+	// Intent enableBluetooth = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+	// startActivityForResult(enableBluetooth, ENABLE_BLUETOOTH);
+	// }
+	// }
 
 	/**
 	 *
@@ -349,60 +342,60 @@ public class SplashActivity extends Activity implements OnInitListener, Platform
 
 	}
 
+	// /**
+	// *
+	// */
+	// private final ServiceConnection mConnection = new ServiceConnection()
+	// {
+	// @Override
+	// public void onServiceConnected(ComponentName className, IBinder service)
+	// {
+	// // This is called when the connection with the service has been
+	// // established, giving us the service object we can use to
+	// // interact with the service. Because we have bound to a explicit
+	// // service that we know is running in our own process, we can
+	// // cast its IBinder to a concrete class and directly access it.
+	// mBoundService = ((ServandoService.ServandoBinder) service).getService();
+	// NotificationMgr.getInstance().setServandoService(mBoundService);
+	// loadServices();
+	// doUnbindService();
+	// }
+	//
+	// @Override
+	// public void onServiceDisconnected(ComponentName className)
+	// {
+	// // This is called when the connection with the service has been
+	// // unexpectedly disconnected -- that is, its process crashed.
+	// // Because it is running in our same process, we should never
+	// // see this happen.
+	// mBoundService = null;
+	// }
+	// };
+
+	// private void doBindService()
+	// {
+	// // Establish a connection with the service. We use an explicit
+	// // class name because we want a specific service implementation that
+	// // we know will be running in our own process (and thus won't be
+	// // supporting component replacement by other applications).
+	// bindService(new Intent(SplashActivity.this, ServandoService.class), mConnection, Context.BIND_AUTO_CREATE);
+	// mIsBound = true;
+	// }
+
 	/**
 	 *
 	 */
-	private final ServiceConnection mConnection = new ServiceConnection()
-	{
-		@Override
-		public void onServiceConnected(ComponentName className, IBinder service)
-		{
-			// This is called when the connection with the service has been
-			// established, giving us the service object we can use to
-			// interact with the service. Because we have bound to a explicit
-			// service that we know is running in our own process, we can
-			// cast its IBinder to a concrete class and directly access it.
-			mBoundService = ((ServandoService.ServandoBinder) service).getService();
-			NotificationMgr.getInstance().setServandoService(mBoundService);
-			loadServices();
-			doUnbindService();
-		}
-
-		@Override
-		public void onServiceDisconnected(ComponentName className)
-		{
-			// This is called when the connection with the service has been
-			// unexpectedly disconnected -- that is, its process crashed.
-			// Because it is running in our same process, we should never
-			// see this happen.
-			mBoundService = null;
-		}
-	};
-
-	private void doBindService()
-	{
-		// Establish a connection with the service. We use an explicit
-		// class name because we want a specific service implementation that
-		// we know will be running in our own process (and thus won't be
-		// supporting component replacement by other applications).
-		bindService(new Intent(SplashActivity.this, ServandoService.class), mConnection, Context.BIND_AUTO_CREATE);
-		mIsBound = true;
-	}
-
-	/**
-	 *
-	 */
-	public void doUnbindService()
-	{
-		if (mIsBound)
-		{
-			Log.d(DEBUG_TAG, "UnbindService");
-			// UiUtils.showToast("UnbindService", this);
-			// Detach our existing connection.
-			unbindService(mConnection);
-			mIsBound = false;
-		}
-	}
+	// public void doUnbindService()
+	// {
+	// if (mIsBound)
+	// {
+	// Log.d(DEBUG_TAG, "UnbindService");
+	// // UiUtils.showToast("UnbindService", this);
+	// // Detach our existing connection.
+	// unbindService(mConnection);
+	// mIsBound = false;
+	// }
+	// }
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data)
@@ -431,20 +424,21 @@ public class SplashActivity extends Activity implements OnInitListener, Platform
 		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 	}
 
-	@Override
-	protected void onDestroy()
-	{
-		// UiUtils.showToast("unbind service", this);
-		doUnbindService();
-		super.onDestroy();
-
-	}
+	// @Override
+	// protected void onDestroy()
+	// {
+	// // UiUtils.showToast("unbind service", this);
+	// doUnbindService();
+	// super.onDestroy();
+	//
+	// }
 
 	@Override
 	public void onReady()
 	{
+		loadServices();
 		// task to start the home activity after a few seconds
-		TimerTask initHomeTask = new TimerTask()
+		final TimerTask initHomeTask = new TimerTask()
 		{
 			@Override
 			public void run()
@@ -453,10 +447,19 @@ public class SplashActivity extends Activity implements OnInitListener, Platform
 				finish();
 			}
 		};
-		// timer to schedule the task
-		Timer timer = new Timer();
-		loadingMessage.setText("Starting ...");
-		timer.schedule(initHomeTask, SPLASH_DELAY_IN_SECONDS * 1000);
+		h.post(new Runnable()
+		{
+
+			@Override
+			public void run()
+			{
+				// timer to schedule the task
+				Timer timer = new Timer();
+				loadingMessage.setText("Starting ...");
+				timer.schedule(initHomeTask, SPLASH_DELAY_IN_SECONDS * 1000);
+			}
+		});
+
 	}
 
 	private class DownloadAndInstallServandoSetupFile extends AsyncTask<String, Integer, String> {

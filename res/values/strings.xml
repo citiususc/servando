@@ -108,5 +108,6 @@
     <string name="action_finish_at">Finish at:</string>
     <string name="action_remaining">Remaining:</string>
     <string name="action_not_started">Not started</string>
+    <string name="title_activity_start_servando_activity_in_bg">StartServandoActivityInBg</string>
 
 </resources>

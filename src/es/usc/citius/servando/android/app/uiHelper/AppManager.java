@@ -11,12 +11,10 @@ import android.content.Intent;
 import android.os.Process;
 import android.util.Log;
 import es.usc.citius.servando.android.ServandoPlatformFacade;
-import es.usc.citius.servando.android.agenda.ProtocolEngine;
+import es.usc.citius.servando.android.agenda.ServandoBackgroundService;
 import es.usc.citius.servando.android.app.RestartReceiver;
 import es.usc.citius.servando.android.app.ServandoIntent;
 import es.usc.citius.servando.android.medim.ui.MedimBackgroundService;
-import es.usc.citius.servando.android.ui.NotificationMgr;
-import es.usc.citius.servando.android.ui.ServandoService;
 
 /**
  * 
@@ -27,7 +25,7 @@ public class AppManager {
 
 	private static final String DEBUG_TAG = AppManager.class.getSimpleName();
 
-	private static Context lastContext;
+	// private static Context lastContext;
 
 	/**
 	 * Close aplication
@@ -41,13 +39,9 @@ public class AppManager {
 		{
 			Log.d(DEBUG_TAG, "Closing application...");
 			ServandoPlatformFacade.getInstance().stop(ctx);
-
 			// Stop background service
-			ctx.stopService(new Intent(ctx, ServandoService.class));
+			ctx.stopService(new Intent(ctx, ServandoBackgroundService.class));
 			ctx.stopService(new Intent(ctx, MedimBackgroundService.class));
-			ctx.stopService(new Intent(ctx, ProtocolEngine.class));
-
-			NotificationMgr.getInstance().setServandoService(null);
 			// Send broadcast to close all open activities
 			Log.d(DEBUG_TAG, "Sending exit broadcast");
 			ctx.sendBroadcast(new Intent(ServandoIntent.ACTION_APP_EXIT));
@@ -56,6 +50,7 @@ public class AppManager {
 		{
 			Log.e("AppManager", "Error closing app", e);
 		}
+
 		// Schedule app proccess stop in 3 secs
 		new Timer().schedule(new TimerTask()
 		{
@@ -66,6 +61,7 @@ public class AppManager {
 				Process.killProcess(Process.myPid());
 			}
 		}, 2500);
+
 
 	}
 

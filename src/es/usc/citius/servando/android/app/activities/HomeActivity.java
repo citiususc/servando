@@ -18,8 +18,8 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import es.usc.citius.servando.android.ServandoPlatformFacade;
 import es.usc.citius.servando.android.agenda.ProtocolEngine;
-import es.usc.citius.servando.android.agenda.ProtocolEngineServiceBinder;
 import es.usc.citius.servando.android.app.R;
 import es.usc.citius.servando.android.app.uiHelper.AppManager;
 import es.usc.citius.servando.android.logging.ILog;
@@ -28,7 +28,6 @@ import es.usc.citius.servando.android.models.services.IPlatformService;
 import es.usc.citius.servando.android.models.services.ServiceManager;
 import es.usc.citius.servando.android.ui.Iconnable;
 import es.usc.citius.servando.android.ui.NotificationMgr;
-import es.usc.citius.servando.android.ui.ServandoService;
 import es.usc.citius.servando.android.util.UiUtils;
 
 /**
@@ -78,7 +77,7 @@ public class HomeActivity extends Activity {
 	private void registerNotificationReceiver()
 	{
 		// TODO Auto-generated method stub
-		IntentFilter notificationFIlter = new IntentFilter(ServandoService.NOTIFICATIONS_UPDATE);
+		IntentFilter notificationFIlter = new IntentFilter(ServandoPlatformFacade.NOTIFICATIONS_UPDATE);
 		receiver = new NotificationsReceiver();
 		LocalBroadcastManager.getInstance(this).registerReceiver(receiver, notificationFIlter);
 	}
@@ -207,7 +206,7 @@ public class HomeActivity extends Activity {
 	public void onClickTesting(View v)
 	{
 		log.info("OnCLickTesting");
-		ProtocolEngine agenda = ProtocolEngineServiceBinder.getInstance().getProtocolEngine();
+		ProtocolEngine agenda = ProtocolEngine.getInstance();
 		log.info(agenda.getProtocol().getDescription());
 		log.info("Loaded acions: " + agenda.getProtocol().getActions().size());
 

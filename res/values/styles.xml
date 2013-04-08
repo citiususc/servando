@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <resources>
 
     <!-- Base application theme is the default theme. -->
@@ -25,14 +24,19 @@
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowContentOverlay">@null</item>
     </style>
-    
-     <style name="pillowRatingBar" parent="@android:style/Widget.RatingBar">
+
+    <style name="pillowRatingBar" parent="@android:style/Widget.RatingBar">
         <item name="android:progressDrawable">@drawable/pillow_ratingbar_full</item>
         <item name="android:minHeight">100dip</item>
         <item name="android:maxHeight">100dip</item>
     </style>
-    
-     
+
+    <style name="Invisible" parent="@android:style/Theme.Dialog">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+    </style>
 
     <style name="HomeButton">
         <item name="android:layout_gravity">center_vertical</item>
@@ -56,7 +60,7 @@
         <item name="android:textStyle">normal</item>
         <item name="android:textColor">@color/foreground1</item>
         <item name="android:background">@null</item>
-<!--         <item name="android:layout_margin">2dip</item> -->
+        <!-- <item name="android:layout_margin">2dip</item> -->
 
         <item name="android:paddingTop">25dip</item>
         <item name="android:paddingBottom">20dip</item>
@@ -77,8 +81,7 @@
         <item name="android:textStyle">normal</item>
         <item name="android:textColor">@color/foreground1</item>
         <item name="android:padding">3dip</item>
-
-       <item name="android:background">@drawable/simple_button</item>
+        <item name="android:background">@drawable/simple_button</item>
     </style>
 
     <style name="ServandoBlueButton">
@@ -86,7 +89,6 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textColor">#ffffff</item>
         <item name="android:gravity">center</item>
-
         <item name="android:textStyle">bold</item>
         <item name="android:shadowColor">#333333</item>
         <item name="android:shadowDx">1</item>
@@ -94,8 +96,7 @@
         <item name="android:shadowRadius">2</item>
         <item name="android:background">@drawable/blue_button</item>
     </style>
-    
-    
+
     <style name="ServandoWhiteButton">
         <item name="android:layout_width">fill_parent</item>
         <item name="android:layout_height">wrap_content</item>
@@ -109,11 +110,9 @@
         <item name="android:background">@drawable/white_button</item>
     </style>
 
-
-     <style name="BoldText">
+    <style name="BoldText">
         <item name="android:textStyle">bold</item>
     </style>
-
 
     <style name="GridSpace">
         <item name="android:layout_width">fill_parent</item>
@@ -208,4 +207,5 @@
     <style name="styleName" parent="@style/ServandoLightBlueButton">
         <item name="android:layout_marginBottom">40dip</item>
     </style>
+
 </resources>

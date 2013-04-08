@@ -24,7 +24,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import es.usc.citius.servando.android.app.uiHelper.AppManager;
 import es.usc.citius.servando.android.settings.ServandoStartConfig;
 
 public class UpdateActivity extends Activity {
@@ -77,7 +76,7 @@ public class UpdateActivity extends Activity {
 		new ReinstallServandoTask().execute();
 	}
 
-	class ReinstallServandoTask extends AsyncTask<String, Integer, String> {
+	private class ReinstallServandoTask extends AsyncTask<String, Integer, String> {
 
 		String externalStoragePath = Environment.getExternalStorageDirectory().getAbsolutePath();
 		String downloadFilePath = externalStoragePath + "/ServandoPlatformApp.apk";
@@ -144,7 +143,6 @@ public class UpdateActivity extends Activity {
 		protected void onProgressUpdate(Integer... values)
 		{
 			super.onProgressUpdate(values);
-			Log.d(TAG, "Descargando actualizacións " + values[0] + "%");
 			progressBar.setProgress(values[0]);
 			loadingMessage.setText("Downloading data... (" + values[0] + "%)");
 		}
@@ -160,11 +158,10 @@ public class UpdateActivity extends Activity {
 		intent.setDataAndType(Uri.fromFile(apk), "application/vnd.android.package-archive");
 		getApplicationContext().startActivity(intent);
 		finish();
-		AppManager.closeApplication(getApplicationContext());
 
 	}
 
-	class CheckForUpdates extends AsyncTask<String, Integer, String> {
+	private class CheckForUpdates extends AsyncTask<String, Integer, String> {
 
 		String externalStoragePath = Environment.getExternalStorageDirectory().getAbsolutePath();
 		String version = "";

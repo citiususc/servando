@@ -18,7 +18,6 @@ import android.widget.Toast;
 import es.usc.citius.servando.android.ServandoPlatformFacade;
 import es.usc.citius.servando.android.app.R;
 import es.usc.citius.servando.android.ui.NotificationMgr;
-import es.usc.citius.servando.android.ui.ServandoService;
 
 public abstract class ServandoActivity extends Activity {
 
@@ -126,7 +125,7 @@ public abstract class ServandoActivity extends Activity {
 	private void registerNotificationReceiver()
 	{
 		// TODO Auto-generated method stub
-		IntentFilter notificationFIlter = new IntentFilter(ServandoService.NOTIFICATIONS_UPDATE);
+		IntentFilter notificationFIlter = new IntentFilter(ServandoPlatformFacade.NOTIFICATIONS_UPDATE);
 		receiver = new NotificationsReceiver();
 		LocalBroadcastManager.getInstance(this).registerReceiver(receiver, notificationFIlter);
 	}

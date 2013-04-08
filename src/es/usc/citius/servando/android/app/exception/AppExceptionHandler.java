@@ -29,14 +29,19 @@ public class AppExceptionHandler implements UncaughtExceptionHandler {
 			Log.d("AppExceptionHandler", "Handling uncaught error", exception);
 
 			File trace = new File(StorageModule.getInstance().getPlatformLogsPath() + "/crash_trace.txt");
-			PrintWriter print = new PrintWriter(new FileWriter(trace));
-			exception.printStackTrace(print);
-			print.flush();
-			print.close();
 
-			Log.d("AppExceptionHandler", "Trace wrote to " + trace.getAbsolutePath().toString());
-
-			AppManager.restartApplication(app);
+			// error in bucle
+			if (trace.exists())
+			{
+				AppManager.closeApplication(app);
+			} else
+			{
+				PrintWriter print = new PrintWriter(new FileWriter(trace));
+				exception.printStackTrace(print);
+				print.flush();
+				print.close();
+				Log.d("AppExceptionHandler", "Trace wrote to " + trace.getAbsolutePath().toString());
+			}
 
 			// lastException = exception;
 			// Intent intent = new Intent(app, CrashActivity.class);

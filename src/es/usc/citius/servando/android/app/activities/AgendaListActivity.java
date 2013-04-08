@@ -33,7 +33,7 @@ import android.widget.TextView;
 import android.widget.ViewAnimator;
 import android.widget.ViewSwitcher;
 import es.usc.citius.servando.android.ServandoPlatformFacade;
-import es.usc.citius.servando.android.agenda.ProtocolEngineServiceBinder;
+import es.usc.citius.servando.android.agenda.ProtocolEngine;
 import es.usc.citius.servando.android.app.R;
 import es.usc.citius.servando.android.app.uiHelper.AgendaGridHelper;
 import es.usc.citius.servando.android.models.protocol.MedicalActionExecution;
@@ -85,7 +85,7 @@ public class AgendaListActivity extends Activity {
 		grid = (GridLayout) findViewById(R.id.grid);
 		orientation = getResources().getConfiguration().orientation;
 
-		executions = ProtocolEngineServiceBinder.getInstance().getProtocolEngine().getFilteredDayActions(new GregorianCalendar());
+		executions = ProtocolEngine.getInstance().getFilteredDayActions(new GregorianCalendar());
 		initializeEventDurations();
 
 		int needColumns = getNeedColumns();
