@@ -35,7 +35,7 @@ public class EmergencySymptom implements SymptomViewMgr {
 	public String getButtonText()
 	{
 		// TODO Auto-generated method stub
-		Resources resources = ServandoPlatformFacade.getInstance().getProtocolEngine().getResources();
+		Resources resources = ServandoPlatformFacade.getInstance().getResources();
 		if (resources != null)
 		{
 			String text = resources.getString(R.string.symptom_emergency_button_text);

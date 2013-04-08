@@ -41,7 +41,6 @@ public class EdemaSymptomMgr implements SymptomViewMgr {
 				{
 					AlertDialog.Builder d = new AlertDialog.Builder(v.getContext());
 					final String[] elements = ServandoPlatformFacade.getInstance()
-																	.getProtocolEngine()
 																	.getResources()
 																	.getStringArray(R.array.symptom_edema_location);
 					boolean marked[] = new boolean[elements.length];
@@ -77,14 +76,14 @@ public class EdemaSymptomMgr implements SymptomViewMgr {
 								text = getSymptonLocation();
 							} else
 							{
-								text = ServandoPlatformFacade.getInstance().getProtocolEngine().getResources().getString(R.string.select_button);
+								text = ServandoPlatformFacade.getInstance().getResources().getString(R.string.select_button);
 							}
 							Button button = (Button) view.findViewById(R.id.symptom_edema_location_multichoice);
 							button.setText(text);
 
 						}
 					});
-					String textButton = ServandoPlatformFacade.getInstance().getProtocolEngine().getResources().getString(R.string.done_button);
+					String textButton = ServandoPlatformFacade.getInstance().getResources().getString(R.string.done_button);
 					d.setPositiveButton(textButton, new DialogInterface.OnClickListener()
 					{
 						@Override
@@ -105,7 +104,7 @@ public class EdemaSymptomMgr implements SymptomViewMgr {
 		String location = "";
 		if (selected != null && selected.size() > 0)
 		{
-			String nexo = ServandoPlatformFacade.getInstance().getProtocolEngine().getResources().getString(R.string.and);
+			String nexo = ServandoPlatformFacade.getInstance().getResources().getString(R.string.and);
 
 			if (selected.size() == 1)
 			{
@@ -132,7 +131,7 @@ public class EdemaSymptomMgr implements SymptomViewMgr {
 		String where = getSymptonLocation();
 		if (where.length() == 0)
 		{
-			where = ServandoPlatformFacade.getInstance().getProtocolEngine().getResources().getString(R.string.unspecified);
+			where = ServandoPlatformFacade.getInstance().getResources().getString(R.string.unspecified);
 		}
 		String description = String.format(v.getResources().getString(R.string.symptom_edema_description), where);
 		symptom.setDescription(description);
