@@ -13,6 +13,12 @@ public class DizzinessSymptomMgr implements SymptomViewMgr {
 	}
 
 	@Override
+	public void onViewCreated(View v)
+	{
+
+	}
+
+	@Override
 	public void completeFromView(View v, Symptom symptom)
 	{
 		String comment = ((EditText) v.findViewById(R.id.symptom_comment)).getText().toString();
@@ -21,6 +27,11 @@ public class DizzinessSymptomMgr implements SymptomViewMgr {
 		symptom.setDescription(v.getResources().getString(R.string.symptom_dizziness_description));
 	}
 
-
+	@Override
+	public String getButtonText()
+	{
+		// TODO Auto-generated method stub
+		return "Enviar mareos";
+	}
 
 }

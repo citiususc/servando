@@ -39,13 +39,6 @@ public class SympthomActivity extends ServandoActivity {
 
 		String symptomId = intent.getStringExtra("symptom_id");
 
-		if (symptomId != null)
-		{
-			symptom = SymptomStore.getInstance().getById(symptomId);
-			setConcreteSymptomView(symptom);
-			setActionBarTitle(symptom.getName());
-		}
-
 		sendButton = (Button) findViewById(R.id.symptom_send_button);
 
 		sendButton.setOnClickListener(new OnClickListener()
@@ -56,6 +49,13 @@ public class SympthomActivity extends ServandoActivity {
 				onClickSymptomSend();
 			}
 		});
+
+		if (symptomId != null)
+		{
+			symptom = SymptomStore.getInstance().getById(symptomId);
+			setConcreteSymptomView(symptom);
+			setActionBarTitle(symptom.getName());
+		}
 
 		h = new Handler();
 	}
@@ -86,9 +86,15 @@ public class SympthomActivity extends ServandoActivity {
 
 		LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		concreteSymptomView = inflater.inflate(s.getViewMgr().getView(), null);
+		s.getViewMgr().onViewCreated(concreteSymptomView);
 		container.removeAllViews();
 		container.addView(concreteSymptomView);
 		container.invalidate();
+		if (s.getViewMgr().getButtonText() != null)
+		{
+			sendButton.setText(s.getViewMgr().getButtonText());
+		}
+
 	}
 
 	private void onClickSymptomSend()

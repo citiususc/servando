@@ -10,6 +10,10 @@ public interface SymptomViewMgr {
 
 	public int getView();
 
+	public void onViewCreated(View v);
+
 	public void completeFromView(View v, Symptom symptom);
+
+	public String getButtonText();
 
 }

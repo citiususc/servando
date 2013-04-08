@@ -13,6 +13,12 @@ public class PillowSymptomMgr implements SymptomViewMgr {
 	}
 
 	@Override
+	public void onViewCreated(View v)
+	{
+
+	}
+
+	@Override
 	public void completeFromView(View v, Symptom symptom)
 	{
 		String pillowNum = ((EditText) v.findViewById(R.id.pillowEditText)).getText().toString();
@@ -21,6 +27,13 @@ public class PillowSymptomMgr implements SymptomViewMgr {
 		pillowNum = pillowNum != null ? pillowNum : "0";
 		String description = String.format(v.getResources().getString(R.string.symptom_pillow_description), pillowNum);
 		symptom.setDescription(description);
+	}
+
+	@Override
+	public String getButtonText()
+	{
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

@@ -30,4 +30,18 @@ public class DefaultSymptomMgr implements SymptomViewMgr {
 		symptom.setPatientComment(comment);
 	}
 
+	@Override
+	public void onViewCreated(View v)
+	{
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public String getButtonText()
+	{
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }
