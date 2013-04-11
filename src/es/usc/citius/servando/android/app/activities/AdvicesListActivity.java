@@ -22,7 +22,6 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import es.usc.citius.servando.android.advices.Advice;
-import es.usc.citius.servando.android.advices.DailyReport;
 import es.usc.citius.servando.android.advices.ServandoAdviceMgr;
 import es.usc.citius.servando.android.advices.storage.SQLiteAdviceDAO;
 import es.usc.citius.servando.android.app.R;
@@ -40,8 +39,7 @@ public class AdvicesListActivity extends ListActivity implements View.OnClickLis
 
 		super.onCreate(icicle);
 		setContentView(R.layout.advices_layout);
-
-		advices = DailyReport.getInstance().getAll();
+		advices = SQLiteAdviceDAO.getInstance().getAll();
 		adapter = new AdviceAdapter(this, R.layout.advice_list_item, advices);
 		setListAdapter(adapter);
 
@@ -54,7 +52,7 @@ public class AdvicesListActivity extends ListActivity implements View.OnClickLis
 	{
 
 		View noAdviceMsg = findViewById(R.id.no_advices_msg);
-		if (DailyReport.getInstance().getNotSeen().size() == 0 && !showSeenMessages)
+		if (SQLiteAdviceDAO.getInstance().getNotSeen().size() == 0 && !showSeenMessages)
 		{
 			noAdviceMsg.setVisibility(View.VISIBLE);
 		} else
@@ -69,11 +67,9 @@ public class AdvicesListActivity extends ListActivity implements View.OnClickLis
 		public void onItemClick(AdapterView<?> parent, View view, int position, long id)
 		{
 
-
 		}
 
 	}
-
 
 	@Override
 	public void onWindowFocusChanged(boolean hasFocus)
@@ -147,7 +143,6 @@ public class AdvicesListActivity extends ListActivity implements View.OnClickLis
 				View transparentLayer = (View) v.findViewById(R.id.visible_layer);
 				ImageButton seen = (ImageButton) v.findViewById(R.id.seenButton);
 
-
 				from.setText(o.getSender() + ":");
 				msg.setText(o.getMsg());
 				when.setText(sdf.format(o.getDate()));
@@ -175,7 +170,6 @@ public class AdvicesListActivity extends ListActivity implements View.OnClickLis
 			{
 				v = vi.inflate(R.layout.seen_advice_list_item, null);
 			}
-
 
 			return v;
 		}

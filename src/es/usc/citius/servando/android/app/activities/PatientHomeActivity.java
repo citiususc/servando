@@ -47,7 +47,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 import es.usc.citius.servando.android.ServandoPlatformFacade;
 import es.usc.citius.servando.android.advices.Advice;
-import es.usc.citius.servando.android.advices.DailyReport;
 import es.usc.citius.servando.android.advices.ServandoAdviceMgr;
 import es.usc.citius.servando.android.advices.ServandoAdviceMgr.HomeAdviceListener;
 import es.usc.citius.servando.android.advices.storage.SQLiteAdviceDAO;
@@ -345,7 +344,7 @@ public class PatientHomeActivity extends Activity implements ProtocolEngineListe
 					@Override
 					protected String doInBackground(String... params)
 					{
-						messages = DailyReport.getInstance().getNotSeen().size();
+						messages = SQLiteAdviceDAO.getInstance().getNotSeen().size();
 						return null;
 					}
 
@@ -978,7 +977,7 @@ public class PatientHomeActivity extends Activity implements ProtocolEngineListe
 
 		if (a != null)
 		{
-			if (DailyReport.getInstance().getNotSeen().size() == 1 && a.getId() == DailyReport.getInstance().getNotSeen().get(0).getId())
+			if (SQLiteAdviceDAO.getInstance().getNotSeen().size() == 1 && a.getId() == SQLiteAdviceDAO.getInstance().getNotSeen().get(0).getId())
 			{
 				hideHomeAdvice();
 

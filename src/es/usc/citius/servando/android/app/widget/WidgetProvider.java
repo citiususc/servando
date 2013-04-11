@@ -7,12 +7,14 @@ import android.content.Context;
 public class WidgetProvider extends AppWidgetProvider {
 
 	@Override
-	public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
+	public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds)
+	{
 		super.onUpdate(context, appWidgetManager, appWidgetIds);
 	}
 
 	@Override
-	public void onDisabled(Context context) {
+	public void onDisabled(Context context)
+	{
 		super.onDisabled(context);
 	}
 }
