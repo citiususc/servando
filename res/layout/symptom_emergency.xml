@@ -22,13 +22,13 @@
         
         
         <ImageView
-            android:id="@+id/imageView1"
+            android:id="@+id/about_servando_logo"
             android:layout_width="wrap_content"
             android:layout_height="180dip"
             android:src="@drawable/symptom_emergency" />
 
         <TextView
-            android:id="@+id/textView1"
+            android:id="@+id/version"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dip"

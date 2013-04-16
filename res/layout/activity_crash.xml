@@ -17,14 +17,14 @@
         tools:context=".CrashActivity" >
 
         <ImageView
-            android:id="@+id/imageView1"
+            android:id="@+id/about_servando_logo"
             android:layout_width="fill_parent"
             android:layout_height="80dip"
             android:layout_marginBottom="30dip"
             android:src="@drawable/servando_platform_splash" />
 
         <TextView
-            android:id="@+id/textView1"
+            android:id="@+id/version"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/activity_crash_message"

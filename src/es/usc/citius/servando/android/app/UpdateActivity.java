@@ -8,8 +8,6 @@ import java.io.OutputStream;
 import java.net.URL;
 import java.net.URLConnection;
 
-import org.apache.http.util.ByteArrayBuffer;
-
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -160,52 +158,5 @@ public class UpdateActivity extends Activity {
 		finish();
 
 	}
-
-	private class CheckForUpdates extends AsyncTask<String, Integer, String> {
-
-		String externalStoragePath = Environment.getExternalStorageDirectory().getAbsolutePath();
-		String version = "";
-
-		@Override
-		protected String doInBackground(String... sUrl)
-		{
-			Log.d(TAG, "Checking for updates...");
-			try
-			{
-				URL url = new URL(sUrl[0]);
-				URLConnection connection = url.openConnection();
-				connection.setConnectTimeout(4000);
-				connection.connect();
-				// download the file
-				InputStream input = new BufferedInputStream(url.openStream());
-				ByteArrayBuffer buff = new ByteArrayBuffer(1024);
-
-				byte data[] = new byte[1024];
-				int count;
-
-				while ((count = input.read(data)) != -1)
-				{
-					buff.append((byte) count);
-				}
-				input.close();
-
-				version = new String(buff.toByteArray());
-
-			} catch (Exception e)
-			{
-				Log.e("TAG", "Error", e);
-			}
-			return null;
-		}
-
-		@Override
-		protected void onPostExecute(String result)
-		{
-			super.onPostExecute(result);
-			Log.d(TAG, "Version: " + version);
-		}
-
-	}
-
 
 }

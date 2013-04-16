@@ -29,7 +29,7 @@
     <string name="feature5_intro">Feature 5 content goes here.</string>
     <string name="feature6_intro">Feature 6 content goes here.</string>
     <string name="about_intro">
-        Servando es una plataforma abierta y distribuída, inicialmente desarrollada por el grupo de investigación de sistemas inteligentes en el Centro Singular de Investigación en Tecnologías de la Información (CITIUS) de la Universidad de Santiago de Compostela.
+        Una plataforma de telemedicina abierta y distribuída.
     </string>
     <string name="search_intro">El contenido para la página de búsqueda va aquí.</string>
     <string name="next_1_2">1/2  \u003E\u003E</string>
@@ -40,7 +40,7 @@
     <string name="servando_platform">Servando Platform</string>
     <string name="clear">Clear</string>
     <string name="citius_link_title"><a href="http://www.citius.usc.es">Web CiTIUS</a></string>
-    <string name="servando_link_title"><a href="http://code.google.com/p/servando/">Web Servando</a></string>
+    <string name="servando_link_title"><a href="http://proxectos.citius.usc.es/servando">Web Servando</a></string>
     <string name="usc_link_title"><a href="http://www.usc.es">Web USC</a></string>
     <string name="message_welcome">"Bienvenido a la plataforma Servando!"</string>
     <string name="no_advices_msg">No hay mensajes</string>
@@ -111,6 +111,8 @@
      <string name="action_finish_at">Acaba:</string>
     <string name="action_remaining">Faltan:</string>
     <string name="action_not_started"></string>
+    
+    <string name="version_notes">Notas de la versión</string>
     
 
 

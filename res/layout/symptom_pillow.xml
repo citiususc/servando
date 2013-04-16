@@ -36,7 +36,7 @@
         </EditText>
 
         <ImageView
-            android:id="@+id/imageView1"
+            android:id="@+id/about_servando_logo"
             android:layout_width="wrap_content"
             android:layout_height="200dip"
             android:layout_gravity="center"

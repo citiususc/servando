@@ -27,7 +27,7 @@
     <string name="feature5_intro">Feature 5 content goes here.</string>
     <string name="feature6_intro">Feature 6 content goes here.</string>
     <string name="about_intro">
-    Servando is an open and distributed telemedicine platform, initially developed by the intelligent systems research group in the Centro de Información en Tecnoloxías da Información (CITIUS) of the University of Santiago de Compostela.
+    An open and distributed telemedicine platform.
     </string>
     <string name="search_intro">Content for the Search page goes here.</string>
     <string name="start_monitoring_button_text">Start monitoring</string>

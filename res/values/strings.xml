@@ -29,7 +29,7 @@
     <string name="feature4_intro">Feature 4 content goes here.</string>
     <string name="feature5_intro">Feature 5 content goes here.</string>
     <string name="feature6_intro">Feature 6 content goes here.</string>
-    <string name="about_intro">    Servando is an open and distributed telemedicine platform, initially developed by the intelligent systems research group in the Centro de Información en Tecnoloxías da Información (CITIUS) of the University of Santiago de Compostela.</string>
+    <string name="about_intro">An open and distributed telemedicine platform.</string>
     <string name="search_intro">Content for the Search page goes here.</string>
     <string name="next_1_2">1/2  \u003E\u003E</string>
     <string name="back_2_2">\u003C\u003C 2/2</string>
@@ -39,7 +39,7 @@
     <string name="servando_platform">Servando Platform</string>
     <string name="clear">Clear</string>
     <string name="citius_link_title"><a href="http://www.citius.usc.es">Citius homepage</a></string>
-    <string name="servando_link_title"><a href="http://code.google.com/p/servando/">Servando homepage</a></string>
+    <string name="servando_link_title"><a href="http://proxectos.citius.usc.es/servando">Servando homepage</a></string>
     <string name="usc_link_title"><a href="http://www.usc.es">USC homepage</a></string>
     <string name="message_welcome">"Welcome to Servando Platform!"</string>
     <string name="no_advices_msg">No advices</string>
@@ -70,11 +70,9 @@
     <string name="symptom_edema">Edema</string>
     <string name="symptom_dizziness">Dizziness</string>
     <string name="symptom_emergency">Emergency</string>
-	
-	<string name="symptom_emergency_title">Press the button to alert the doctor that you went to emergency service.</string>
-	<string name="symptom_emergency_description">The patient went to emergency service.</string>
-	<string name="symptom_emergency_button_text">Notify</string>
-    
+    <string name="symptom_emergency_title">Press the button to alert the doctor that you went to emergency service.</string>
+    <string name="symptom_emergency_description">The patient went to emergency service.</string>
+    <string name="symptom_emergency_button_text">Notify</string>
     <string name="symptom_pillow_title">Indicate below the number of pillows needed to sleep comfortably</string>
     <string name="symptom_pillow_description">Patient needs %1$s pillows to sleep comfortably</string>
     <string name="symptom_edema_description">The patient says he has edema in %1$s</string>
@@ -117,5 +115,12 @@
     <string name="action_remaining">Remaining:</string>
     <string name="action_not_started">Not started</string>
     <string name="title_activity_start_servando_activity_in_bg">StartServandoActivityInBg</string>
+
+    <string name="check_for_updates">Check for updates</string>
+    
+    <!-- Version -->
+    <string name="version_notes">Version notes</string>
+    <string name="version_code">13.04.07</string>
+    <string name="title_activity_version_notes">VersionNotesActivity</string>
 
 </resources>

@@ -1,0 +1,6 @@
+Versión <b>13.04.08</b><br><br> 
+- Redeseñado mecanismo de scheduling de actuacións médicas.<br>
+- Versión e notas da versión na pantalla "about".<br>
+- Búsqueda de actualizacións dende o menú da pantalla "about".<br>
+- Posibilidade de incluir administracións de terapia de varios fármacos na mesma actuación.<br>
+- Correxido bug no servizo de tests que impedía completalos en algunhas versións de android.<br>
