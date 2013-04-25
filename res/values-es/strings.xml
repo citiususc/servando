@@ -105,12 +105,29 @@
      <string name="exit_dialog_message">Cerrando Servando...</string>
      <string name="doctor_view_dialog_title">Se requiere autenticación</string>
      <string name="doctor_view_dialog_message">Introduzca su contraseña para acceder a los servicios avanzados de Servando</string>
+     
+    <string name="title_activity_crash">Cierre inesperado</string>
+    <string name="activity_crash_message">Se ha producido un error inesperado, pero Servando ya está funcionando de nuevo. Por favor, pulse el botón enviar informe para comunicarnos el problema y evitar que se vuelva a producir.\nGracias por su colaboración.</string>
+    <string name="send_report_button">Enviar informe</string>
+    <string name="cancel_report_button">Cancelar</string>
+    <string name="report_thanks">Gracias</string>
+    <string name="sending_report">Enviando informe...</string>
+    <string name="oops">Oops...</string>
     
      
      <string name="action_start_at">Empieza:</string>
      <string name="action_finish_at">Acaba:</string>
     <string name="action_remaining">Faltan:</string>
     <string name="action_not_started"></string>
+    
+    
+     <string name="check_for_updates">Actualizaciones</string>
+    <string name="update">Actualizar</string>
+    <string name="update_messagge">Hay actualizaciones disponibles. Por favor, pulse el botón para obtener la versión más reciente del software.</string>
+   <string name="downloading_updates">Descargando actualizaciones...</string>
+   	 <string name="updating_application">Actualizando aplicación</string>
+   	 <string name="downloading_data">Descargando archivos... (%1$d%%)</string>
+    
     
     <string name="version_notes">Notas de la versión</string>
     

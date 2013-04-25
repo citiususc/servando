@@ -55,7 +55,8 @@ public class UpdateActivity extends Activity {
 				info.setVisibility(View.INVISIBLE);
 				progressBar.setVisibility(View.VISIBLE);
 				loadingMessage.setVisibility(View.VISIBLE);
-				loadingMessage.setText("Descargando actualizacións...");
+				String text = getResources().getString(R.string.downloading_updates);
+				loadingMessage.setText(text);
 
 			}
 		});
@@ -125,7 +126,8 @@ public class UpdateActivity extends Activity {
 			super.onPostExecute(result);
 			Log.d(TAG, "Setting timer...");
 			progressBar.setVisibility(View.INVISIBLE);
-			loadingMessage.setText("Actualizando aplicación...");
+			String text = getResources().getString(R.string.updating_application);
+			loadingMessage.setText(text);
 
 			h.postDelayed(new Runnable()
 			{
@@ -142,7 +144,10 @@ public class UpdateActivity extends Activity {
 		{
 			super.onProgressUpdate(values);
 			progressBar.setProgress(values[0]);
-			loadingMessage.setText("Downloading data... (" + values[0] + "%)");
+			String string = getResources().getString(R.string.downloading_data);
+			String textProgress = String.format(string, values[0]);
+
+			loadingMessage.setText(textProgress);
 		}
 
 	}

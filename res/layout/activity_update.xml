@@ -48,7 +48,7 @@
             android:layout_marginLeft="20dip"
             android:layout_marginRight="20dip"
             android:gravity="center"
-            android:text="Hai actualizacións dispoñibles. Por favor, pulse actualizar para obter a versión máis recente do software,"
+            android:text="@string/update_messagge"
             android:textColor="@color/background1"
             android:textSize="20dip" />
 
@@ -58,7 +58,7 @@
             android:layout_width="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="40dip"
-            android:text="Actualizar"
+            android:text="@string/update"
             android:textSize="18dip" />
 
     </LinearLayout>

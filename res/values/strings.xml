@@ -117,10 +117,15 @@
     <string name="title_activity_start_servando_activity_in_bg">StartServandoActivityInBg</string>
 
     <string name="check_for_updates">Check for updates</string>
+    <string name="update">Update</string>
+    <string name="update_messagge">Updates are available. Please click the button to get the latest version of the software.</string>
+    <string name="downloading_updates">Downloading updates...</string>
+    <string name="updating_application">Updating application...</string>
+    <string name="downloading_data">Downloading data... (%1$d%%)</string>
     
     <!-- Version -->
     <string name="version_notes">Version notes</string>
-    <string name="version_code">13.04.07</string>
+    <string name="version_code">13.04-r0</string>
     <string name="title_activity_version_notes">VersionNotesActivity</string>
 
 </resources>
