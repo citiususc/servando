@@ -59,6 +59,7 @@ public class ServandoApplication extends Application {
 	public void onCreate()
 	{
 		Thread.setDefaultUncaughtExceptionHandler(new AppExceptionHandler(this));
+		updateLocale(this);
 	}
 
 	public static void updateLocale(Context ctx)
