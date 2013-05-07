@@ -60,7 +60,7 @@
     <string name="accept">Accept</string>
     <string name="back_button">Back</string>
     <string name="doitnow_button">Do it now</string>
-    <string name="symptom_comment_hint">Type a comment here if you want to datail symptom....</string>
+    <string name="symptom_comment_hint">Type a comment here if you want to detail symptom....</string>
     <string name="alert_patient_comment">Patient comment:</string>
     <string name="advices_list_header">Messages</string>
     <string name="show_seen_messages">Show seen messages</string>
@@ -115,17 +115,42 @@
     <string name="action_remaining">Remaining:</string>
     <string name="action_not_started">Not started</string>
     <string name="title_activity_start_servando_activity_in_bg">StartServandoActivityInBg</string>
-
     <string name="check_for_updates">Check for updates</string>
     <string name="update">Update</string>
     <string name="update_messagge">Updates are available. Please click the button to get the latest version of the software.</string>
     <string name="downloading_updates">Downloading updates...</string>
     <string name="updating_application">Updating application...</string>
     <string name="downloading_data">Downloading data... (%1$d%%)</string>
-    
+
+    <!-- Vista Hospital -->
+    <string name="hospital_activity_title">Nursery</string>
+    <string name="hospital_activity_symptoms">Symptoms</string>
+    <string name="hospital_activity_advices">Advices</string>
+    <string name="hospital_activity_message">If you need, you can notify us some sympton or advice.</string>
+    <string name="hospital_advices_activity_title">Advices</string>
+    <string name="hospital_advices_select_advice_message">Select a reason for advice:</string>
+    <string name="hospital_advices_select_when">Select a date:</string>
+    <string name="hospital_advices_comment">Comment:</string>
+     <string name="hospital_advices_hint">Type a comment here if you want to give more detail...</string>
+     <string name="hospital_advices_button">Send advice</string>
+     <string name="hospital_advices_should_select_reason_msg">You must select a reason</string>
+     <string name="alert_advice_display_name">Patient advice</string>
+     <string name="alert_advice_doctor_msg">Reason: %1$s \n Date: %2$s \nComment: %3$s</string>
+     <string name="sending_advice">Sending advice...</string>
+     <string name="sending_advice_success">Advice sent successfully</string>
+    <string-array name="advices_reasons">
+        <item>Select a reason</item>
+        <item>Therapy change</item>
+        <item>Emergency</item>
+        <item>Hospitalization</item>
+        <item>Hospital discharge</item>
+    </string-array>
+
     <!-- Version -->
     <string name="version_notes">Version notes</string>
     <string name="version_code">13.04-r0</string>
     <string name="title_activity_version_notes">VersionNotesActivity</string>
+    
+    
 
 </resources>

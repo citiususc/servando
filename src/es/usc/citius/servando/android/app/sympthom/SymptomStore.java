@@ -61,17 +61,17 @@ public class SymptomStore {
 													.setDescription("Síntomas de edema")
 													.setViewMgr(new EdemaSymptomMgr())
 													.create();
-			Symptom urgencias = new Symptom.Builder().setId("urgencias")
-														.setName(ctx.getString(R.string.symptom_emergency))
-														.setDescription("Asistencia a urgencias")
-														.setViewMgr(new EmergencySymptom())
-														.create();
+			// Symptom urgencias = new Symptom.Builder().setId("urgencias")
+			// .setName(ctx.getString(R.string.symptom_emergency))
+			// .setDescription("Asistencia a urgencias")
+			// .setViewMgr(new EmergencySymptom())
+			// .create();
 
 			symptoms.put(headache.getId(), headache);
 			symptoms.put(pillows.getId(), pillows);
 			symptoms.put(dizziness.getId(), dizziness);
 			symptoms.put(edema.getId(), edema);
-			symptoms.put(urgencias.getId(), urgencias);
+			// symptoms.put(urgencias.getId(), urgencias);
 		}
 	}
 
