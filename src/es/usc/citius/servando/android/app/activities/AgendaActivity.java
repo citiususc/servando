@@ -2,7 +2,6 @@ package es.usc.citius.servando.android.app.activities;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
@@ -261,26 +260,8 @@ public class AgendaActivity extends Activity implements ProtocolEngineListener {
 
 	private void updateUiActions(List<MedicalActionExecution> actions)
 	{
-		int[][] actionLayoutInfo = uiHelper.getActionLayoutInfo();
-		// int[] icons = new int[actionLayoutInfo.length];
-		//
-		// try
-		// {
-		// for (int i = 0; i < actionLayoutInfo.length; i++)
-		// {
-		// MedicalActionExecution e = actions.get(i);
-		// if (e.getAction().getProvider() instanceof Iconnable)
-		// {
-		// icons[i] = ((Iconnable) e.getAction().getProvider()).getIconResourceId();
-		// }
-		// }
-		// } catch (Exception e)
-		// {
-		// e.printStackTrace();
-		// }
+		float[][] actionLayoutInfo = uiHelper.getActionLayoutInfo();
 
-		System.out.println(Arrays.toString(actionLayoutInfo[0]));
-		System.out.println(Arrays.toString(actionLayoutInfo[1]));
 		// Gat a layout inflater
 		LayoutInflater li = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		// Current hour of day
@@ -327,26 +308,35 @@ public class AgendaActivity extends Activity implements ProtocolEngineListener {
 		// add events
 		for (int i = 0; i < actionLayoutInfo[0].length; i++)
 		{
-			int eventRow = actionLayoutInfo[0][i];
-			int eventDuration = actionLayoutInfo[1][i];
+			MedicalActionExecution action = actions.get(i);
+
+			int START_MINS = action.getStartDate().get(Calendar.MINUTE);
+			int END_MINS = new DateTime(action.getStartDate()).plusSeconds((int) action.getTimeWindow()).getMinuteOfHour();
+
+			// int marginTop = (int) ((float) START_MINS / 60 * heightInPx);
+			// int marginBottom = (int) ((float) (60 - END_MINS) / 60 * heightInPx);
+
+			float eventRow = actionLayoutInfo[0][i];
+			float eventDuration = actionLayoutInfo[1][i];
 
 			LinearLayout item = (LinearLayout) li.inflate(R.layout.agenda_grid_item, null);
 
 			item.setId(Integer.parseInt(10 + "" + i));
 			item.setLayoutParams(new LinearLayout.LayoutParams((int) widthInPx, (int) (eventDuration * heightInPx)));
+			// item.setMinimumHeight((int) (eventDuration * heightInPx) + marginBottom + marginTop);
 			item.setMinimumHeight((int) (eventDuration * heightInPx));
 			item.setMinimumWidth((int) widthInPx);
 			item.setTag(actions.get(i));
 
 			// TextView textview = (TextView) item.findViewById(R.id.title);
 			ImageButton button = (ImageButton) item.findViewById(R.id.icon);
-			button.setTag(actions.get(i));
+			button.setTag(action);
 			//
 			// Ellipsize action text
-			String text = actions.get(i).getTitle().length() <= 10 ? actions.get(i).getTitle() : actions.get(i).getTitle().substring(0, 10) + "...";
+//			String text = action.getTitle().length() <= 10 ? action.getTitle() : action.getTitle().substring(0, 10) + "...";
 
 			// textview.setText("");
-			button.setImageDrawable(getResources().getDrawable(actions.get(i).getIcon()));
+			button.setImageDrawable(getResources().getDrawable(action.getIcon()));
 
 			button.setMinimumHeight((int) (eventDuration * innerHeightInPx));
 			button.setMinimumWidth((int) widthInPx);
@@ -360,7 +350,15 @@ public class AgendaActivity extends Activity implements ProtocolEngineListener {
 				}
 			});
 
-			uiHelper.addViewToRow(grid, item, eventRow, eventDuration);
+			log.debug("StartMin: " + START_MINS + ", endMin:" + END_MINS);
+
+			if (END_MINS > 5 && END_MINS < 55)
+			{
+				// eventDuration++;
+			}
+
+			uiHelper.addViewToRow(grid, item, (int) eventRow, (int) eventDuration);
+
 			item.invalidate();
 
 		}
@@ -757,7 +755,6 @@ public class AgendaActivity extends Activity implements ProtocolEngineListener {
 	public void onProtocolEngineStart()
 	{
 
-
 	}
 
 	@Override
@@ -765,7 +762,14 @@ public class AgendaActivity extends Activity implements ProtocolEngineListener {
 	{
 		if (currentView == VIEW_AGENDA_ACTION_DETAILS && current != null)
 		{
-			updateActionDetailsView(current);
+			h.post(new Runnable()
+			{
+				@Override
+				public void run()
+				{
+					updateActionDetailsView(current);
+				}
+			});
 		}
 
 	}

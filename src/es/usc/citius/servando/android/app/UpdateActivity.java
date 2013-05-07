@@ -22,6 +22,9 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import es.usc.citius.servando.android.app.uiHelper.AppManager;
+import es.usc.citius.servando.android.logging.ILog;
+import es.usc.citius.servando.android.logging.ServandoLoggerFactory;
 import es.usc.citius.servando.android.settings.ServandoStartConfig;
 
 public class UpdateActivity extends Activity {
@@ -31,6 +34,8 @@ public class UpdateActivity extends Activity {
 	private ProgressBar progressBar;
 	private TextView info;
 	Handler h = new Handler();
+
+	private static ILog log = ServandoLoggerFactory.getLogger(AppManager.class);
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -49,8 +54,6 @@ public class UpdateActivity extends Activity {
 			public void onClick(View v)
 			{
 				reinstallFromApk(getApplicationContext());
-
-				// new CheckForUpdates().execute(VERSION_URL);
 				v.setVisibility(View.INVISIBLE);
 				info.setVisibility(View.INVISIBLE);
 				progressBar.setVisibility(View.VISIBLE);
@@ -82,7 +85,7 @@ public class UpdateActivity extends Activity {
 		@Override
 		protected String doInBackground(String... sUrl)
 		{
-			Log.d(TAG, "Downloading apk...");
+			log.debug("Downloading apk...");
 			try
 			{
 				URL url = new URL(ServandoStartConfig.getInstance().get(ServandoStartConfig.APK_URL));
@@ -114,7 +117,7 @@ public class UpdateActivity extends Activity {
 
 			} catch (Exception e)
 			{
-				Log.e("TAG", "Error", e);
+				log.error("An error ocurred downloading apk", e);
 			}
 			return null;
 		}
@@ -126,6 +129,8 @@ public class UpdateActivity extends Activity {
 			Log.d(TAG, "Setting timer...");
 			progressBar.setVisibility(View.INVISIBLE);
 			loadingMessage.setText("Actualizando aplicación...");
+
+			log.debug("Opening apk file...");
 
 			h.postDelayed(new Runnable()
 			{

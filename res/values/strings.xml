@@ -120,7 +120,7 @@
     
     <!-- Version -->
     <string name="version_notes">Version notes</string>
-    <string name="version_code">13.04.07</string>
+    <string name="version_code">13.04-r2</string>
     <string name="title_activity_version_notes">VersionNotesActivity</string>
 
 </resources>

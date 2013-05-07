@@ -7,16 +7,19 @@ import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Toast;
 import es.usc.citius.servando.android.ServandoPlatformFacade;
 import es.usc.citius.servando.android.app.exception.AppExceptionHandler;
+import es.usc.citius.servando.android.logging.ILog;
+import es.usc.citius.servando.android.logging.ServandoLoggerFactory;
 import es.usc.citius.servando.android.settings.StorageModule;
 
 public class CrashActivity extends Activity {
+
+	private static ILog log = ServandoLoggerFactory.getLogger(CrashActivity.class);
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -29,6 +32,7 @@ public class CrashActivity extends Activity {
 			@Override
 			public void onClick(View v)
 			{
+				log.debug("Servando recovered from an error. Send pressed when asking for report submit. Sending report.");
 				sendMail(AppExceptionHandler.lastException);
 
 			}
@@ -42,12 +46,13 @@ public class CrashActivity extends Activity {
 				File trace = new File(StorageModule.getInstance().getPlatformLogsPath() + "/crash_trace.txt");
 				if (trace.exists())
 				{
-					Log.d("CrashActivity", "Deleting crash trace: " + trace.getAbsolutePath().toString());
+					log.debug("Servando recovered from an error. Cancel pressed when asking for report submit. Deleting crash trace file");
 					trace.delete();
 					finish();
 				}
 			}
 		});
+		log.debug("Crash activity created");
 	}
 
 	@Override
@@ -98,12 +103,13 @@ public class CrashActivity extends Activity {
 
 		} catch (Exception e)
 		{
-			Log.e("AppExceptionHandler", "Uncaught error", e);
+			log.debug("An error ocurred while sending error report");
 		}
 	}
 
 	private void deleteTraceAndExit()
 	{
+		log.debug("Deleting crash trace...");
 		File trace = new File(StorageModule.getInstance().getPlatformLogsPath() + "/crash_trace.txt");
 		trace.delete();
 		Toast.makeText(this, getString(R.string.report_thanks), Toast.LENGTH_SHORT).show();

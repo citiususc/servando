@@ -4,6 +4,7 @@ import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -12,6 +13,7 @@ import java.net.NetworkInterface;
 import java.net.SocketException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -22,8 +24,10 @@ import java.util.zip.ZipInputStream;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.bluetooth.BluetoothAdapter;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
@@ -52,6 +56,7 @@ import es.usc.citius.servando.android.settings.ServandoStartConfig;
 import es.usc.citius.servando.android.sound.SoundHelper;
 import es.usc.citius.servando.android.ui.NotificationMgr;
 import es.usc.citius.servando.android.ui.animation.AnimationStore;
+import es.usc.citius.servando.android.util.BluetoothUtils;
 
 /**
  * This activity shows a splash screen and performs the necesary configurations (bluethooth enabling, logs, ...)
@@ -65,10 +70,17 @@ public class SplashActivity extends Activity implements OnInitListener, Platform
 
 	private static final int ENABLE_BLUETOOTH = 1;
 
+	private boolean enableDynamicSDCardSetup = true;
+
+	private boolean allowDownloadPatientData = false;
+
+	private boolean allowExtractDefaultPatientData = true;
+
 	public static final String UNBIND_SERVANDO_SERVICE = "es.usc.citius.servando.android.UNBIND_SERVANDO_SERVICE";
 
 	private boolean mIsBound;
 	private TextView loadingMessage;
+	View loadingIndicator;
 
 	TextToSpeech tts;
 	private static final String DEBUG_TAG = SplashActivity.class.getSimpleName();
@@ -91,7 +103,6 @@ public class SplashActivity extends Activity implements OnInitListener, Platform
 
 		Log.d(DEBUG_TAG, "Starting splash ...");
 
-
 		if (ServandoPlatformFacade.isStarted())
 		{
 			Log.d(DEBUG_TAG, "Servando is already started.");
@@ -104,14 +115,30 @@ public class SplashActivity extends Activity implements OnInitListener, Platform
 			progressBar = (ProgressBar) findViewById(R.id.splash_progress);
 			loadingMessage = (TextView) findViewById(R.id.loading_message);
 
+			loadingIndicator = findViewById(R.id.loading);
+
 			h.postDelayed(new Runnable()
 			{
+
 				@Override
 				public void run()
 				{
 					if (!ServandoStartConfig.getInstance().isPlatformSetupOnSDCard())
 					{
-						setupAppDir();
+						if (enableDynamicSDCardSetup)
+						{
+							if (allowDownloadPatientData)
+							{
+								setupAppDir();
+							} else if (allowExtractDefaultPatientData)
+							{
+								extractDefaultPatientData();
+							}
+						} else
+						{
+							loadingMessage.setText("Servando no está correctamente configurado y no puede iniciarse. \n\nDisculpe las molestias");
+							loadingIndicator.setVisibility(View.INVISIBLE);
+						}
 					} else
 					{
 						startApplication();
@@ -122,8 +149,81 @@ public class SplashActivity extends Activity implements OnInitListener, Platform
 		}
 	}
 
+	protected void extractDefaultPatientData()
+	{
+		String externalStoragePath = Environment.getExternalStorageDirectory().getAbsolutePath();
+
+		File sd = new File(externalStoragePath);
+		String files[] = sd.list(new FilenameFilter()
+		{
+			@Override
+			public boolean accept(File dir, String filename)
+			{
+				return filename.startsWith("Servando") && filename.endsWith(".zip");
+			}
+		});
+
+		Log.d("Splash", Arrays.toString(files));
+
+		CharSequence[] choiceList;
+
+		if (files != null && files.length > 0)
+		{
+			choiceList = new CharSequence[files.length];
+
+			for (int i = 0; i < files.length; i++)
+			{
+				choiceList[i] = files[i];
+			}
+
+			showFileChooser(choiceList, files, sd.getAbsolutePath());
+		}
+
+
+	}
+
+	private void showFileChooser(final CharSequence[] choiceList, final String files[], final String where)
+	{
+
+		final String externalStoragePath = Environment.getExternalStorageDirectory().getAbsolutePath();
+		final String unzipPath = externalStoragePath + ServandoStartConfig.getInstance().getPlatformInstallationPath() + "/";
+
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setTitle("Setup from file:");
+		builder.setCancelable(false);
+		builder.setNegativeButton("Cancel", new OnClickListener()
+		{
+			@Override
+			public void onClick(DialogInterface dialog, int which)
+			{
+				loadingMessage.setText("Servando no está correctamente configurado y no puede iniciarse. \n\nDisculpe las molestias");
+				loadingIndicator.setVisibility(View.INVISIBLE);
+			}
+		});
+		int selected = -1; // does not select anything
+
+		builder.setSingleChoiceItems(choiceList, selected, new DialogInterface.OnClickListener()
+		{
+
+			@Override
+			public void onClick(DialogInterface dialog, int which)
+			{
+				// Toast.makeText(SplashActivity.this, "Select " + where + "/" + files[which],
+				// Toast.LENGTH_SHORT).show();
+				File zip = new File(where + "/" + files[which]);
+				File where = new File(unzipPath);
+				new DecompressTask(zip.getAbsolutePath(), where.getAbsolutePath() + "/").execute();
+				dialog.cancel();
+				Log.d(DEBUG_TAG, "Setting up app...");
+			}
+		});
+		AlertDialog alert = builder.create();
+		alert.show();
+	}
+
 	private void setupAppDir()
 	{
+
 		Log.d(DEBUG_TAG, "Setting up app...");
 
 		final EditText editText = new EditText(this);
@@ -146,7 +246,7 @@ public class SplashActivity extends Activity implements OnInitListener, Platform
 			@Override
 			public void onClick(DialogInterface dialog, int id)
 			{
-				dialog.dismiss();
+				dialog.cancel();
 				finish();
 			}
 		});
@@ -164,6 +264,10 @@ public class SplashActivity extends Activity implements OnInitListener, Platform
 		// ServandoApplication.updateLocale(this);
 
 		// initializeUiResources();
+		if (BluetoothUtils.getInstance().getAdapter() == null)
+		{
+			BluetoothUtils.getInstance().setAdapter(BluetoothAdapter.getDefaultAdapter());
+		}
 
 		loadingMessage.setText("Configuring logs...");
 		configureLogs();
@@ -195,7 +299,7 @@ public class SplashActivity extends Activity implements OnInitListener, Platform
 		// }
 		// });
 
-		tts = new TextToSpeech(this.getApplicationContext(), this);
+		// tts = new TextToSpeech(this.getApplicationContext(), this);
 	}
 
 	private void printLocalIpAddress()

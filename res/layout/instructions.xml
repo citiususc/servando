@@ -10,7 +10,7 @@
         android:layout_height="wrap_content" >
 
         <LinearLayout
-            android:id="@+id/linearLayout1"
+            android:id="@+id/therapy_content"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:orientation="vertical" >

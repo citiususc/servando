@@ -9,11 +9,15 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Process;
-import android.util.Log;
 import es.usc.citius.servando.android.ServandoPlatformFacade;
 import es.usc.citius.servando.android.agenda.ServandoBackgroundService;
+import es.usc.citius.servando.android.alerts.AlertMsg;
+import es.usc.citius.servando.android.alerts.AlertMsg.Builder;
+import es.usc.citius.servando.android.alerts.AlertType;
 import es.usc.citius.servando.android.app.RestartReceiver;
 import es.usc.citius.servando.android.app.ServandoIntent;
+import es.usc.citius.servando.android.logging.ILog;
+import es.usc.citius.servando.android.logging.ServandoLoggerFactory;
 import es.usc.citius.servando.android.medim.ui.MedimBackgroundService;
 
 /**
@@ -24,6 +28,7 @@ import es.usc.citius.servando.android.medim.ui.MedimBackgroundService;
 public class AppManager {
 
 	private static final String DEBUG_TAG = AppManager.class.getSimpleName();
+	private static ILog log = ServandoLoggerFactory.getLogger(AppManager.class);
 
 	// private static Context lastContext;
 
@@ -37,18 +42,25 @@ public class AppManager {
 		// Stop platform
 		try
 		{
-			Log.d(DEBUG_TAG, "Closing application...");
+			log.debug("Closing application...");
+
+			Builder builder = new AlertMsg.Builder();
+			AlertMsg a = builder.setType(AlertType.SYSTEM_EVENT).setDisplayName("Cierre").setDescription("Servando se ha detenido").create();
+			// uncomment for sending
+			log.debug("Sending close alert...");
+			ServandoPlatformFacade.getInstance().alert(a);
+
 			ServandoPlatformFacade.getInstance().stop(ctx);
 			// Stop background service
 			ctx.stopService(new Intent(ctx, ServandoBackgroundService.class));
 			ctx.stopService(new Intent(ctx, MedimBackgroundService.class));
 			// Send broadcast to close all open activities
-			Log.d(DEBUG_TAG, "Sending exit broadcast");
+			log.debug("Sending exit broadcast to all open activities");
 			ctx.sendBroadcast(new Intent(ServandoIntent.ACTION_APP_EXIT));
 
 		} catch (Exception e)
 		{
-			Log.e("AppManager", "Error closing app", e);
+			log.error("An error ocurred closing app", e);
 		}
 
 		// Schedule app proccess stop in 3 secs
@@ -57,10 +69,10 @@ public class AppManager {
 			@Override
 			public void run()
 			{
-				Log.d(DEBUG_TAG, "Stopping app task.");
+				log.debug("Application process closed.");
 				Process.killProcess(Process.myPid());
 			}
-		}, 2500);
+		}, 3000);
 
 
 	}
@@ -68,7 +80,7 @@ public class AppManager {
 	public static void restartApplication(Context ctx)
 	{
 
-		Log.d(DEBUG_TAG, "Restarting application...");
+		log.debug("Restarting application...");
 
 		closeApplication(ctx);
 		// get a Calendar object with current time

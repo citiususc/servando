@@ -122,21 +122,36 @@ public class PatientHomeActivity extends Activity implements ProtocolEngineListe
 		protocolEngine = ServandoPlatformFacade.getInstance().getProtocolEngine();
 		protocolEngine.addProtocolListener(this);
 
-		checkCrashReport();
+		h.postDelayed(new Runnable()
+		{
+
+			@Override
+			public void run()
+			{
+				checkCrashReport();
+			}
+		}, 1000);
 
 	}
 
 	private void checkCrashReport()
 	{
+		log.debug("Checking ocurrence of crashes...");
 		File trace = new File(StorageModule.getInstance().getPlatformLogsPath() + "/crash_trace.txt");
+		log.debug("Checking file " + trace);
 		if (trace.exists())
 		{
+			log.debug("Crash logs found. Starting crash activity...");
+
 			Intent intent = new Intent(getApplicationContext(), CrashActivity.class);
 			intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 			intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
 			intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 			startActivity(intent);
 
+		} else
+		{
+			log.debug("No crash logs found");
 		}
 
 	}

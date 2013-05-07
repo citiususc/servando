@@ -61,6 +61,20 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        
+         <activity
+            android:name="es.usc.citius.servando.android.app.activities.InstallActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:launchMode="singleInstance"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" >
+            <intent-filter>
+                 <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        
+        
+        
         <activity android:name="es.usc.citius.servando.android.app.activities.NotificationsActivity" />
         <activity
             android:name="es.usc.citius.servando.android.app.activities.AgendaListActivity"

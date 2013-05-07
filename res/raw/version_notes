@@ -1,6 +1,20 @@
-Versión <b>13.04.08</b><br><br> 
-- Redeseñado mecanismo de scheduling de actuacións médicas.<br>
-- Versión e notas da versión na pantalla "about".<br>
-- Búsqueda de actualizacións dende o menú da pantalla "about".<br>
-- Posibilidade de incluir administracións de terapia de varios fármacos na mesma actuación.<br>
-- Correxido bug no servizo de tests que impedía completalos en algunhas versións de android.<br>
+<html>
+Changelog:<br>
+<br>--- 13.04 ---<br>
+* Redeseñado mecanismo de scheduling de actuacións médicas.<br>
+* Versión e notas da versión na pantalla "about".<br>
+* Búsqueda de actualizacións dende o menú da pantalla "about".<br>
+* Posibilidade de incluir administracións de terapia de varios fármacos na mesma actuación.<br>
+* Modificado o modelo de terapia
+<br>--- 13.04-r1 ---<br>
+* Cálculo e envío da frecuencia cardíaca con cada fragmento de ECG </br>
+* Correxido bug no servizo de tests que impedía completalos en algunhas versións de android.<br>
+* Correxido bug no servizo de terapia que facía que se mostrara sempre o mesmo fármaco.<br>
+* Correxido bug no reporte diario que provocaba que se mostrase ás 00:00h <br>
+* Eliminada a notificación que aparecía e desaparecía automáticamente ó completar unha acción.<br> 
+* Parada automática do ECG ó calcular a frecuencia cardíaca.<br>
+* Visualización da saturación de osíxeno ó rematar dita proba.
+<br>--- 13.04-r2 ---<br>
+* Posibilidade de instalación dende ZIP<br>
+* Correxidos varios bugs menores.
+</html>

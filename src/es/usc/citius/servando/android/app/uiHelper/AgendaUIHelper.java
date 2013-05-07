@@ -28,7 +28,7 @@ public class AgendaUIHelper {
 	private boolean[][] cells;
 	private boolean distribute;
 	private int startCoulumn = 0;
-	private int[][] actionLayoutInfo;
+	private float[][] actionLayoutInfo;
 
 	public AgendaUIHelper(List<MedicalActionExecution> actions, boolean distribute)
 	{
@@ -162,15 +162,44 @@ public class AgendaUIHelper {
 		}
 	}
 
+	private void addViewToRow(GridLayout grid, View v, int row, int duration, int topMargin, int bottomMargin)
+	{
+		// System.out.println("Add view to row: " + row + ", duration: " + duration + ", top: " + topMargin +
+		// ", bottom: " + bottomMargin);
+		// int col = getRow(row, duration);
+		//
+		// if (col != -1)
+		// {
+		// GridLayout.Spec rowSpec = GridLayout.spec(row, duration);
+		// GridLayout.Spec colSpec = GridLayout.spec(col, 1);
+		// LayoutParams params = new LayoutParams(rowSpec, colSpec);
+		// params.setMargins(1, 0, 1, 0);
+		//
+		// if (v.findViewById(R.id.topMargin) != null)
+		// {
+		// View marginTop = v.findViewById(R.id.topMargin);
+		// marginTop.setMinimumHeight(topMargin);
+		//
+		// View marginBottom = v.findViewById(R.id.bottomMargin);
+		// marginBottom.setMinimumHeight(bottomMargin);
+		// }
+		//
+		// grid.addView(v, params);
+		// } else
+		// {
+		// Log.d(TAG, "Cannot add view to grid. No available free columns");
+		// }
+	}
+
 	private void setCelloccupied(int row, int col)
 	{
 		cells[row][col] = true;
 	}
 
-	private int[][] getActionLayoutInfo(List<MedicalActionExecution> actions)
+	private float[][] getActionLayoutInfo(List<MedicalActionExecution> actions)
 	{
 
-		int[][] actionLayoutInfo = new int[2][actions.size()];
+		float[][] actionLayoutInfo = new float[2][actions.size()];
 
 		for (int i = 0; i < actions.size(); i++)
 		{
@@ -185,7 +214,7 @@ public class AgendaUIHelper {
 		return actionLayoutInfo;
 	}
 
-	private int getNeedColumns(int[][] actionLayoutInfo)
+	private int getNeedColumns(float[][] actionLayoutInfo)
 	{
 
 		int max = 0;
@@ -197,8 +226,8 @@ public class AgendaUIHelper {
 			// recorro os eventos e miro se coinciden
 			for (int evt = 0; evt < actionLayoutInfo[0].length; evt++)
 			{
-				int evtStart = actionLayoutInfo[0][evt]; // 2
-				int evtEnd = evtStart + actionLayoutInfo[1][evt]; // 5
+				float evtStart = actionLayoutInfo[0][evt]; // 2
+				float evtEnd = evtStart + actionLayoutInfo[1][evt]; // 5
 
 				if (hour >= evtStart && hour < evtEnd)
 				{
@@ -225,7 +254,7 @@ public class AgendaUIHelper {
 		return columns;
 	}
 
-	public int[][] getActionLayoutInfo()
+	public float[][] getActionLayoutInfo()
 	{
 		return actionLayoutInfo;
 	}
