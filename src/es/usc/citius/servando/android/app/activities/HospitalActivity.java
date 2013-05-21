@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageButton;
+import es.usc.citius.servando.android.ServandoPlatformFacade;
 import es.usc.citius.servando.android.app.R;
 import es.usc.citius.servando.android.app.sympthom.SymptomListActivity;
 
@@ -48,5 +49,13 @@ public class HospitalActivity extends Activity implements OnClickListener {
 			break;
 		}
 
+	}
+
+	public void onClickHome(View v)
+	{
+		Class<?> homeActivity = ServandoPlatformFacade.getInstance().getSettings().isPatient() ? PatientHomeActivity.class : HomeActivity.class;
+		final Intent intent = new Intent(this, homeActivity);
+		intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+		this.startActivity(intent);
 	}
 }

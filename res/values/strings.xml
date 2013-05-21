@@ -135,7 +135,9 @@
      <string name="hospital_advices_button">Send advice</string>
      <string name="hospital_advices_should_select_reason_msg">You must select a reason</string>
      <string name="alert_advice_display_name">Patient advice</string>
-     <string name="alert_advice_doctor_msg">Reason: %1$s \n Date: %2$s \nComment: %3$s</string>
+     <string name="advice_reason">Reason</string>
+     <string name="advice_date">Date</string>
+     <string name="advice_comment">Comment</string>
      <string name="sending_advice">Sending advice...</string>
      <string name="sending_advice_success">Advice sent successfully</string>
     <string-array name="advices_reasons">
