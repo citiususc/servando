@@ -56,7 +56,6 @@ import es.usc.citius.servando.android.agenda.ProtocolEngineListener;
 import es.usc.citius.servando.android.app.CrashActivity;
 import es.usc.citius.servando.android.app.R;
 import es.usc.citius.servando.android.app.UpdateActivity;
-import es.usc.citius.servando.android.app.sympthom.SymptomListActivity;
 import es.usc.citius.servando.android.app.uiHelper.AppManager;
 import es.usc.citius.servando.android.logging.ILog;
 import es.usc.citius.servando.android.logging.ServandoLoggerFactory;
@@ -270,7 +269,7 @@ public class PatientHomeActivity extends Activity implements ProtocolEngineListe
 			@Override
 			public void onClick(View v)
 			{
-				startSympthoms();
+				startHospitalActivity();
 			}
 		});
 	}
@@ -526,9 +525,10 @@ public class PatientHomeActivity extends Activity implements ProtocolEngineListe
 		startActivity(intent);
 	}
 
-	private void startSympthoms()
+	private void startHospitalActivity()
 	{
-		Intent intent = new Intent(getApplicationContext(), SymptomListActivity.class);
+		// Intent intent = new Intent(getApplicationContext(), SymptomListActivity.class);
+		Intent intent = new Intent(getApplicationContext(), HospitalActivity.class);
 		intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
 		intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 		startActivity(intent);

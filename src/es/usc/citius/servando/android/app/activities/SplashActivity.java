@@ -70,11 +70,11 @@ public class SplashActivity extends Activity implements OnInitListener, Platform
 
 	private static final int ENABLE_BLUETOOTH = 1;
 
-	private boolean enableDynamicSDCardSetup = true;
+	private boolean enableDynamicSDCardSetup = false;
 
 	private boolean allowDownloadPatientData = false;
 
-	private boolean allowExtractDefaultPatientData = true;
+	private boolean allowExtractDefaultPatientData = false;
 
 	public static final String UNBIND_SERVANDO_SERVICE = "es.usc.citius.servando.android.UNBIND_SERVANDO_SERVICE";
 
@@ -90,6 +90,9 @@ public class SplashActivity extends Activity implements OnInitListener, Platform
 
 	String patientFolder;
 
+	String externalStoragePath;
+	String unzipPath;
+
 	/**
 	 * @see android.app.Activity#onCreate(Bundle)
 	 */
@@ -98,7 +101,8 @@ public class SplashActivity extends Activity implements OnInitListener, Platform
 	{
 
 		super.onCreate(savedInstanceState);
-
+		externalStoragePath = Environment.getExternalStorageDirectory().getAbsolutePath();
+		unzipPath = externalStoragePath + ServandoStartConfig.getInstance().getPlatformInstallationPath() + "/";
 		printLocalIpAddress();
 
 		Log.d(DEBUG_TAG, "Starting splash ...");
@@ -178,15 +182,17 @@ public class SplashActivity extends Activity implements OnInitListener, Platform
 
 			showFileChooser(choiceList, files, sd.getAbsolutePath());
 		}
-
+		// else
+		// {
+		// File zip = new File(where + "/" + files[which]);
+		// File where = new File(unzipPath);
+		// new DecompressTask(zip.getAbsolutePath(), where.getAbsolutePath() + "/").execute();
+		// }
 
 	}
 
 	private void showFileChooser(final CharSequence[] choiceList, final String files[], final String where)
 	{
-
-		final String externalStoragePath = Environment.getExternalStorageDirectory().getAbsolutePath();
-		final String unzipPath = externalStoragePath + ServandoStartConfig.getInstance().getPlatformInstallationPath() + "/";
 
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder.setTitle("Setup from file:");
@@ -750,6 +756,104 @@ public class SplashActivity extends Activity implements OnInitListener, Platform
 		private int max;
 
 		public DecompressTask(String zipFile, String location)
+		{
+			_zipFile = zipFile;
+			_location = location;
+
+			_dirChecker("");
+		}
+
+		private void _dirChecker(String dir)
+		{
+			File f = new File(_location + dir);
+
+			if (!f.isDirectory())
+			{
+				f.mkdirs();
+			}
+		}
+
+		@Override
+		protected String doInBackground(String... params)
+		{
+
+			try
+			{
+				FileInputStream fin = new FileInputStream(_zipFile);
+				ZipInputStream zin = new ZipInputStream(fin);
+				ZipEntry ze = null;
+
+				ZipFile zipFile = new ZipFile(_zipFile);
+				max = zipFile.size();
+				progressBar.setMax(max);
+
+				while ((ze = zin.getNextEntry()) != null)
+				{
+					Log.v("Decompress", "Unzipping " + ze.getName());
+
+					if (ze.isDirectory())
+					{
+						_dirChecker(ze.getName());
+					} else
+					{
+						FileOutputStream fout = new FileOutputStream(_location + ze.getName());
+						for (int c = zin.read(); c != -1; c = zin.read())
+						{
+							fout.write(c);
+						}
+
+						zin.closeEntry();
+						fout.close();
+					}
+
+					total += 1;
+					// publishing the progress....
+					publishProgress((int) (total));
+
+				}
+				zin.close();
+			} catch (Exception e)
+			{
+				Log.e("Decompress", "unzip", e);
+			}
+			return null;
+		}
+
+		@Override
+		protected void onProgressUpdate(Integer... values)
+		{
+			super.onProgressUpdate(values);
+			int progress = values[0];
+			progressBar.setProgress(progress);
+			loadingMessage.setText("Setting up Servando... (" + (int) (((float) progress / max) * 100) + "%)");
+		}
+
+		@Override
+		protected void onPreExecute()
+		{
+			super.onPreExecute();
+			showProgressBar();
+			loadingMessage.setText("Setting up Servando...");
+		}
+
+		@Override
+		protected void onPostExecute(String result)
+		{
+			super.onPostExecute(result);
+			hideProgressBar();
+			Log.d("TAG", "finish unzip");
+			startApplication();
+		}
+	}
+
+	public class DecompressDataFromAssetsTask extends AsyncTask<String, Integer, String> {
+
+		private String _zipFile;
+		private String _location;
+		private int total;
+		private int max;
+
+		public DecompressDataFromAssetsTask(String zipFile, String location)
 		{
 			_zipFile = zipFile;
 			_location = location;

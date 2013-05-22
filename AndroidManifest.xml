@@ -66,6 +66,8 @@
             android:name="es.usc.citius.servando.android.app.activities.InstallActivity"
             android:configChanges="orientation|keyboardHidden"
             android:launchMode="singleInstance"
+            android:icon="@drawable/ic_install"
+            android:label="Servando Installer"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" >
             <intent-filter>
                  <action android:name="android.intent.action.MAIN" />
@@ -193,8 +195,18 @@
         </activity>
         <activity
             android:name="es.usc.citius.servando.android.app.VersionNotesActivity"
-            android:label="@string/title_activity_version_notes" 
-             android:theme="@android:style/Theme.Translucent.NoTitleBar" >
+            android:label="@string/title_activity_version_notes"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" >
+        </activity>
+        <activity
+            android:name="es.usc.citius.servando.android.app.activities.HospitalActivity"
+            android:label="@string/hospital_activity_title" 
+            android:screenOrientation="portrait">
+        </activity>
+        <activity
+            android:name="es.usc.citius.servando.android.app.activities.HospitalAdvicesActivity"
+            android:label="@string/hospital_advices_activity_title" 
+            android:screenOrientation="portrait">
         </activity>
     </application>
 

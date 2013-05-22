@@ -105,6 +105,14 @@
      <string name="exit_dialog_message">Cerrando Servando...</string>
      <string name="doctor_view_dialog_title">Se requiere autenticación</string>
      <string name="doctor_view_dialog_message">Introduzca su contraseña para acceder a los servicios avanzados de Servando</string>
+     
+    <string name="title_activity_crash">Cierre inesperado</string>
+    <string name="activity_crash_message">Se ha producido un error inesperado, pero Servando ya está funcionando de nuevo. Por favor, pulse el botón enviar informe para comunicarnos el problema y evitar que se vuelva a producir.\nGracias por su colaboración.</string>
+    <string name="send_report_button">Enviar informe</string>
+    <string name="cancel_report_button">Cancelar</string>
+    <string name="report_thanks">Gracias</string>
+    <string name="sending_report">Enviando informe...</string>
+    <string name="oops">Oops...</string>
     
      
      <string name="action_start_at">Empieza:</string>
@@ -112,6 +120,39 @@
     <string name="action_remaining">Faltan:</string>
     <string name="action_not_started"></string>
     
+    
+     <string name="check_for_updates">Actualizaciones</string>
+    <string name="update">Actualizar</string>
+    <string name="update_messagge">Hay actualizaciones disponibles. Por favor, pulse el botón para obtener la versión más reciente del software.</string>
+   <string name="downloading_updates">Descargando actualizaciones...</string>
+   	 <string name="updating_application">Actualizando aplicación</string>
+   	 <string name="downloading_data">Descargando archivos... (%1$d%%)</string>
+    
+    <!-- Vista Hospital -->
+    <string name="hospital_activity_title">Enfermería</string>
+    <string name="hospital_activity_symptoms">Síntomas</string>
+    <string name="hospital_activity_advices">Avisos</string>
+    <string name="hospital_activity_message">Si lo desea puede remitirnos algún aviso o algún síntoma.</string>
+    <string name="hospital_advices_select_advice_message">Indique el motivo de su aviso:</string>
+    <string name="hospital_advices_select_when">Seleccione la fecha:</string>
+    <string name="hospital_advices_activity_title">Avisos</string>
+     <string name="hospital_advices_comment">Comentario:</string>
+     <string name="hospital_advices_hint">Escriba un comentario aquí si desea dar más detalles...</string>
+     <string name="hospital_advices_button">Enviar aviso</string>
+     <string name="hospital_advices_should_select_reason_msg">Debe seleccionar un motivo</string>
+      <string name="alert_advice_display_name">Aviso del paciente</string>
+      <string name="alert_advice_doctor_msg">Motivo: %1$s \n Fecha: %2$s \nComentario: %3$s</string>
+      <string name="sending_advice">Enviando aviso...</string>
+      <string name="sending_advice_success">Aviso enviado correctamente.</string>
+    
+     <string-array name="advices_reasons">
+        <item>Seleccione motivo</item>
+        <item>Cambio de terapia</item>
+        <item>Visita a urgencias</item>
+        <item>Ingreso hospitalario</item>
+        <item>Alta hospitalaria</item>
+    </string-array>
+   	 
     <string name="version_notes">Notas de la versión</string>
     
 

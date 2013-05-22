@@ -5,7 +5,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FilenameFilter;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
@@ -58,6 +57,8 @@ public class InstallActivity extends Activity {
 
 	String patientFolder;
 
+	String externalStoragePath;
+
 	/**
 	 * @see android.app.Activity#onCreate(Bundle)
 	 */
@@ -90,6 +91,8 @@ public class InstallActivity extends Activity {
 				downloadAndExtract();
 			}
 		});
+
+		externalStoragePath = Environment.getExternalStorageDirectory().getAbsolutePath();
 
 	}
 
@@ -217,9 +220,9 @@ public class InstallActivity extends Activity {
 
 	private class DownloadAndInstallServandoSetupFile extends AsyncTask<String, Integer, String> {
 
-		String externalStoragePath = Environment.getExternalStorageDirectory().getAbsolutePath();
+
 		String downloadFilePath = externalStoragePath + "/ServandoSetup.zip";
-		String unzipPath = externalStoragePath + ServandoStartConfig.getInstance().getPlatformInstallationPath() + "/";
+		String unzipPath = externalStoragePath + "/" + ServandoStartConfig.getInstance().getPlatformInstallationPath() + "/";
 
 		boolean correctDownload = false;
 
@@ -325,12 +328,6 @@ public class InstallActivity extends Activity {
 				if (zip.exists())
 				{
 					File where = new File(unzipPath);
-
-					if (where.exists())
-					{
-						Log.d("Splash", "Deleting platform path...");
-						deleteFiles(ServandoStartConfig.getInstance().getPlatformInstallationPath());
-					}
 					new DecompressTask(zip.getAbsolutePath(), where.getAbsolutePath() + "/").execute();
 
 				}
@@ -350,20 +347,21 @@ public class InstallActivity extends Activity {
 	public static void deleteFiles(String path)
 	{
 
-		Log.d("Splash", "Deleting platform path");
-
 		File file = new File(path);
 
-		if (file.exists())
+		Log.d("Splash", "Deleting platform path..." + file.getAbsolutePath());
+
+
+
+		if (file.exists() && file.getAbsolutePath().contains("es.usc.citius.servando"))
 		{
-			String deleteCmd = "rm -r " + path;
-			Runtime runtime = Runtime.getRuntime();
-			try
-			{
-				runtime.exec(deleteCmd);
-			} catch (IOException e)
-			{
-			}
+			deleteDirectory(file);
+			file = new File(path);
+			Log.d("Splash", "Path deleted: " + (!file.exists()));
+
+		} else
+		{
+			Log.d("Splash", "Cannot delete " + file.getAbsolutePath());
 		}
 	}
 
@@ -398,6 +396,8 @@ public class InstallActivity extends Activity {
 
 			try
 			{
+				deleteFiles(externalStoragePath + "/" + ServandoStartConfig.getInstance().getPlatformInstallationPath());
+
 				FileInputStream fin = new FileInputStream(_zipFile);
 				ZipInputStream zin = new ZipInputStream(fin);
 				ZipEntry ze = null;
@@ -453,6 +453,7 @@ public class InstallActivity extends Activity {
 		{
 			super.onPreExecute();
 			showProgressBar();
+			findViewById(R.id.install_options).setVisibility(View.INVISIBLE);
 			loadingMessage.setText("Setting up Servando...");
 		}
 
@@ -461,6 +462,7 @@ public class InstallActivity extends Activity {
 		{
 			super.onPostExecute(result);
 			hideProgressBar();
+			loadingIndicator.setVisibility(View.INVISIBLE);
 			loadingMessage.setText("Installation done!");
 
 		}
@@ -479,5 +481,28 @@ public class InstallActivity extends Activity {
 	{
 		progressBar.setProgress(0);
 		progressBar.setVisibility(View.INVISIBLE);
+	}
+
+	static boolean deleteDirectory(File path)
+	{
+		if (path.exists())
+		{
+			File[] files = path.listFiles();
+			if (files == null)
+			{
+				return true;
+			}
+			for (int i = 0; i < files.length; i++)
+			{
+				if (files[i].isDirectory())
+				{
+					deleteDirectory(files[i]);
+				} else
+				{
+					files[i].delete();
+				}
+			}
+		}
+		return (path.delete());
 	}
 }

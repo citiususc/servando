@@ -46,31 +46,39 @@
                 android:scaleType="fitCenter"
                 android:src="@drawable/servando_platform_splash" />
 
-            <TextView
-                android:id="@+id/textView2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="20dip"
-                android:text="Choose installation mode:"
-                android:textSize="18dip" />
-
             <LinearLayout
                 android:id="@+id/install_options"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center" >
+                android:orientation="vertical" >
 
-                <Button
-                    android:id="@+id/install_from_file_button"
-                    android:layout_width="100dip"
+                <TextView
+                    android:id="@+id/textView2"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="From file..." />
+                    android:layout_marginBottom="20dip"
+                    android:gravity="center"
+                    android:text="Choose installation mode:"
+                    android:textSize="18dip" />
 
-                <Button
-                    android:id="@+id/install_from_url_button"
-                    android:layout_width="100dip"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="From URL..." />
+                    android:gravity="center" >
+
+                    <Button
+                        android:id="@+id/install_from_file_button"
+                        android:layout_width="100dip"
+                        android:layout_height="wrap_content"
+                        android:text="From file..." />
+
+                    <Button
+                        android:id="@+id/install_from_url_button"
+                        android:layout_width="100dip"
+                        android:layout_height="wrap_content"
+                        android:text="From URL..." />
+                </LinearLayout>
+
             </LinearLayout>
 
             <ImageView
