@@ -141,8 +141,11 @@
      <string name="hospital_advices_button">Enviar aviso</string>
      <string name="hospital_advices_should_select_reason_msg">Debe seleccionar un motivo</string>
       <string name="alert_advice_display_name">Aviso del paciente</string>
-      <string name="alert_advice_doctor_msg">Motivo: %1$s \n Fecha: %2$s \nComentario: %3$s</string>
+      <string name="alert_advice_doctor_msg">Motivo: %1$s \n Fecha: %2$s \n Comentario: %3$s</string>
       <string name="sending_advice">Enviando aviso...</string>
+      <string name="advice_reason">Motivo</string>
+      <string name="advice_date">Fecha</string>
+      <string name="advice_comment">Comentario</string>
       <string name="sending_advice_success">Aviso enviado correctamente.</string>
     
      <string-array name="advices_reasons">

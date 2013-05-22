@@ -4,9 +4,9 @@ import java.util.GregorianCalendar;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
@@ -60,7 +60,6 @@ public class HospitalAdvicesActivity extends Activity implements OnClickListener
 	@Override
 	public void onClick(View v)
 	{
-		Log.d("TESTING", "On click....");
 		switch (v.getId()) {
 		case R.id.hospital_advices_send_button:
 			if (sendButton != null && comment != null)
@@ -123,17 +122,35 @@ public class HospitalAdvicesActivity extends Activity implements OnClickListener
 	{
 		if (comment != null && spinner != null && datePicker != null)
 		{
-			String reason = (String) spinner.getSelectedItem();
-			String comment_text = comment.getText() != null ? comment.getText().toString() : "-";
-			String date_of_advice = String.valueOf(datePicker.getDayOfMonth()) + "-" + String.valueOf(datePicker.getMonth()) + "-"
+			String reason_resource = getResources().getString(R.string.advice_reason);
+			String reason_view = (String) spinner.getSelectedItem();
+			String reason_msg = reason_resource + ": " + reason_view;
+
+			String date_resource = getResources().getString(R.string.advice_date);
+			String date_view = String.valueOf(datePicker.getDayOfMonth()) + "-" + String.valueOf(datePicker.getMonth()) + "-"
 					+ String.valueOf(datePicker.getYear());
+			String date_msg = date_resource + ": " + date_view;
+
+			String doctor_msg = reason_msg + "\n" + date_msg;
+
+			String comment_view = comment.getText().toString();
+			String comment_msg = "";
+			if (comment_view.length() > 0)
+			{
+				String comment_resource = getResources().getString(R.string.advice_comment);
+				comment_msg = comment_resource + ": " + comment_view;
+				doctor_msg = doctor_msg + "\n" + comment_msg;
+
+			}
+
 			String displayName = getResources().getString(R.string.alert_advice_display_name);
-			String doctor_msg = String.format(getResources().getString(R.string.alert_advice_doctor_msg), reason, date_of_advice, comment_text);
-			return new AlertMsg.Builder().setTimeStamp(new GregorianCalendar())
-											.setType(AlertType.ADVICE)
-											.setDescription(doctor_msg)
-											.setDisplayName(displayName)
-											.create();
+
+			AlertMsg alert = new AlertMsg.Builder().setTimeStamp(new GregorianCalendar())
+													.setType(AlertType.ADVICE)
+													.setDescription(doctor_msg)
+													.setDisplayName(displayName)
+													.create();
+			return alert;
 		}
 		return null;
 	}
@@ -228,6 +245,14 @@ public class HospitalAdvicesActivity extends Activity implements OnClickListener
 		outtoRight.setDuration(600);
 		outtoRight.setInterpolator(new AccelerateInterpolator());
 		return outtoRight;
+	}
+
+	public void onClickHome(View v)
+	{
+		Class<?> homeActivity = ServandoPlatformFacade.getInstance().getSettings().isPatient() ? PatientHomeActivity.class : HomeActivity.class;
+		final Intent intent = new Intent(this, homeActivity);
+		intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+		this.startActivity(intent);
 	}
 
 }
