@@ -204,7 +204,7 @@
     <!-- <item name="android:text">Default</item> -->
     <!-- </style> -->
 
-    <style name="styleName" parent="@style/ServandoLightBlueButton">
+    <style name="styleName" parent="@style/ServandoBlueButton">
         <item name="android:layout_marginBottom">40dip</item>
     </style>
 
