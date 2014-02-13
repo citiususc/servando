@@ -330,6 +330,7 @@
                 <LinearLayout
                     android:id="@+id/pending_actions"
                     android:layout_width="fill_parent"
+                    android:orientation="horizontal"
                     android:layout_height="50dip"
                     android:background="@null" >
                 </LinearLayout>

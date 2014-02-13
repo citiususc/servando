@@ -127,7 +127,7 @@ public class HospitalAdvicesActivity extends Activity implements OnClickListener
 			String reason_msg = reason_resource + ": " + reason_view;
 
 			String date_resource = getResources().getString(R.string.advice_date);
-			String date_view = String.valueOf(datePicker.getDayOfMonth()) + "-" + String.valueOf(datePicker.getMonth()) + "-"
+			String date_view = String.valueOf(datePicker.getDayOfMonth()) + "/" + String.valueOf(datePicker.getMonth() + 1) + "/"
 					+ String.valueOf(datePicker.getYear());
 			String date_msg = date_resource + ": " + date_view;
 
