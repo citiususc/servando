@@ -58,7 +58,7 @@
       <sourceFolder url="file://$MODULE_DIR$/src/debug/resources" type="java-resource" />
       <sourceFolder url="file://$MODULE_DIR$/src/main/aidl" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/main/assets" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/src/main/java" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/src/main/src" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/main/jni" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/main/rs" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/main/res" type="java-resource" />
@@ -84,9 +84,18 @@
     </content>
     <orderEntry type="jdk" jdkName="Android API 19 Platform" jdkType="Android SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="module" module-name="MedimLibs" exported="" />
+    <orderEntry type="library" exported="" name="stax-1.2.0" level="project" />
+    <orderEntry type="library" exported="" name="ormlite-core-4.45" level="project" />
+    <orderEntry type="library" exported="" name="android-logging-log4j-1.0.2" level="project" />
+    <orderEntry type="module" module-name="ServandoLibs" exported="" />
+    <orderEntry type="library" exported="" name="simple-xml-2.7.1" level="project" />
     <orderEntry type="library" exported="" name="support-v4-19.0.1" level="project" />
+    <orderEntry type="library" exported="" name="joda-time-2.3" level="project" />
     <orderEntry type="library" exported="" name="ComAndroidSupportAppcompatV71901.aar" level="project" />
+    <orderEntry type="library" exported="" name="stax-api-1.0.1" level="project" />
     <orderEntry type="library" exported="" name="ComAndroidSupportGridlayoutV71901.aar" level="project" />
+    <orderEntry type="library" exported="" name="log4j-1.2.16" level="project" />
   </component>
 </module>
 
