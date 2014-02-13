@@ -1,0 +1,1 @@
+include ':ServandoApp', 'Services:TherapyService', 'Services:MonitoringService', 'Services:TestsService', 'PlatformIndependentLibs:MedimLibs', 'PlatformIndependentLibs:ServandoLibs'
