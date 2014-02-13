@@ -1,0 +1,335 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:grid="http://schemas.android.com/apk/res/es.usc.citius.servando.android.app"
+    android:id="@+id/relativeLayoutAgenda"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
+
+    <LinearLayout
+        android:id="@+id/header"
+        style="@style/TitleBar" >
+
+        <ImageButton
+            style="@style/TitleBarAction"
+            android:contentDescription="@string/description_home"
+            android:onClick="onClickHome"
+            android:src="@drawable/title_home" />
+
+        <ImageView style="@style/TitleBarSeparator" />
+
+        <TextView
+            style="@style/TitleBarText"
+            android:text="Agenda" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/topbar"
+        android:layout_width="fill_parent"
+        android:layout_height="50dip"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/header"
+        android:background="@color/background2"
+        android:orientation="horizontal"
+        android:padding="1dip" >
+
+        <ImageButton
+            android:id="@+id/separator_1"
+            android:layout_width="1px"
+            android:layout_height="fill_parent"
+            android:layout_toRightOf="@+id/agenda_day_button"
+            android:background="@drawable/separator_gradient" />
+
+        <Button
+            android:id="@+id/agenda_day_view_button"
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_toRightOf="@+id/separator_1"
+            android:layout_weight="1"
+            android:background="@null"
+            android:drawablePadding="5dip"
+            android:drawableRight="@drawable/ic_list_black"
+            android:padding="10dip"
+            android:text="Day"
+            android:width="0dip" />
+
+        <ImageButton
+            android:id="@+id/separator_2"
+            android:layout_width="1px"
+            android:layout_height="fill_parent"
+            android:layout_toRightOf="@+id/agenda_week_button"
+            android:background="@drawable/separator_gradient" />
+
+        <Button
+            android:id="@+id/agenda_listview_button"
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_toRightOf="@+id/separator_2"
+            android:layout_weight="1"
+            android:background="@null"
+            android:drawablePadding="5dip"
+            android:drawableRight="@drawable/ic_checked_black"
+            android:padding="10dip"
+            android:text="List"
+            android:width="0dip" />
+
+        <ImageButton
+            android:layout_width="1px"
+            android:layout_height="fill_parent"
+            android:layout_toRightOf="@+id/agenda_eventlist_button"
+            android:background="@drawable/separator_gradient" />
+    </LinearLayout>
+
+    <ViewAnimator
+        android:id="@+id/pager"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_below="@+id/topbar" >
+
+        <ScrollView
+            android:id="@+id/agenda_dayview"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:orientation="vertical"
+            android:scrollbars="vertical" >
+
+            <android.support.v7.widget.GridLayout
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/grid"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:orientation="horizontal"
+                grid:columnCount="8"
+                grid:rowCount="24" >
+
+
+
+<!--                 <Button -->
+<!--                     xmlns:android="http://schemas.android.com/apk/res/android" -->
+<!--                     android:layout_width="50dip" -->
+<!--                     android:layout_height="50dip" -->
+<!--                     android:background="@drawable/blue_button" -->
+<!--                     android:text="1" -->
+<!--                     android:layout_margin="5dip" -->
+<!--                     android:textColor="#ffffff" -->
+<!--                     android:textStyle="bold" /> -->
+<!-- <android.support.v7.widget.Space -->
+<!--                      style="@style/GridSpace" -->
+<!--                      android:padding="5dip" -->
+<!--             android:layout_width="wrap_content" -->
+<!--             android:layout_height="fill_parent" -->
+<!--             android:layout_weight="1" /> -->
+<!--                 <Button -->
+<!--                     xmlns:android="http://schemas.android.com/apk/res/android" -->
+<!--                     android:layout_width="50dip" -->
+<!--                     android:layout_height="50dip" -->
+<!--                     android:background="@drawable/blue_button" -->
+<!--                     android:text="1" -->
+<!--                     android:layout_margin="5dip" -->
+<!--                     android:textColor="#ffffff" -->
+<!--                     android:textStyle="bold" /> -->
+                <!-- <TextView -->
+                <!-- grid:layout_column="0" -->
+                <!-- grid:layout_row="0" -->
+                <!-- android:background="#ececec" -->
+                <!-- android:height="70dp" -->
+                <!-- android:padding="20dp" -->
+                <!-- android:text="00:00" /> -->
+
+
+                <!-- <TextView -->
+                <!-- grid:layout_column="0" -->
+                <!-- grid:layout_row="1" -->
+                <!-- android:background="#ececec" -->
+                <!-- android:height="70dp" -->
+                <!-- android:padding="20dp" -->
+                <!-- android:text="01:00" /> -->
+
+
+                <!-- <TextView -->
+                <!-- grid:layout_column="0" -->
+                <!-- grid:layout_row="2" -->
+                <!-- android:background="#ececec" -->
+                <!-- android:height="70dp" -->
+                <!-- android:padding="20dp" -->
+                <!-- android:text="02:00" /> -->
+
+
+                <!-- <TextView -->
+                <!-- grid:layout_column="0" -->
+                <!-- grid:layout_row="3" -->
+                <!-- android:background="#ececec" -->
+                <!-- android:height="70dp" -->
+                <!-- android:padding="20dp" -->
+                <!-- android:text="03:00" /> -->
+
+
+                <!-- <TextView -->
+                <!-- grid:layout_column="0" -->
+                <!-- grid:layout_row="4" -->
+                <!-- android:background="#ececec" -->
+                <!-- android:height="70dp" -->
+                <!-- android:padding="20dp" -->
+                <!-- android:text="04:00" /> -->
+
+
+                <!-- <TextView -->
+                <!-- grid:layout_column="0" -->
+                <!-- grid:layout_row="5" -->
+                <!-- android:background="#ececec" -->
+                <!-- android:height="70dp" -->
+                <!-- android:padding="20dp" -->
+                <!-- android:text="04:00" /> -->
+            </android.support.v7.widget.GridLayout>
+        </ScrollView>
+
+        <ListView
+            android:id="@+id/agenda_list"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:drawSelectorOnTop="false" >
+        </ListView>
+
+        <RelativeLayout
+            android:id="@+id/main_view"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:gravity="center_vertical" >
+
+            <TextView
+                android:id="@+id/event_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dip"
+                android:layout_toRightOf="@+id/event_icon"
+                android:text="Event"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="@color/title_background" />
+
+            <LinearLayout
+                android:id="@+id/time_list"
+                android:layout_width="70dip"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="false"
+                android:layout_marginRight="10dip"
+                android:background="@color/background1"
+                android:gravity="top"
+                android:orientation="vertical"
+                android:paddingTop="20dip" >
+
+                <ImageView
+                    android:id="@+id/ImageView01"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:src="@drawable/ic_clock" />
+
+                <TextView
+                    android:id="@+id/therapy_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dip"
+                    android:text="15:22 pm"
+                    android:textAppearance="?android:attr/textAppearanceSmall" />
+
+                <ImageView
+                    android:id="@+id/envelope"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="20dip"
+                    android:src="@drawable/ic_duration" />
+
+                <TextView
+                    android:id="@+id/evant_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="5dip"
+                    android:text="30 min"
+                    android:textAppearance="?android:attr/textAppearanceSmall" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/event_description"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/ImageButton01"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@+id/event_name"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="5dp"
+                android:layout_toLeftOf="@+id/ImageButton01"
+                android:text="Event description asdasdas dsa dsa d sa dasd asd asdsadsa asd sad sad sad sa dsa dsad asd sa"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textColor="@color/foreground2" />
+
+            <ImageButton
+                android:id="@+id/ImageButton01"
+                android:layout_width="1px"
+                android:layout_height="fill_parent"
+                android:layout_marginBottom="80dip"
+                android:layout_marginTop="5dip"
+                android:layout_toLeftOf="@+id/time_list"
+                android:background="@drawable/separator_gradient" />
+
+            <Button
+                android:id="@+id/backButton"
+                style="@style/ServandoBlueButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentLeft="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="20dip"
+                android:layout_marginLeft="20dip"
+                android:text="Back" />
+
+            <Button
+                android:id="@+id/goButton"
+                style="@style/ServandoBlueButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentRight="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="20dip"
+                android:layout_marginRight="20dip"
+                android:drawablePadding="5dip"
+                android:drawableRight="@drawable/ic_action_start_white"
+                android:text="Do it now" />
+
+            <ImageView
+                android:id="@+id/event_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignTop="@+id/event_name"
+                android:layout_marginLeft="10dip"
+                android:src="@drawable/ic_cardio" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/week_relativelayout"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent" >
+
+            <ListView
+                android:id="@+id/agenda_day"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:drawSelectorOnTop="false" >
+            </ListView>
+        </RelativeLayout>
+
+    </ViewAnimator>
+
+    <!-- <TextView -->
+    <!-- android:id="@android:id/empty" -->
+    <!-- android:layout_width="fill_parent" -->
+    <!-- android:layout_height="fill_parent" -->
+    <!-- android:text="No medical actions" /> -->
+
+</RelativeLayout>

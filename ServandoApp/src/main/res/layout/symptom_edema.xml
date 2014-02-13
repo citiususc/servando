@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+ <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/edemaScroll"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+<LinearLayout
+    android:id="@+id/LinearLayout1"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/sending_sympton_message"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dip"
+        android:layout_marginRight="20dip"
+        android:layout_marginTop="10dip"
+        android:text="@string/symptom_edema_title"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <Button
+        android:id="@+id/symptom_edema_location_multichoice"
+       android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dip"
+        android:layout_marginRight="20dip"
+        android:layout_marginTop="10dip"
+        android:text="@string/select_button" />
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" >
+
+        <ImageView
+            android:id="@+id/about_servando_logo"
+            android:layout_width="wrap_content"
+            android:layout_height="270dip"
+            android:src="@drawable/symptom_edema" />
+
+        <TextView
+            android:id="@+id/therapy_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/sending_report"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="84dp"
+            android:text="Edema"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/sending_report"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="28dp"
+            android:text="Normal"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textSize="20sp" />
+
+    </RelativeLayout>
+</LinearLayout>
+
+ </ScrollView>

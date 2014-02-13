@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/widget_root"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@null"
+    android:gravity="center"
+    android:orientation="vertical" >
+
+    <!-- android:background="#332072b9" -->
+
+    <RelativeLayout
+        android:id="@+id/linLayout"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/servando_widget_background"
+        android:orientation="vertical" >
+
+        <ImageView
+            android:id="@+id/widget_image"
+            android:layout_width="fill_parent"
+            android:layout_height="110dp"
+            android:layout_gravity="center"
+            android:scaleType="center"
+            android:src="@drawable/bg_logo" />
+
+        <TextView
+            android:id="@+id/widget_app_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:text="ServandoPlatform"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="#ffffff"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/widget_notification_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/widget_app_name"
+            android:layout_centerHorizontal="false"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="0dp"
+            android:layout_toRightOf="@+id/widget_app_name"
+            android:text="(0 notifications)"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="#ffffff" />
+
+        <TextView
+            android:id="@+id/widget_next_action_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/widget_app_name"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="10dp"
+            android:text="Next scheduled action:"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="#ffffff" />
+
+        <TextView
+            android:id="@+id/widget_next_action_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/widget_next_action_text"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="10dp"
+            android:text="Electrocardiography"
+            android:textColor="@color/servando_blue_dark"
+            android:textSize="@dimen/text_size_medium"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/widget_next_action_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/widget_next_action_name"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@+id/widget_next_action_name"
+            android:text="11:50 pm"
+            android:textColor="@color/servando_blue_dark"
+            android:textSize="@dimen/text_size_medium"
+            android:textStyle="bold" />
+    </RelativeLayout>
+
+</LinearLayout>

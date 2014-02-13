@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="10dip"
+    android:background="@color/background1"
+    android:visibility="visible" >
+
+    <ImageView
+        android:id="@+id/user_icon"
+        android:layout_width="40dip"
+        android:layout_height="50dip"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="10dip"
+        android:paddingTop="10dip"
+        android:scaleType="fitCenter"
+        android:src="@drawable/nurse" />
+
+    <RelativeLayout
+        android:id="@+id/relMessage"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_marginLeft="50dip"
+        android:layout_marginRight="10dip"
+        android:paddingBottom="10dip"
+        android:paddingTop="10dip" >
+
+        <ImageView
+            android:id="@+id/envelope"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="10dip"
+            android:background="@color/foreground2"
+            android:scaleType="fitStart"
+            android:src="@drawable/ic_message_top_left" />
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="25dip"
+            android:background="@drawable/message_shape"
+            android:orientation="vertical"
+            android:paddingTop="10dip"
+            android:paddingLeft="10dip"
+            android:paddingRight="10dip"
+            android:paddingBottom="5dip"
+            android:scrollbars="none" >
+
+            <TextView
+                android:id="@+id/message_intro"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Ana:"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/background1"
+                android:textSize="25dip" />
+
+            <TextView
+                android:id="@+id/message_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dip"
+                android:text="Ola Ángel, últimamente estás tomando demasiado sal. Procura reducir o consumo de sal nas comidas."
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textColor="@color/background2"
+                android:textSize="20dip" />
+
+            <ImageButton
+                android:id="@+id/seenButton"
+                android:layout_width="25dip"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:layout_marginBottom="5dip"
+                android:layout_marginRight="5dip"
+                android:background="@null"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ok_2_w" />
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/message_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginRight="30dip"
+        android:layout_marginTop="25dip"
+        android:text="Mar 12, 11:03"
+        android:textColor="@color/background3"
+        android:textSize="11dip" />
+
+    <View
+        android:id="@+id/visible_layer"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_alignTop="@+id/user_icon"
+        android:layout_alignBottom="@+id/relMessage"
+        android:background="#88ffffff"
+        android:visibility="visible" />
+
+</RelativeLayout>

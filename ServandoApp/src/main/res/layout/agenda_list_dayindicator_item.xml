@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/foreground2"
+    android:gravity="center_vertical"
+    android:padding="5dip" >
+
+    <!-- android:background="#ececec" -->
+
+    <TextView
+        android:id="@+id/day_indicator_dayname"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:text="Fry"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textColor="@color/background1" />
+
+    <TextView
+        android:id="@+id/day_indicator_daynum"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:text="May 01 2012"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textColor="@color/background1" />
+
+</RelativeLayout>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:id="@+id/menu_advices_show_seen"
+        android:icon="@drawable/eye_open"
+        android:title="@string/show_seen_messages"/>
+
+</menu>

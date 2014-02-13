@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<resources>
+    <string name="hello">Choose one of the features below.</string>
+    <string name="app_name">Servando</string>
+    <string name="description_logo">Demo</string>
+    <string name="description_about">About</string>
+    <string name="description_home">Home</string>
+    <string name="description_search">Buscar</string>
+    <string name="description_feature1">Monitorización</string>
+    <string name="description_feature2">Terapia</string>
+    <string name="description_feature3">Agenda</string>
+    <string name="description_feature4">Tests</string>
+    <string name="description_feature5">Feature 5</string>
+    <string name="description_feature6">Feature 6</string>
+    <string name="title_about">About</string>
+    <string name="title_home">Home</string>
+    <string name="title_search">Buscar</string>
+    <string name="title_feature1">Monitorización</string>
+    <string name="title_feature2">Terapia</string>
+    <string name="title_feature3">Agenda</string>
+    <string name="title_feature4">Tests</string>
+    <string name="title_feature5">Feature 5</string>
+    <string name="title_feature6">Feature 6</string>
+    <string name="default_intro">This is the default content view for an activity. Be sure to change your activity\'s onCreate method. Use setContentView on a custom layout.</string>
+    <string name="feature1_intro">Feature 1 content goes here.</string>
+    <string name="feature2_intro">Feature 2 content goes here.</string>
+    <string name="feature3_intro">Feature 3 content goes here.</string>
+    <string name="feature4_intro">Feature 4 content goes here.</string>
+    <string name="feature5_intro">Feature 5 content goes here.</string>
+    <string name="feature6_intro">Feature 6 content goes here.</string>
+    <string name="about_intro">
+        Una plataforma de telemedicina abierta y distribuída.
+    </string>
+    <string name="search_intro">El contenido para la página de búsqueda va aquí.</string>
+    <string name="next_1_2">1/2  \u003E\u003E</string>
+    <string name="back_2_2">\u003C\u003C 2/2</string>
+    <string name="medical_actions">Acciones médicas</string>
+    <string name="notifications_list_title">Notificaciones</string>
+    <string name="service_hint">Service hint</string>
+    <string name="servando_platform">Servando Platform</string>
+    <string name="clear">Clear</string>
+    <string name="citius_link_title"><a href="http://www.citius.usc.es">Web CiTIUS</a></string>
+    <string name="servando_link_title"><a href="http://proxectos.citius.usc.es/servando">Web Servando</a></string>
+    <string name="usc_link_title"><a href="http://www.usc.es">Web USC</a></string>
+    <string name="message_welcome">"Bienvenido a la plataforma Servando!"</string>
+    <string name="no_advices_msg">No hay mensajes</string>
+    <!-- Patient activity -->
+    <string name="welcome">Bienvenido/a</string>
+    <string name="pending_actions">acciones pendientes</string>
+    <!-- SÍNTOMAS -->
+	<string name="title_activity_sympthom_list">SympthomListActivity</string>
+	<string name="sympthom_activity_title">Síntomas</string>
+	<string name="title_activity_sympthom">Actividad síntomas</string>
+	<string name="symptom_send_button_text">Enviar síntoma</string>
+	<string name="symptom_default_comment">Comentario:</string>
+	<string name="sending_symptom">Enviando síntoma...</string>
+	<string name="sending_symptom_success">Síntoma enviado.</string>
+	<string name="accept">Aceptar</string>
+	<string name="back_button">Atrás</string>
+    <string name="doitnow_button">Hacer ahora</string>
+	<string name="symptom_comment_hint">Escriba un comentario aquí si quiere detallar el síntoma...</string>
+	<string name="alert_patient_comment">Comentario paciente:</string> 
+	<string name="advices_list_header">Mensajes</string>
+	<string name="show_seen_messages">Mostrar mensajes leídos</string>
+	
+	<string name="symptoms">Síntomas</string>
+	<string name="symptom_pillow">Número de almohadas</string>
+	<string name="symptom_headache">Dolor de cabeza</string>
+	<string name="symptom_edema">Edema</string>
+	<string name="symptom_dizziness">Mareos</string>
+	<string name="symptom_emergency">Urgencias</string>
+	
+	<string name="symptom_emergency_title">Pulse el botón para indicar que ha tenido que acudir a urgencias.</string>
+	<string name="symptom_emergency_description">El paciente indica que ha tenido que acudir a los servicios de urgencias.</string>
+	<string name="symptom_emergency_button_text">Notificar</string>
+	
+	<string name="symptom_pillow_title">Indique a continuación el número de almohadas que necesita para dormir</string>
+	<string name="symptom_pillow_description">El paciente necesita %1$s almohadas para dormir cómodamente</string>
+	<string name="symptom_edema_description">El paciente dice que tiene un edema en %1$s</string>
+	<string name="symptom_headache_description">El paciente dijo que tiene dolor de cabeza</string>
+	<string name="symptom_dizziness_description">El paciente dijo que sufre mareos</string>
+	<string name="symptom_dizziness_title">Si no se encuentra bien y desea comunicar síntomas de mareos o náuseas pulse el botón enviar.</string>
+	<string name="symptom_edema_title">Si tiene edemas indique dónde y pulse enviar.</string>
+	<string name="symptom_headache_title">Si desea comunicar dolor de cabeza pulse enviar.</string>
+	<string name="select_button">Seleccione dónde</string>
+	<string name="and">y</string>
+	<string name="unspecified">NO ESPECIFICADO</string>
+	<string-array name="symptom_edema_location">
+        <item>tobillo</item>
+        <item>pierna</item>
+        <item>abdomen</item>
+    </string-array>
+    
+	<string name="menu_settings">Ajustes</string>
+    <string name="menu_doctor_view">Avanzado</string>
+    <string name="menu_exit">Salir</string>
+    <string name="menu_help">Ayuda</string>
+    
+    <string name="close_dialog_message">Si apaga Servando se interrumpirá el protocolo médico y dejará de recibir avisos. Está seguro de que desea continuar?</string>
+     <string name="close_dialog_title">Cuidado...</string>
+     <string name="close_dialog_yes">Si, cerrar</string>
+     <string name="close_dialog_no">Cancelar</string>
+     
+     <string name="exit_dialog_title">Espere, por favor</string>
+     <string name="exit_dialog_message">Cerrando Servando...</string>
+     <string name="doctor_view_dialog_title">Se requiere autenticación</string>
+     <string name="doctor_view_dialog_message">Introduzca su contraseña para acceder a los servicios avanzados de Servando</string>
+     
+    <string name="title_activity_crash">Cierre inesperado</string>
+    <string name="activity_crash_message">Se ha producido un error inesperado, pero Servando ya está funcionando de nuevo. Por favor, pulse el botón enviar informe para comunicarnos el problema y evitar que se vuelva a producir.\nGracias por su colaboración.</string>
+    <string name="send_report_button">Enviar informe</string>
+    <string name="cancel_report_button">Cancelar</string>
+    <string name="report_thanks">Gracias</string>
+    <string name="sending_report">Enviando informe...</string>
+    <string name="oops">Oops...</string>
+    
+     
+     <string name="action_start_at">Empieza:</string>
+     <string name="action_finish_at">Acaba:</string>
+    <string name="action_remaining">Faltan:</string>
+    <string name="action_not_started"></string>
+    
+    
+     <string name="check_for_updates">Actualizaciones</string>
+    <string name="update">Actualizar</string>
+    <string name="update_messagge">Hay actualizaciones disponibles. Por favor, pulse el botón para obtener la versión más reciente del software.</string>
+   <string name="downloading_updates">Descargando actualizaciones...</string>
+   	 <string name="updating_application">Actualizando aplicación</string>
+   	 <string name="downloading_data">Descargando archivos... (%1$d%%)</string>
+    
+    <!-- Vista Hospital -->
+    <string name="hospital_activity_title">Enfermería</string>
+    <string name="hospital_activity_symptoms">Síntomas</string>
+    <string name="hospital_activity_advices">Avisos</string>
+    <string name="hospital_activity_message">Si lo desea puede remitirnos algún aviso o algún síntoma.</string>
+    <string name="hospital_advices_select_advice_message">Indique el motivo de su aviso:</string>
+    <string name="hospital_advices_select_when">Seleccione la fecha:</string>
+    <string name="hospital_advices_activity_title">Avisos</string>
+     <string name="hospital_advices_comment">Comentario:</string>
+     <string name="hospital_advices_hint">Escriba un comentario aquí si desea dar más detalles...</string>
+     <string name="hospital_advices_button">Enviar aviso</string>
+     <string name="hospital_advices_should_select_reason_msg">Debe seleccionar un motivo</string>
+      <string name="alert_advice_display_name">Aviso del paciente</string>
+      <string name="alert_advice_doctor_msg">Motivo: %1$s \n Fecha: %2$s \n Comentario: %3$s</string>
+      <string name="sending_advice">Enviando aviso...</string>
+      <string name="advice_reason">Motivo</string>
+      <string name="advice_date">Fecha</string>
+      <string name="advice_comment">Comentario</string>
+      <string name="sending_advice_success">Aviso enviado correctamente.</string>
+    
+     <string-array name="advices_reasons">
+        <item>Seleccione motivo</item>
+        <item>Cambio de terapia</item>
+        <item>Visita a urgencias</item>
+        <item>Ingreso hospitalario</item>
+        <item>Alta hospitalaria</item>
+    </string-array>
+   	 
+    <string name="version_notes">Notas de la versión</string>
+    
+
+
+</resources>

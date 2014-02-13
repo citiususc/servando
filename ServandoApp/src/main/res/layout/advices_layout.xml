@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/advices_list_container"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:gravity="center_vertical" >
+
+    <LinearLayout
+        android:id="@+id/list_container"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical" >
+
+        <LinearLayout style="@style/TitleBar" >
+
+            <ImageButton
+                style="@style/TitleBarAction"
+                android:contentDescription="@string/description_home"
+                android:onClick="onClickHome"
+                android:src="@drawable/title_home" />
+
+            <ImageView style="@style/TitleBarSeparator" />
+
+            <TextView
+                style="@style/TitleBarText"
+                android:text="@string/advices_list_header" />
+        </LinearLayout>
+
+        <RelativeLayout
+            android:id="@+id/relativeLayout2"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" >
+        </RelativeLayout>
+
+        <ListView
+            android:id="@android:id/list"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:divider="#ffffff"
+            android:drawSelectorOnTop="false" >
+        </ListView>
+
+        <!-- android:transcriptMode="alwaysScroll" -->
+
+<!--         <TextView -->
+<!--             android:id="@android:id/empty" -->
+<!--             android:layout_width="fill_parent" -->
+<!--             android:layout_height="fill_parent" -->
+<!--             android:gravity="center_vertical|center_horizontal" -->
+<!--             android:text="No advices" -->
+<!--             android:textAppearance="?android:attr/textAppearanceMedium" -->
+<!--             android:textColor="@color/background2" -->
+<!--             android:textStyle="bold" /> -->
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/no_advices_msg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:text="@string/no_advices_msg"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="@color/foreground2"
+        android:textSize="28dip"
+        android:visibility="invisible" />
+
+</RelativeLayout>

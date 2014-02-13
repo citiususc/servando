@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:grid="http://schemas.android.com/apk/res/es.usc.citius.servando.android.app"
+    android:id="@+id/relativeLayoutAgenda"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
+
+    <LinearLayout
+        android:id="@+id/header"
+        style="@style/TitleBar" >
+
+        <ImageButton
+            style="@style/TitleBarAction"
+            android:contentDescription="@string/description_home"
+            android:onClick="onClickHome"
+            android:src="@drawable/title_home" />
+
+        <ImageView style="@style/TitleBarSeparator" />
+
+        <TextView
+            style="@style/TitleBarText"
+            android:text="Agenda" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/topbar"
+        android:layout_width="fill_parent"
+        android:layout_height="0dip"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/header"
+        android:background="@color/background2"
+        android:orientation="horizontal"
+        android:padding="1dip" >
+
+        <ImageButton
+            android:id="@+id/separator_1"
+            android:layout_width="1px"
+            android:layout_height="fill_parent"
+            android:layout_toRightOf="@+id/agenda_day_button"
+            android:background="@drawable/separator_gradient" />
+
+        <ImageButton
+            android:id="@+id/separator_2"
+            android:layout_width="1px"
+            android:layout_height="fill_parent"
+            android:layout_toRightOf="@+id/agenda_week_button"
+            android:background="@drawable/separator_gradient" />
+
+        <ImageButton
+            android:layout_width="1px"
+            android:layout_height="fill_parent"
+            android:layout_toRightOf="@+id/agenda_eventlist_button"
+            android:background="@drawable/separator_gradient" />
+    </LinearLayout>
+
+    <ViewAnimator
+        android:id="@+id/pager"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_below="@+id/topbar" >
+
+        <ScrollView
+            android:id="@+id/agenda_calendar_day_view"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:orientation="vertical"
+            android:scrollbars="vertical" >
+
+            <android.support.v7.widget.GridLayout
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/grid"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:orientation="horizontal"
+                grid:columnCount="8"
+                grid:rowCount="24" >
+            </android.support.v7.widget.GridLayout>
+        </ScrollView>
+
+        <include
+            android:id="@+id/agenda_list_view_ref"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            layout="@layout/agenda_list_view_layout" />
+
+        <include
+            android:id="@+id/event_details_view_ref"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            layout="@layout/event_details_view" />
+    </ViewAnimator>
+
+    <!-- <TextView -->
+    <!-- android:id="@android:id/empty" -->
+    <!-- android:layout_width="fill_parent" -->
+    <!-- android:layout_height="fill_parent" -->
+    <!-- android:text="No medical actions" /> -->
+
+    <ImageButton
+        android:id="@+id/agenda_day_view_button"
+        style="@style/ServandoBlueButton"
+        android:layout_width="50dp"
+        android:layout_height="50dip"
+        android:layout_toLeftOf="@+id/agenda_listview_button"
+        android:background="@null"
+        android:padding="10dip"
+        android:src="@drawable/calendar_w" />
+
+    <ImageButton
+        android:id="@+id/agenda_listview_button"
+        style="@style/ServandoBlueButton"
+        android:layout_width="50dp"
+        android:layout_height="50dip"
+        android:layout_alignParentRight="true"
+        android:background="@null"
+        android:padding="10dip"
+        android:src="@drawable/ic_list_white" />
+
+</RelativeLayout>

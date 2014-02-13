@@ -1,0 +1,85 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Servando - Login</title>
+<style>
+body {
+	font-size: 12pt;
+	font-family: Helvetica, Arial, sans-serif;
+	font-weight: normal;
+	font-style: normal;
+	color: #444;
+	background-color: white;
+	line-height: 1.2em;
+	margin-left: 3em;
+	margin-right: 2em;
+}
+
+#login {
+	padding: 20px;
+	background: #fff;
+	width: 400px;
+	margin-bottom: 30px;
+}
+
+h1 {
+	margin-bottom: 0;
+}
+
+
+#header {
+	height: 60px;
+	padding: 10px;
+	background: #2072b9;
+	color: #fff;
+}
+
+.error{color:red}
+
+
+input {
+	border: 1px solid #666666;
+
+}
+
+input[type="submit"]{
+color:#fff;
+	background-color:#2072b9;
+}
+</style>
+</head>
+<body>
+	<center>
+<div id="header">
+		<h1>Servando File Server</h1>
+</div>
+		<div id='login' class='hidden'>
+
+			<form id='generic_login_form' method='POST'
+				action='http://%local_ip_address%:8080/%file_server_path%'>
+				<input type="hidden" name="h" value="servando" id="h" />
+
+				<!-- 				<p class='form-row'> -->
+				<!-- 					<label for='username'>Username:</label> -->
+				<!-- 					<input type='text' name='username' id='username' /> -->
+				<!-- 				</p> -->
+
+				<h3>%error_message%</h3>
+				<p class='form-row'>
+					<label for='password'>Password:</label> <input type='password'
+						name='password' id='password' value="" />
+						<input type='submit' value='Login' />
+				</p>
+
+			</form>
+		</div>
+	</center>
+	<hr>
+	<center>
+		ServandoFileserver is developed by <a
+			href="http://proxectos.citius.usc.es/servando">ServandoPlatform</a>
+		Team
+	</center>
+</body>
+</html>

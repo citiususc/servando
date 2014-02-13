@@ -1,0 +1,98 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".HospitalActivity" >
+
+    <LinearLayout
+        android:id="@+id/linearLayout1"
+        style="@style/TitleBar"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true" >
+
+        <ImageButton
+            style="@style/TitleBarAction"
+            android:contentDescription="@string/description_home"
+            android:onClick="onClickHome"
+            android:src="@drawable/title_home" />
+
+        <ImageView style="@style/TitleBarSeparator" />
+
+        <TextView
+            style="@style/TitleBarText"
+            android:text="@string/hospital_activity_title" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/LinearLayout1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@id/linearLayout1"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:layout_margin="20dip"
+        android:gravity="center"
+        android:orientation="vertical" >
+
+        <RelativeLayout
+            android:id="@+id/b1ll"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical" >
+
+            <ImageButton
+                android:id="@+id/hospital_activity_advices"
+                style="@style/WhiteButton"
+                android:layout_width="match_parent"
+                android:layout_height="120dip"
+                android:layout_alignParentTop="true"
+                android:layout_weight="1"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_communicate_advice" />
+
+            <TextView
+                android:id="@+id/textView1"
+                style="@style/BoldText"
+                android:layout_width="match_parent"
+                android:layout_height="30dip"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@id/hospital_activity_advices"
+                android:gravity="center"
+                android:text="@string/hospital_activity_advices"
+                android:textSize="18dip" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/b2ll"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical" >
+
+            <ImageButton
+                android:id="@+id/hospital_activity_symptoms"
+                style="@style/WhiteButton"
+                android:layout_width="match_parent"
+                android:layout_height="120dip"
+                android:layout_alignParentTop="true"
+                android:layout_weight="1"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_communicate_symptom" />
+
+            <TextView
+                android:id="@+id/textView2"
+                style="@style/BoldText"
+                android:layout_width="match_parent"
+                android:layout_height="30dip"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@id/hospital_activity_symptoms"
+                android:gravity="center"
+                android:text="@string/hospital_activity_symptoms"
+                android:textSize="18dip" />
+        </RelativeLayout>
+    </LinearLayout>
+
+</RelativeLayout>
