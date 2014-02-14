@@ -9,6 +9,11 @@ Servando deals with a number of recurrent problems in telemedicine systems, such
 
 Servando allows the development of generic telemedicine applications, adaptable according to the disease or the particular characteristics of the patient.
 
+Setting up the project
+==============================
+In order to set up this project for development, import it from Android Studio, and then include the [core module dependency](https://github.com/citiususc/servando-core) in the PlatformIndependentLibs folder. 
+
+
 More info
 ==============================
 For general information about the project, APIs, guides and publications, visit our project page: http://proxectos.citius.usc.es/servando/
