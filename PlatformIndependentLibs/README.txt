@@ -1,2 +1,1 @@
-This directory is meant to hold the Servando Core as gradle android module, that can be used to generate a jar for use in the server side.
-The Core Libs are in a separate git repository, so this directory is excluded from version control.
+This directory is meant to hold the Servando Core gradle module required to build the Servando android app. The Core module can also be used to generate a JAR library to use in the server side, so it is in a separate git repository, and this directory is excluded from version control.
