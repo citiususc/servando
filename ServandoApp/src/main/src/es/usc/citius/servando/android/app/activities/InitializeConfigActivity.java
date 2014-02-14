@@ -1,17 +1,10 @@
 package es.usc.citius.servando.android.app.activities;
 
-import java.io.File;
-
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.content.Intent;
 import android.os.Bundle;
-import es.usc.citius.servando.android.medim.MedimServiceHelper;
-import es.usc.citius.servando.android.medim.Drivers.DeviceMgr;
-import es.usc.citius.servando.android.medim.model.devices.DeviceInfo;
-import es.usc.citius.servando.android.medim.model.devices.DeviceType;
-import es.usc.citius.servando.android.medim.model.devices.Sensor;
-import es.usc.citius.servando.android.models.MIT.MITSignalSpecification;
+
 import es.usc.citius.servando.android.util.BluetoothUtils;
 
 public class InitializeConfigActivity extends Activity {
@@ -31,7 +24,7 @@ public class InitializeConfigActivity extends Activity {
 
 	private void saveTestDeviceInfo() {
 
-		DeviceInfo ecg = new DeviceInfo();
+		/*DeviceInfo ecg = new DeviceInfo();
 		ecg.setDeviceType(DeviceType.ELECTROCARDIOGRAPH);
 		ecg.setAcquisitionFrecuency(250);
 		ecg.setDeviceId("BT3_6");
@@ -88,7 +81,7 @@ public class InitializeConfigActivity extends Activity {
 
 		} catch (Exception e) {
 			e.printStackTrace();
-		}
+		}*/
 
 	}
 

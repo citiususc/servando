@@ -29,6 +29,7 @@ public class AppExceptionHandler implements UncaughtExceptionHandler {
 	{
 		try
 		{
+            Log.e("AppExceptionHandler", "Error",exception);
 			log.error("An unexpected error ocurred", exception);
 			File trace = new File(StorageModule.getInstance().getPlatformLogsPath() + "/crash_trace.txt");
 

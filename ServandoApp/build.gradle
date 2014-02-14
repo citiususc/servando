@@ -42,7 +42,11 @@ dependencies {
     compile 'com.android.support:support-v4:19.0.1'
     compile 'com.android.support:appcompat-v7:+'
 
-    compile 'org.simpleframework:simple-xml:2.7.1'
+    compile ('org.simpleframework:simple-xml:2.7.1'){
+        exclude module: 'stax'
+        exclude module: 'stax-api'
+        exclude module: 'xpp3'
+    }
     compile 'joda-time:joda-time:2.3'
     compile 'log4j:log4j:1.2.16'
     compile 'de.mindpipe.android:android-logging-log4j:1.0.2'
@@ -50,8 +54,8 @@ dependencies {
 
     compile project(':PlatformIndependentLibs:ServandoLibs')
     compile project(':PlatformIndependentLibs:MedimLibs')
-    //compile project(':Services:TestsService')
-    //compile project(':Services:MonitoringService')
-    //compile project(':Services:TherapyService')
+    compile project(':Services:TestsService')
+    compile project(':Services:MonitoringService')
+    compile project(':Services:TherapyService')
 
 }

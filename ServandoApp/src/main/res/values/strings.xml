@@ -83,6 +83,7 @@
     <string name="symptom_headache_title">If you want to communicate headache, press send symptom.</string>
     <string name="select_button">Select where</string>
     <string name="and">and</string>
+    <string name="done_button">Done</string>
     <string name="unspecified">UNSPECIFIED</string>
 
     <string-array name="symptom_edema_location">

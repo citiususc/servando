@@ -18,7 +18,6 @@ import es.usc.citius.servando.android.app.RestartReceiver;
 import es.usc.citius.servando.android.app.ServandoIntent;
 import es.usc.citius.servando.android.logging.ILog;
 import es.usc.citius.servando.android.logging.ServandoLoggerFactory;
-import es.usc.citius.servando.android.medim.ui.MedimBackgroundService;
 
 /**
  * 
@@ -53,7 +52,9 @@ public class AppManager {
 			ServandoPlatformFacade.getInstance().stop(ctx);
 			// Stop background service
 			ctx.stopService(new Intent(ctx, ServandoBackgroundService.class));
-			ctx.stopService(new Intent(ctx, MedimBackgroundService.class));
+
+            // TODO: Get class by name
+			//ctx.stopService(new Intent(ctx, MedimBackgroundService.class));
 			// Send broadcast to close all open activities
 			log.debug("Sending exit broadcast to all open activities");
 			ctx.sendBroadcast(new Intent(ServandoIntent.ACTION_APP_EXIT));
