@@ -1,39 +1,12 @@
 package es.usc.citius.servando.android.app.activities;
 
-import java.io.BufferedInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.FilenameFilter;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.InetAddress;
-import java.net.NetworkInterface;
-import java.net.SocketException;
-import java.net.URL;
-import java.net.URLConnection;
-import java.util.Arrays;
-import java.util.Enumeration;
-import java.util.Timer;
-import java.util.TimerTask;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipFile;
-import java.util.zip.ZipInputStream;
-
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.Dialog;
 import android.bluetooth.BluetoothAdapter;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
+import android.content.res.AssetManager;
 import android.content.res.Configuration;
 import android.graphics.drawable.AnimationDrawable;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -41,10 +14,22 @@ import android.speech.tts.TextToSpeech;
 import android.speech.tts.TextToSpeech.OnInitListener;
 import android.util.Log;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.net.SocketException;
+import java.util.Enumeration;
+import java.util.Timer;
+import java.util.TimerTask;
+
 import es.usc.citius.servando.android.ServandoPlatformFacade;
 import es.usc.citius.servando.android.ServandoPlatformFacade.PlatformFacadeListener;
 import es.usc.citius.servando.android.agenda.ServandoBackgroundService;
@@ -53,9 +38,7 @@ import es.usc.citius.servando.android.models.protocol.MedicalAction;
 import es.usc.citius.servando.android.models.protocol.MedicalActionMgr;
 import es.usc.citius.servando.android.models.services.IPlatformService;
 import es.usc.citius.servando.android.settings.ServandoStartConfig;
-import es.usc.citius.servando.android.sound.SoundHelper;
 import es.usc.citius.servando.android.ui.NotificationMgr;
-import es.usc.citius.servando.android.ui.animation.AnimationStore;
 import es.usc.citius.servando.android.util.BluetoothUtils;
 
 /**
@@ -69,12 +52,6 @@ public class SplashActivity extends Activity implements OnInitListener, Platform
 	private static final int SPLASH_DELAY_IN_SECONDS = 0;
 
 	private static final int ENABLE_BLUETOOTH = 1;
-
-	private boolean enableDynamicSDCardSetup = false;
-
-	private boolean allowDownloadPatientData = false;
-
-	private boolean allowExtractDefaultPatientData = false;
 
 	public static final String UNBIND_SERVANDO_SERVICE = "es.usc.citius.servando.android.UNBIND_SERVANDO_SERVICE";
 
@@ -127,22 +104,17 @@ public class SplashActivity extends Activity implements OnInitListener, Platform
 				@Override
 				public void run()
 				{
+
+                    if (ServandoStartConfig.getInstance().dynamicSetupEnabled())
+                    {
+
+                        copySettingsFromAssets();
+                    }
+
 					if (!ServandoStartConfig.getInstance().isPlatformSetupOnSDCard())
 					{
-						if (enableDynamicSDCardSetup)
-						{
-							if (allowDownloadPatientData)
-							{
-								setupAppDir();
-							} else if (allowExtractDefaultPatientData)
-							{
-								extractDefaultPatientData();
-							}
-						} else
-						{
 							loadingMessage.setText("Servando no está correctamente configurado y no puede iniciarse. \n\nDisculpe las molestias");
 							loadingIndicator.setVisibility(View.INVISIBLE);
-						}
 					} else
 					{
 						startApplication();
@@ -153,116 +125,54 @@ public class SplashActivity extends Activity implements OnInitListener, Platform
 		}
 	}
 
-	protected void extractDefaultPatientData()
-	{
-		String externalStoragePath = Environment.getExternalStorageDirectory().getAbsolutePath();
+    private void copySettingsFromAssets() {
 
-		File sd = new File(externalStoragePath);
-		String files[] = sd.list(new FilenameFilter()
-		{
-			@Override
-			public boolean accept(File dir, String filename)
-			{
-				return filename.startsWith("Servando") && filename.endsWith(".zip");
-			}
-		});
+        Log.d(DEBUG_TAG,"Copying default files from assets to sdcard...");
 
-		Log.d("Splash", Arrays.toString(files));
+        String platformDir =Environment.getExternalStorageDirectory().getPath() +"/"
+                + ServandoStartConfig.getInstance().get(ServandoStartConfig.EXTERNAL_PATH) + "/"
+                + ServandoStartConfig.getInstance().get(ServandoStartConfig.DIRECTORY);
+        AssetManager am = getResources().getAssets();
 
-		CharSequence[] choiceList;
+        try {
 
-		if (files != null && files.length > 0)
-		{
-			choiceList = new CharSequence[files.length];
+            File f = new File(platformDir);
 
-			for (int i = 0; i < files.length; i++)
-			{
-				choiceList[i] = files[i];
-			}
+            if(!f.exists()){
+                f.mkdirs();
+            }
 
-			showFileChooser(choiceList, files, sd.getAbsolutePath());
-		}
-		// else
-		// {
-		// File zip = new File(where + "/" + files[which]);
-		// File where = new File(unzipPath);
-		// new DecompressTask(zip.getAbsolutePath(), where.getAbsolutePath() + "/").execute();
-		// }
+            InputStream settingsInputStream = am.open("settings.xml");
+            InputStream patientInputStream = am.open("patient.xml");
+            InputStream protocolInputStream = am.open("protocol.xml");
 
-	}
 
-	private void showFileChooser(final CharSequence[] choiceList, final String files[], final String where)
-	{
+            OutputStream settingsOutput = new FileOutputStream(platformDir + "/settings.xml");
+            OutputStream patientOutput = new FileOutputStream(platformDir+"/patient.xml");
+            OutputStream protocolOutput = new FileOutputStream(platformDir+"/protocol.xml");
 
-		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		builder.setTitle("Setup from file:");
-		builder.setCancelable(false);
-		builder.setNegativeButton("Cancel", new OnClickListener()
-		{
-			@Override
-			public void onClick(DialogInterface dialog, int which)
-			{
-				loadingMessage.setText("Servando no está correctamente configurado y no puede iniciarse. \n\nDisculpe las molestias");
-				loadingIndicator.setVisibility(View.INVISIBLE);
-			}
-		});
-		int selected = -1; // does not select anything
+            copyFile(settingsInputStream,settingsOutput);
+            copyFile(patientInputStream, patientOutput);
+            copyFile(protocolInputStream,protocolOutput);
 
-		builder.setSingleChoiceItems(choiceList, selected, new DialogInterface.OnClickListener()
-		{
+        } catch (IOException e) {
+            Log.e(DEBUG_TAG,"Error copying default files to sdcard",e);
+        }
+    }
 
-			@Override
-			public void onClick(DialogInterface dialog, int which)
-			{
-				// Toast.makeText(SplashActivity.this, "Select " + where + "/" + files[which],
-				// Toast.LENGTH_SHORT).show();
-				File zip = new File(where + "/" + files[which]);
-				File where = new File(unzipPath);
-				new DecompressTask(zip.getAbsolutePath(), where.getAbsolutePath() + "/").execute();
-				dialog.cancel();
-				Log.d(DEBUG_TAG, "Setting up app...");
-			}
-		});
-		AlertDialog alert = builder.create();
-		alert.show();
-	}
+    private void copyFile(InputStream in, OutputStream out) throws IOException {
+        byte[] buffer = new byte[1024];
+        int read;
+        while((read = in.read(buffer)) != -1){
+            out.write(buffer, 0, read);
+        }
+        out.flush();
+        out.close();
+        in.close();
+    }
 
-	private void setupAppDir()
-	{
 
-		Log.d(DEBUG_TAG, "Setting up app...");
-
-		final EditText editText = new EditText(this);
-
-		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-
-		builder.setView(editText);
-		builder.setInverseBackgroundForced(true);
-		builder.setPositiveButton(R.string.accept, new DialogInterface.OnClickListener()
-		{
-			@Override
-			public void onClick(DialogInterface dialog, int id)
-			{
-				patientFolder = editText.getText().toString();
-				new DownloadAndInstallServandoSetupFile().execute();
-
-			}
-		}).setNegativeButton("Cancel", new DialogInterface.OnClickListener()
-		{
-			@Override
-			public void onClick(DialogInterface dialog, int id)
-			{
-				dialog.cancel();
-				finish();
-			}
-		});
-
-		Dialog dialog = builder.create();
-		dialog.show();
-
-	}
-
-	private void startApplication()
+    private void startApplication()
 	{
 
 		Log.d(DEBUG_TAG, "Servando Service is not started.");
@@ -275,20 +185,8 @@ public class SplashActivity extends Activity implements OnInitListener, Platform
 			BluetoothUtils.getInstance().setAdapter(BluetoothAdapter.getDefaultAdapter());
 		}
 
-		loadingMessage.setText("Configuring logs...");
-		configureLogs();
-
-		// loadingMessage.setText("Configuring bluetooth...");
-		// configureBluetooth();
-
 		loadingMessage.setText("Starting... Please wait.");
 
-		// h.post(new Runnable()
-		// {
-		// @Override
-		// public void run()
-		// {
-		// startServandoService();
 
 		try
 		{
@@ -350,15 +248,6 @@ public class SplashActivity extends Activity implements OnInitListener, Platform
 		}
 	}
 
-	/**
-	 *
-	 */
-	private void initializeUiResources()
-	{
-		AnimationStore.getInstance().initialize(this);
-		SoundHelper.initSounds(this);
-
-	}
 
 	@Override
 	public void onWindowFocusChanged(boolean hasFocus)
@@ -382,65 +271,10 @@ public class SplashActivity extends Activity implements OnInitListener, Platform
 	}
 
 	/**
-	 * Starts Servando Service
-	 */
-	// private void startServandoService()
-	// {
-	// ServandoPlatformFacade.getInstance().addListener(this);
-	//
-	// if (!ServandoService.isRunning())
-	// {
-	// Log.d(DEBUG_TAG, "Invoking servando service...");
-	// Intent intent = new Intent(SplashActivity.this, ServandoService.class);
-	// startService(intent);
-	// doBindService();
-	// }
-	// }
-
-	/**
-	 *
-	 */
-	private void configureLogs()
-	{
-		// logs initialization
-		// String logsFilename = DataSource.getInstance().getBasePath() + "/" + "medimLog4j.log";
-		// Log4JConfig.initialize(logsFilename, Level.ALL, true);
-	}
-
-	/**
-	 *
-	 */
-	// private void configureBluetooth()
-	// {
-	// // Get the adapter
-	// BluetoothAdapter btAdapter = BluetoothAdapter.getDefaultAdapter();
-	// if (btAdapter == null)
-	// {
-	// throw new NullPointerException("Device not supports bluetooth");
-	// }
-	// // gardamos o adaptador para futuros usos
-	// BluetoothUtils.getInstance().setAdapter(btAdapter);
-	// // If Bluetooth is not yet enabled, enable it
-	// if (!btAdapter.isEnabled())
-	// {
-	// Intent enableBluetooth = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-	// startActivityForResult(enableBluetooth, ENABLE_BLUETOOTH);
-	// }
-	// }
-
-	/**
 	 *
 	 */
 	private void loadServices()
 	{
-		// HashMap<String, IPlatformService> services = new HashMap<String, IPlatformService>();
-		// IPlatformService service = new MedimService();
-		// services.put(service.getId(), service);
-		// ServiceManager.getInstance().setRegisteredServices(services);
-		//
-		// for (MedicalAction a : service.getProvidedActions()) {
-		// MedicalActionMgr.getInstance().addMedicalAction(a);
-		// }
 
 		for (IPlatformService service : ServandoPlatformFacade.getInstance().getRegisteredServices().values())
 		{
@@ -451,61 +285,6 @@ public class SplashActivity extends Activity implements OnInitListener, Platform
 		}
 
 	}
-
-	// /**
-	// *
-	// */
-	// private final ServiceConnection mConnection = new ServiceConnection()
-	// {
-	// @Override
-	// public void onServiceConnected(ComponentName className, IBinder service)
-	// {
-	// // This is called when the connection with the service has been
-	// // established, giving us the service object we can use to
-	// // interact with the service. Because we have bound to a explicit
-	// // service that we know is running in our own process, we can
-	// // cast its IBinder to a concrete class and directly access it.
-	// mBoundService = ((ServandoService.ServandoBinder) service).getService();
-	// NotificationMgr.getInstance().setServandoService(mBoundService);
-	// loadServices();
-	// doUnbindService();
-	// }
-	//
-	// @Override
-	// public void onServiceDisconnected(ComponentName className)
-	// {
-	// // This is called when the connection with the service has been
-	// // unexpectedly disconnected -- that is, its process crashed.
-	// // Because it is running in our same process, we should never
-	// // see this happen.
-	// mBoundService = null;
-	// }
-	// };
-
-	// private void doBindService()
-	// {
-	// // Establish a connection with the service. We use an explicit
-	// // class name because we want a specific service implementation that
-	// // we know will be running in our own process (and thus won't be
-	// // supporting component replacement by other applications).
-	// bindService(new Intent(SplashActivity.this, ServandoService.class), mConnection, Context.BIND_AUTO_CREATE);
-	// mIsBound = true;
-	// }
-
-	/**
-	 *
-	 */
-	// public void doUnbindService()
-	// {
-	// if (mIsBound)
-	// {
-	// Log.d(DEBUG_TAG, "UnbindService");
-	// // UiUtils.showToast("UnbindService", this);
-	// // Detach our existing connection.
-	// unbindService(mConnection);
-	// mIsBound = false;
-	// }
-	// }
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data)
@@ -533,15 +312,6 @@ public class SplashActivity extends Activity implements OnInitListener, Platform
 		super.onConfigurationChanged(newConfig);
 		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 	}
-
-	// @Override
-	// protected void onDestroy()
-	// {
-	// // UiUtils.showToast("unbind service", this);
-	// doUnbindService();
-	// super.onDestroy();
-	//
-	// }
 
 	@Override
 	public void onReady()
@@ -572,388 +342,5 @@ public class SplashActivity extends Activity implements OnInitListener, Platform
 
 	}
 
-	private class DownloadAndInstallServandoSetupFile extends AsyncTask<String, Integer, String> {
 
-		String externalStoragePath = Environment.getExternalStorageDirectory().getAbsolutePath();
-		String downloadFilePath = externalStoragePath + "/ServandoSetup.zip";
-		String unzipPath = externalStoragePath + ServandoStartConfig.getInstance().getPlatformInstallationPath() + "/";
-
-		@Override
-		protected String doInBackground(String... sUrl)
-		{
-
-			try
-			{
-				Log.d("Splash", "Starting download...");
-				Log.d("Splash", "EEP: " + externalStoragePath);
-				Log.d("Splash", "DFP: " + downloadFilePath);
-				Log.d("Splash", "UZP: " + unzipPath);
-
-				h.post(new Runnable()
-				{
-					@Override
-					public void run()
-					{
-						loadingMessage.setText("Downloading data...");
-					}
-				});
-
-				URL url = null;
-				URLConnection connection = null;
-				String urlStr = "";
-				try
-				{
-					SharedPreferences prefs = getSharedPreferences("servando", Context.MODE_PRIVATE);
-					String patientId = prefs.getString("patient_id", null);
-					Log.d(DEBUG_TAG, "Patient id: " + patientId);
-
-					if (patientFolder != null)
-					{
-						urlStr = ServandoStartConfig.getInstance()
-													.get(ServandoStartConfig.SDCARD_PATIENT_DATA_URL)
-													.replaceAll("%PATIENT_ID%", patientFolder);
-					} else if (patientId != null)
-					{
-						urlStr = ServandoStartConfig.getInstance()
-													.get(ServandoStartConfig.SDCARD_PATIENT_DATA_URL)
-													.replaceAll("%PATIENT_ID%", patientId);
-
-					} else
-					{
-						urlStr = ServandoStartConfig.getInstance().get(ServandoStartConfig.SDCARD_DATA_URL);
-					}
-
-					url = new URL(urlStr);
-					connection = url.openConnection();
-					connection.setConnectTimeout(4000);
-					connection.connect();
-				} catch (Exception e)
-				{
-					Log.d(DEBUG_TAG, "Cannot download data for patient ");
-					// try with generic data
-					url = new URL(ServandoStartConfig.getInstance().get(ServandoStartConfig.SDCARD_DATA_URL));
-					connection = url.openConnection();
-					connection.setConnectTimeout(4000);
-					connection.connect();
-
-				}
-
-				int fileLength = connection.getContentLength();
-
-				Log.d(DEBUG_TAG, "Downloading " + fileLength + "bytes of data from " + urlStr);
-				// download the file
-				InputStream input = new BufferedInputStream(url.openStream());
-				OutputStream output = new FileOutputStream(downloadFilePath);
-
-				byte data[] = new byte[1024];
-				long total = 0;
-				int count;
-
-				while ((count = input.read(data)) != -1)
-				{
-					total += count;
-					// publishing the progress....
-					publishProgress((int) (total * 100 / fileLength));
-					output.write(data, 0, count);
-				}
-
-				output.flush();
-				output.close();
-				input.close();
-
-			} catch (Exception e)
-			{
-				Log.e("TAG", "Error", e);
-
-				h.post(new Runnable()
-				{
-					@Override
-					public void run()
-					{
-						findViewById(R.id.loading).setVisibility(View.INVISIBLE);
-						loadingMessage.setText("Update site not avaliable. Servando can not be started.");
-					}
-				});
-
-			}
-			return null;
-		}
-
-		@Override
-		protected void onProgressUpdate(Integer... values)
-		{
-			super.onProgressUpdate(values);
-			progressBar.setProgress(values[0]);
-			loadingMessage.setText("Downloading data... (" + values[0] + "%)");
-		}
-
-		@Override
-		protected void onPostExecute(String result)
-		{
-			super.onPostExecute(result);
-			hideProgressBar();
-
-			Log.d("TAG", "finish download");
-
-			File zip = new File(downloadFilePath);
-
-			Log.d("Splash", "Exist: " + zip.exists());
-
-			Log.d("Splash", "Unzipping to: " + unzipPath);
-
-			if (zip.exists())
-			{
-				File where = new File(unzipPath);
-
-				if (where.exists())
-				{
-					Log.d("Splash", "Deleting platform path...");
-					// deleteFiles(ServandoStartConfig.getInstance().getPlatformInstallationPath());
-				}
-
-				new DecompressTask(zip.getAbsolutePath(), where.getAbsolutePath() + "/").execute();
-
-				// zip.delete();
-			}
-
-			// startApplication();
-		}
-
-		@Override
-		protected void onPreExecute()
-		{
-			super.onPreExecute();
-			showProgressBar();
-			loadingMessage.setText("...");
-		}
-	}
-
-	public static void deleteFiles(String path)
-	{
-
-		Log.d("Splash", "Deleting platform path");
-
-		File file = new File(path);
-
-		if (file.exists())
-		{
-			String deleteCmd = "rm -r " + path;
-			Runtime runtime = Runtime.getRuntime();
-			try
-			{
-				runtime.exec(deleteCmd);
-			} catch (IOException e)
-			{
-			}
-		}
-	}
-
-	public class DecompressTask extends AsyncTask<String, Integer, String> {
-
-		private String _zipFile;
-		private String _location;
-		private int total;
-		private int max;
-
-		public DecompressTask(String zipFile, String location)
-		{
-			_zipFile = zipFile;
-			_location = location;
-
-			_dirChecker("");
-		}
-
-		private void _dirChecker(String dir)
-		{
-			File f = new File(_location + dir);
-
-			if (!f.isDirectory())
-			{
-				f.mkdirs();
-			}
-		}
-
-		@Override
-		protected String doInBackground(String... params)
-		{
-
-			try
-			{
-				FileInputStream fin = new FileInputStream(_zipFile);
-				ZipInputStream zin = new ZipInputStream(fin);
-				ZipEntry ze = null;
-
-				ZipFile zipFile = new ZipFile(_zipFile);
-				max = zipFile.size();
-				progressBar.setMax(max);
-
-				while ((ze = zin.getNextEntry()) != null)
-				{
-					Log.v("Decompress", "Unzipping " + ze.getName());
-
-					if (ze.isDirectory())
-					{
-						_dirChecker(ze.getName());
-					} else
-					{
-						FileOutputStream fout = new FileOutputStream(_location + ze.getName());
-						for (int c = zin.read(); c != -1; c = zin.read())
-						{
-							fout.write(c);
-						}
-
-						zin.closeEntry();
-						fout.close();
-					}
-
-					total += 1;
-					// publishing the progress....
-					publishProgress((int) (total));
-
-				}
-				zin.close();
-			} catch (Exception e)
-			{
-				Log.e("Decompress", "unzip", e);
-			}
-			return null;
-		}
-
-		@Override
-		protected void onProgressUpdate(Integer... values)
-		{
-			super.onProgressUpdate(values);
-			int progress = values[0];
-			progressBar.setProgress(progress);
-			loadingMessage.setText("Setting up Servando... (" + (int) (((float) progress / max) * 100) + "%)");
-		}
-
-		@Override
-		protected void onPreExecute()
-		{
-			super.onPreExecute();
-			showProgressBar();
-			loadingMessage.setText("Setting up Servando...");
-		}
-
-		@Override
-		protected void onPostExecute(String result)
-		{
-			super.onPostExecute(result);
-			hideProgressBar();
-			Log.d("TAG", "finish unzip");
-			startApplication();
-		}
-	}
-
-	public class DecompressDataFromAssetsTask extends AsyncTask<String, Integer, String> {
-
-		private String _zipFile;
-		private String _location;
-		private int total;
-		private int max;
-
-		public DecompressDataFromAssetsTask(String zipFile, String location)
-		{
-			_zipFile = zipFile;
-			_location = location;
-
-			_dirChecker("");
-		}
-
-		private void _dirChecker(String dir)
-		{
-			File f = new File(_location + dir);
-
-			if (!f.isDirectory())
-			{
-				f.mkdirs();
-			}
-		}
-
-		@Override
-		protected String doInBackground(String... params)
-		{
-
-			try
-			{
-				FileInputStream fin = new FileInputStream(_zipFile);
-				ZipInputStream zin = new ZipInputStream(fin);
-				ZipEntry ze = null;
-
-				ZipFile zipFile = new ZipFile(_zipFile);
-				max = zipFile.size();
-				progressBar.setMax(max);
-
-				while ((ze = zin.getNextEntry()) != null)
-				{
-					Log.v("Decompress", "Unzipping " + ze.getName());
-
-					if (ze.isDirectory())
-					{
-						_dirChecker(ze.getName());
-					} else
-					{
-						FileOutputStream fout = new FileOutputStream(_location + ze.getName());
-						for (int c = zin.read(); c != -1; c = zin.read())
-						{
-							fout.write(c);
-						}
-
-						zin.closeEntry();
-						fout.close();
-					}
-
-					total += 1;
-					// publishing the progress....
-					publishProgress((int) (total));
-
-				}
-				zin.close();
-			} catch (Exception e)
-			{
-				Log.e("Decompress", "unzip", e);
-			}
-			return null;
-		}
-
-		@Override
-		protected void onProgressUpdate(Integer... values)
-		{
-			super.onProgressUpdate(values);
-			int progress = values[0];
-			progressBar.setProgress(progress);
-			loadingMessage.setText("Setting up Servando... (" + (int) (((float) progress / max) * 100) + "%)");
-		}
-
-		@Override
-		protected void onPreExecute()
-		{
-			super.onPreExecute();
-			showProgressBar();
-			loadingMessage.setText("Setting up Servando...");
-		}
-
-		@Override
-		protected void onPostExecute(String result)
-		{
-			super.onPostExecute(result);
-			hideProgressBar();
-			Log.d("TAG", "finish unzip");
-			startApplication();
-		}
-	}
-
-	void showProgressBar()
-	{
-		progressBar.setProgress(0);
-		progressBar.setVisibility(View.VISIBLE);
-
-	}
-
-	void hideProgressBar()
-	{
-		progressBar.setProgress(0);
-		progressBar.setVisibility(View.INVISIBLE);
-	}
 }

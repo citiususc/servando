@@ -1,0 +1,24 @@
+<ServandoSettings>
+   <services class="java.util.ArrayList">
+      <serviceReflectionInfo>
+         <neededAssemblys class="java.util.ArrayList"/>
+         <serviceAssemblyName>PlatformService</serviceAssemblyName>
+         <serviceAssemblyOrigin>local</serviceAssemblyOrigin>
+         <serviceAssemblyType>compiled</serviceAssemblyType>
+         <serviceClassName>PlatformService</serviceClassName>
+         <serviceId>SERVANDO</serviceId>
+         <servicePackageName>es.usc.citius.servando.android.communications</servicePackageName>
+      </serviceReflectionInfo>
+   </services>
+   <uncompletedActionsFile>uncompletedActions.xml</uncompletedActionsFile>
+   <finishedActionsFile>finishedActions.xml</finishedActionsFile>
+   <serverUrl>http://1.2.3.4/serverurl</serverUrl>
+   <role>patient</role>
+   <patientFile>patient.xml</patientFile>
+   <protocolFile>protocol.xml</protocolFile>
+   <logTime>60</logTime>
+   <httpServerEnabled>true</httpServerEnabled>
+   <communicationsModuleEnabled>true</communicationsModuleEnabled>
+   <systemEventsSendingEnabled>false</systemEventsSendingEnabled>
+   <language>es</language>
+</ServandoSettings>

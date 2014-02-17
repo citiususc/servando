@@ -1,0 +1,21 @@
+<MedicalProtocol>
+    <startDate>2013-04-15 00:00:00.000</startDate>
+    <name>Empty protocol</name>
+    <description>Default protocol.</description>
+    <version>0.1</version>
+
+    <protocolAction>
+        <action>
+            <id>dailyreport</id>
+            <displayname>Daily report</displayname>
+            <description>Daily report.</description>
+        </action>
+        <priority>Low</priority>
+        <startGap>10h</startGap>
+        <interval>1d</interval>
+        <duration>0</duration>
+        <timewindow>5h</timewindow>
+        <exceptions class="java.util.ArrayList"/>
+    </protocolAction>
+
+</MedicalProtocol>

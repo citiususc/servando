@@ -54,8 +54,8 @@ dependencies {
 
     compile project(':PlatformIndependentLibs:ServandoLibs')
     compile project(':PlatformIndependentLibs:MedimLibs')
-    compile project(':Services:TestsService')
-    compile project(':Services:MonitoringService')
-    compile project(':Services:TherapyService')
+    //compile project(':Services:TestsService')
+    //compile project(':Services:MonitoringService')
+    //compile project(':Services:TherapyService')
 
 }
