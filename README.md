@@ -21,8 +21,6 @@ Services and medical actions can easily communicate with the server using the WS
 
 In the server, services can receive the information received from the client side, and deal with it as they want, for example storing it in a database for visualization, or publishing it under a REST API.
 
->**A module for receiving the messages sent by the different services will be available soon in a separate repository.**
-
 Setting up the project
 ==============================
 In order to set up this project for development, import it from Android Studio, and then include the [core module dependency](https://github.com/citiususc/servando-core) in the PlatformIndependentLibs folder. 
